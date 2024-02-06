@@ -1,0 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&family=Sometype+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+:root {
+  --mfont-family: 'Sometype Mono', sans-serif;
+  --ofont-family: 'Open Sans', sans-serif;
+
+  --gradient-text: linear-gradient(270deg, #D0F1E9 10.11%, rgba(84, 147, 183, 0.50) 98.23%);
+  --gradient-bar: linear-gradient(103.22deg, #AE67FA -13.86%, #F49867 99.55%);
+
+  --color-bg: #03045E;
+  --color-footer : #0077B6;
+  --color-text: #CAF0F8;
+  --color-component: #00B4D8;
+  --color-textbox: #031B34;
+}

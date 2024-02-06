@@ -1,0 +1,25 @@
+.learn__header {
+    display: flex;
+
+    .learn__header-content {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        border-bottom: 2px solid var(--color-text);
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+
+        h1 {
+            color: var(--color-text);
+            text-align: center;
+            font-family: var(--ofont-family);
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 0.135rem;
+            margin-bottom: 0.5rem;
+        }
+    }
+}
+
+
+

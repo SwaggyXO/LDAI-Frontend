@@ -1,0 +1,16 @@
+.learn__button button {
+    width: 20rem;
+    min-height: 3rem;
+    color: #FFF;
+    text-align: center;
+    font-family: var(--mfont-family);
+    font-size: 1.5rem;
+    font-weight: 700;
+    cursor: pointer;
+    outline: none;
+
+    border-radius: 0.625rem;
+    border-right: 1px solid #FFF;
+    border-bottom: 3px solid #FFF;
+    border-left: 1px solid #FFF;
+}
