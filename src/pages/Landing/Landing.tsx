@@ -5,13 +5,13 @@ import { Dotcomma } from '../../components/notmain';
 const Landing = () => {
 
     let content = (
-        <div>
+        <>
             <Dotcomma />
             <Whatlearn />
             <Login />
             <Features />
             <Softend />
-        </div>
+        </>
     )
     
     return (
