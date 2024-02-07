@@ -5,7 +5,7 @@ import { Button } from '../../../components/notmain'
 const Login = () => {
   return (
     <div className='learn__login section__padding'>
-      <Button title="START LEARNING" color="var(--color-footer)" route="/register"/>
+      <Button title="START LEARNING" color="var(--color-footer)" route="/login"/>
       <br /><br />
       <Button title="HAVE AN ACCOUNT?" color="#92B600"/>
     </div>
