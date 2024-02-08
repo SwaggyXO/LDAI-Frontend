@@ -5,13 +5,14 @@ type ButtonProps = {
   title: string,
   color: string,
   borderRadius?: string,
-  route?: string
+  route?: string,
+  onClick?: () => Promise<void>
 }
 
-const Button = ({ title, color, borderRadius, route }: ButtonProps) => {
+const Button = ({ title, color, borderRadius, route, onClick }: ButtonProps) => {
   return (
     <div className='learn__button'>
-        <Link to={route as string}><button type='button' style={{ background: color, borderRadius: borderRadius }}>{title}</button></Link>
+        <Link to={route as string}><button type='button' style={{ background: color, borderRadius: borderRadius }} onClick={onClick}>{title}</button></Link>
     </div>
   )
 }
