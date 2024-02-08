@@ -1,10 +1,21 @@
 import Logout from "../Auth/Logout"
 import { useAuth0 } from "@auth0/auth0-react"
 import './home.scss'
+import { Button } from "../../components/notmain"
+
+import { useState } from "react"
 
 const Home = () => {
 
   const { user, isAuthenticated, error, isLoading } = useAuth0();
+
+  const [isFirstTimer, setIsFirstTimer] = useState(true);
+
+  if (!error && !isLoading && isAuthenticated && isFirstTimer) setIsFirstTimer(false);
+
+  const content = (
+    <p>Here!</p>
+  )
 
   return (
     isAuthenticated && (
@@ -12,15 +23,11 @@ const Home = () => {
         Home
         {error && <p>Authentication Error</p>}
         {!error && isLoading && <p>Loading...</p>}
-        {user?.picture && <img src={user.picture} alt={user?.name} />}
-        <h2>{user?.name}</h2>
-        <ul>
-            {Object.keys(user as Object).map((objKey, i) => <li key={i}>{objKey}: {user![objKey]} </li>)}
-        </ul>
+        {!error && !isLoading && content}
+        <Button title="Profile" color="var(--color-footer)" route="/profile" />
         <Logout />
       </div>
     )
-    
   )
 }
 
