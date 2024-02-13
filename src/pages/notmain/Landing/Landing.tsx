@@ -1,6 +1,6 @@
-import { Features, Login, Whatlearn, Softend } from '../../containers/notmain';
+import { Features, Login, Whatlearn, Softend } from '../../../containers/notmain';
 
-import { Dotcomma } from '../../components/notmain';
+import { Dotcomma } from '../../../components/notmain';
 
 const Landing = () => {
 

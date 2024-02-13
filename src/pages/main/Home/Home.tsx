@@ -1,17 +1,11 @@
 import Logout from "../Auth/Logout"
 import { useAuth0 } from "@auth0/auth0-react"
 import './home.scss'
-import { Button } from "../../components/notmain"
-
-import { useState } from "react"
+import { Button } from "../../../components/notmain"
 
 const Home = () => {
 
   const { user, isAuthenticated, error, isLoading } = useAuth0();
-
-  const [isFirstTimer, setIsFirstTimer] = useState(true);
-
-  if (!error && !isLoading && isAuthenticated && isFirstTimer) setIsFirstTimer(false);
 
   const content = (
     <p>Here!</p>
