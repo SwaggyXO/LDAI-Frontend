@@ -1,18 +1,28 @@
+import { Button } from "../../../components/notmain";
 import Logout from "../Auth/Logout"
 import { useAuth0 } from "@auth0/auth0-react"
+import './grade.scss'
 
 const Grade = () => {
 
-    const { isAuthenticated } = useAuth0(); 
+    const { user, isAuthenticated, error, isLoading } = useAuth0();
 
-    return (
-        isAuthenticated && (
-            <div>
-                Grade
-                <Logout />
-            </div>
-        )
+  const content = (
+    <p>Here!</p>
+  )
+
+  return (
+    isAuthenticated && (
+      <div className="column">
+        Grade
+        {error && <p>Authentication Error</p>}
+        {!error && isLoading && <p>Loading...</p>}
+        {!error && !isLoading && content}
+        <Button title="Profile" color="var(--color-footer)" route="/profile" />
+        <Logout />
+      </div>
     )
+  )
 }
 
 export default Grade

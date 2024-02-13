@@ -18,10 +18,9 @@ const App = () => {
         <Route path='*' element={<Navigate to={'/'} replace />} />
       </Route>
 
-      <Route path='/home' element={<Home />} />
-      <Route path='/grade' element={<Grade />} />
-      <Route path='/home' element={<Home />} />
-      <Route path="/profile" element={<Profile />} />
+      <Route path='grade' element={<Grade />} />
+      <Route path='home' element={<Home />} />
+      
 
 
     </Routes>
