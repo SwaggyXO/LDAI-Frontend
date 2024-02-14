@@ -5,10 +5,6 @@
     scroll-behavior: smooth;
 }
 
-body {
-    background: var(--color-bg)
-}
-
 .gradient__bg {
     /* ff 3.6+ */
     background: -moz-radial-gradient(circle at 3% 25%, rgba(3, 4, 94, 1) 0%, rgba(0, 119, 182, 1) 99%);

@@ -1,0 +1,25 @@
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+
+type BackButtonProps = {
+  to: string
+};
+
+const BackButton: React.FC<BackButtonProps> = ({ to }) => {
+
+    const navigate = useNavigate();
+
+    const handleBack = () => {
+        navigate(to);
+    }
+
+    return (
+        <button className="back-button" onClick={handleBack}>
+            <FontAwesomeIcon icon={faArrowLeft} size='2x'/>
+        </button>
+    );
+};
+
+export default BackButton;

@@ -2,6 +2,8 @@ import { Features, Login, Whatlearn, Softend } from '../../../containers/notmain
 
 import { Dotcomma } from '../../../components/notmain';
 
+import './landing.scss';
+
 const Landing = () => {
 
     let content = (
@@ -15,7 +17,7 @@ const Landing = () => {
     )
     
     return (
-        <div>
+        <div className="landing">
             {content}
         </div>
     )

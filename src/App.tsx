@@ -10,12 +10,10 @@ import Grade from "./pages/main/Grade/Grade";
 
 const App = () => {
 
-  let x = 1;
-
-  const path = (x === 1) ? 'grade' : 'home';
-  const element = (x === 1) ? <Grade /> : <Home />;
-
-  console.log(element);
+  // let x = 1;
+  // const path = (x === 1) ? 'home' : 'grade';
+  // const element = (x === 1) ? <Home /> : <Grade />;
+  // console.log(element);
   
   return (
     <Routes>
@@ -24,7 +22,8 @@ const App = () => {
         <Route path='*' element={<Navigate to={'/'} replace />} />
       </Route>
 
-      <Route path={path} element={element} />
+      <Route path='/home' element={<Home />} />
+      <Route path='/grade' element={<Grade />} />
       <Route path='/profile' element={<Profile />} />
 
     </Routes>
