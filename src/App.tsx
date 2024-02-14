@@ -9,19 +9,23 @@ import Profile from "./pages/main/Profile/Profile";
 import Grade from "./pages/main/Grade/Grade";
 
 const App = () => {
+
+  let x = 1;
+
+  const path = (x === 1) ? 'grade' : 'home';
+  const element = (x === 1) ? <Grade /> : <Home />;
+
+  console.log(element);
   
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Landing />} />
-
         <Route path='*' element={<Navigate to={'/'} replace />} />
       </Route>
 
-      <Route path='grade' element={<Grade />} />
-      <Route path='home' element={<Home />} />
-      
-
+      <Route path={path} element={element} />
+      <Route path='/profile' element={<Profile />} />
 
     </Routes>
   )

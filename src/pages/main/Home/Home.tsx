@@ -5,7 +5,7 @@ import { Button } from "../../../components/notmain"
 
 const Home = () => {
 
-  const { user, isAuthenticated, error, isLoading } = useAuth0();
+  const { isAuthenticated, error, isLoading } = useAuth0();
 
   const content = (
     <p>Here!</p>
@@ -19,6 +19,7 @@ const Home = () => {
         {!error && isLoading && <p>Loading...</p>}
         {!error && !isLoading && content}
         <Button title="Profile" color="var(--color-footer)" route="/profile" />
+        <Button title="Grade" color="var(--color-footer)" route="/grade" />
         <Logout />
       </div>
     )

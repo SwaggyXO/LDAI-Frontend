@@ -5,7 +5,7 @@ import './grade.scss'
 
 const Grade = () => {
 
-    const { user, isAuthenticated, error, isLoading } = useAuth0();
+    const { isAuthenticated, error, isLoading } = useAuth0();
 
   const content = (
     <p>Here!</p>
@@ -19,6 +19,8 @@ const Grade = () => {
         {!error && isLoading && <p>Loading...</p>}
         {!error && !isLoading && content}
         <Button title="Profile" color="var(--color-footer)" route="/profile" />
+        <Button title="Home" color="var(--color-footer)" route="/home" />
+
         <Logout />
       </div>
     )
