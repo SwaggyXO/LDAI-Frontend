@@ -17,7 +17,7 @@ const BackButton: React.FC<BackButtonProps> = ({ to }) => {
 
     return (
         <button className="back-button" onClick={handleBack}>
-            <FontAwesomeIcon icon={faArrowLeft} size='2x'/>
+            <FontAwesomeIcon icon={faArrowLeft} size='2x' color='#fff'/>
         </button>
     );
 };

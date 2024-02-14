@@ -20,7 +20,7 @@ const Grade = () => {
     //   <Logout />
     // </>
     <>
-      <Topnav customButton={<BackButton to={'/home'}/>} text={'Select your Grade'}/>
+      <Topnav customButton={<BackButton to={'/home'}/>} text={'Select your grade'}/>
     </>
   )
 
