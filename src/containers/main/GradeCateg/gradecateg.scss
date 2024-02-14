@@ -1,0 +1,13 @@
+.grade-categ {
+    flex: 1;
+    margin-top: 10vh;
+    left: 0;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    height: 15vh;
+}
+
+.grade-categ:nth-child(1) {
+    margin-top: 15vh;
+}

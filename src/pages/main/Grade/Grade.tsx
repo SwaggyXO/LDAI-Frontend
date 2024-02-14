@@ -4,12 +4,11 @@ import { useAuth0 } from "@auth0/auth0-react"
 import './grade.scss'
 import Topnav from "../../../containers/main/Topnav/Topnav";
 import BackButton from "./BackButton";
+import GradeCateg from "../../../containers/main/GradeCateg/GradeCateg";
 
 const Grade = () => {
 
   const {isAuthenticated, error, isLoading } = useAuth0();
-
-  
 
   const content = (
     // <>
@@ -21,6 +20,11 @@ const Grade = () => {
     // </>
     <>
       <Topnav customButton={<BackButton to={'/home'}/>} text={'Select your grade'}/>
+      <div className="grade--categories">
+        <GradeCateg />
+        <GradeCateg />
+        <GradeCateg />
+      </div>
     </>
   )
 
