@@ -7,13 +7,11 @@ import Landing from "./pages/notmain/Landing/Landing";
 import Home from "./pages/main/Home/Home";
 import Profile from "./pages/main/Profile/Profile";
 import Grade from "./pages/main/Grade/Grade";
+import Subject from "./pages/main/Subject/Subject";
+import GradeLayout from "./layouts/main/GradeLayout/GradeLayout";
+import SubjectLayout from "./layouts/main/SubjectLayout/SubjectLayout";
 
 const App = () => {
-
-  // let x = 1;
-  // const path = (x === 1) ? 'home' : 'grade';
-  // const element = (x === 1) ? <Home /> : <Grade />;
-  // console.log(element);
   
   return (
     <Routes>
@@ -23,7 +21,15 @@ const App = () => {
       </Route>
 
       <Route path='/home' element={<Home />} />
-      <Route path='/grade' element={<Grade />} />
+      
+      <Route path='/grade' element={<GradeLayout />}>
+        <Route index element={<Grade />} />  
+      </Route>
+
+      <Route path='/subject' element={<SubjectLayout />}>
+        <Route index element={<Subject />} />
+      </Route>
+
       <Route path='/profile' element={<Profile />} />
 
     </Routes>

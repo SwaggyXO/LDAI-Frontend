@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { Header, Footer } from "../../notmain";
+import { Header, Footer } from "../../../containers/notmain";
 
 const Layout = () => {
 

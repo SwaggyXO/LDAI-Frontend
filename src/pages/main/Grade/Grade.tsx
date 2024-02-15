@@ -1,4 +1,3 @@
-import Logout from "../Auth/Logout"
 import { useAuth0 } from "@auth0/auth0-react"
 import './grade.scss'
 import BackButton from "../../../components/main/buttons/BackButton";
@@ -32,16 +31,14 @@ const Grade = () => {
 
   const content = (
     <>
-      <Topnav customButton={<BackButton to='/home'/>} text='Select your grade'/>
       <div className="grade--categories">
         <GradeCateg heading="Middle School" tiles={midSchoolTiles}/>
         <GradeCateg heading="Secondary School" tiles={secSchoolTiles}/>
         <GradeCateg heading="Senior Secondary School" tiles={senSecSchoolTiles}/>
       </div>
       <div className="button-next_container">
-        <Button buttonText="Next" onClick={handleNext} className="button-next" />
+        <Button buttonText="Next" onClick={handleNext} className="button-next" to="/subject"/>
       </div>
-      
     </>
   )
 
