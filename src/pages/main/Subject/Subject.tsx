@@ -19,7 +19,7 @@ const Subject = (props: SubjectsProps) => {
     }
 
     const content = (
-        <>
+        <div className='parent'>
             <div className="subjects-container">
                 {subjects.map((subject) => (
                     <SubjectTile key={subject.id} name={subject.name} svg={subject.svg} />
@@ -28,7 +28,7 @@ const Subject = (props: SubjectsProps) => {
             <div className="button-next_container">
                 <Button buttonText="Next" onClick={handleNext} className="button-next" to="/home"/>
             </div>
-        </>
+        </div>
         
     )
 
