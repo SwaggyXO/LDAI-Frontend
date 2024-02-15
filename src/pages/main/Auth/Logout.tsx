@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react"
-import ButtonAuth from "../../../components/main/buttons/Button_Auth"
+import Button from "../../../components/main/buttons/Button"
 
 const Logout = () => {
 
@@ -8,7 +8,7 @@ const Logout = () => {
     const onLogout = () => logout({logoutParams: {returnTo: `${import.meta.env.VITE_AUTH0_LOGOUT_REDIRECT_URI}`}});
 
     return (
-        isAuthenticated && (<ButtonAuth buttonText="Logout" onClick={onLogout} />)
+        isAuthenticated && (<Button buttonText="Logout" onClick={onLogout} className="button-logout"/>)
     )
 }
 

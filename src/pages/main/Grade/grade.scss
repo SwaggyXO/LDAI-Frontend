@@ -1,9 +1,26 @@
+.grade--categories {
+    margin-top: 15vh;
+    margin-bottom: 2.5vh;
+}
 
-// .column {
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: flex-start;
-//     align-items: center;
-// }
+.button-next_container {
+    display: flex;
+    justify-content: center;
 
+    .button-next {
+        width: 20vh;
+        height: 7.5vh;
+        background-color: var(--color-bg);
+        border: none;
+        border-radius: 10px;
 
+        font-family: var(--ofont-family);
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+        cursor: pointer;
+    }
+}

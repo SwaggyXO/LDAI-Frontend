@@ -1,13 +1,39 @@
 .grade-categ {
-    flex: 1;
-    margin-top: 10vh;
-    left: 0;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-    height: 15vh;
-}
+    padding: 3vh 2vh;
 
-.grade-categ:nth-child(1) {
-    margin-top: 15vh;
+    .tiles-container {
+        display: flex;
+        justify-content: space-around;
+        padding: 1vh 2vh;
+        gap: 1.5vh;
+    }
+
+    .header {
+        display: flex;
+        padding-bottom: 0.5vh;
+
+        h2 {
+            display: flex;
+            justify-content: center;
+
+            font-family: var(--mfont-family);
+            font-size: 1rem;
+            font-weight: 600;
+            color: rgba(0, 0, 0, 0.40);
+        }
+
+        .line-container {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            justify-content: center;
+
+            .line {
+                background-color: rgba(0, 0, 0, 0.20);
+                flex-grow: 0.9;
+                height: 2px;        
+            }
+        }
+    }
+    
 }
