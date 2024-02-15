@@ -1,41 +1,51 @@
-import "./App.css"
+import "./App.css";
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import {
+  Route,
+  Navigate,
+  createBrowserRouter,
+  createRoutesFromElements,
+} from "react-router-dom";
 import { Layout } from "./containers/notmain";
 
 import Landing from "./pages/notmain/Landing/Landing";
-import Home from "./pages/main/Home/Home";
-import Profile from "./pages/main/Profile/Profile";
-import Grade from "./pages/main/Grade/Grade";
-import Subject from "./pages/main/Subject/Subject";
-import GradeLayout from "./layouts/main/GradeLayout/GradeLayout";
-import SubjectLayout from "./layouts/main/SubjectLayout/SubjectLayout";
+import Home from "./pages/Main/Home/Home";
+import Profile from "./pages/Main/Profile/Profile";
+import Grade from "./pages/Main/Grade/Grade";
+import Subject from "./pages/Main/Subject/Subject";
+import GradeLayout from "./layouts/Main/GradeLayout/GradeLayout";
+import SubjectLayout from "./layouts/Main/SubjectLayout/SubjectLayout";
 
-import { SampleSubject } from "./pages/main/Subject/SampleSubject";
+import { SampleSubject } from "./pages/Main/Subject/SampleSubject";
+import Intro from "./layouts/Main/Gameplay/Quiz/Start/Intro";
+import Question from "./layouts/Main/Gameplay/Quiz/Question/Question";
+import Completion from "./layouts/Main/Gameplay/Quiz/Result/Completion";
 
-const App = () => {
-  
-  return (
-    <Routes>
-      <Route path='/' element={<Layout />}>
+export const routes = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route path="/" element={<Layout />}>
         <Route index element={<Landing />} />
-        <Route path='*' element={<Navigate to={'/'} replace />} />
+        <Route path="*" element={<Navigate to={"/"} replace />} />
       </Route>
 
-      <Route path='/home' element={<Home />} />
+      <Route path="/home" element={<Home />} />
 
-      <Route path='/grade' element={<GradeLayout />}>
-        <Route index element={<Grade />} />  
+      <Route path="/grade" element={<GradeLayout />}>
+        <Route index element={<Grade />} />
       </Route>
 
-      <Route path='/subject' element={<SubjectLayout />}>
-        <Route index element={<Subject subjects={SampleSubject}/>} />
+      <Route path="/subject" element={<SubjectLayout />}>
+        <Route index element={<Subject subjects={SampleSubject} />} />
       </Route>
 
-      <Route path='/profile' element={<Profile />} />
+      <Route path="/quiz" element={<Intro />}>
+        <Route path="question" element={<Question />} />
+        <Route path="result" element={<Completion />} />
+        <Route path="*" element={<Navigate to={"/quiz"} replace />} />
+      </Route>
 
-    </Routes>
+      <Route path="/profile" element={<Profile />} />
+    </>
   )
-}
-
-export default App
+);

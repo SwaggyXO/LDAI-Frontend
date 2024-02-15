@@ -1,7 +1,7 @@
-import Logout from "../Auth/Logout"
 import { useAuth0 } from "@auth0/auth0-react"
 import './home.scss'
 import { Button } from "../../../components/notmain"
+import Logout from "../Auth/Logout"
 
 const Home = () => {
 

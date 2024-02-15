@@ -1,8 +1,8 @@
 import './subject.scss';
 
 import { useAuth0 } from "@auth0/auth0-react";
-import SubjectTile from "../../../components/main/Tiles/SubjectTile/SubjectTile";
-import Button from "../../../components/main/buttons/Button";
+import Button from '../../../components/Main/buttons/Button';
+import Tile from '../../../components/Main/Tiles/Tile';
 
 type SubjectsProps = {
     subjects: { id: number, name: string; svg: string }[];
@@ -22,7 +22,7 @@ const Subject = (props: SubjectsProps) => {
         <div className='parent'>
             <div className="subjects-container">
                 {subjects.map((subject) => (
-                    <SubjectTile key={subject.id} name={subject.name} svg={subject.svg} />
+                    <Tile key={subject.id} name={subject.name} svg={subject.svg} />
                 ))}
             </div>
             <div className="button-next_container">

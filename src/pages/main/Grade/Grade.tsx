@@ -1,10 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react"
 import './grade.scss'
-import BackButton from "../../../components/main/buttons/BackButton";
-import Topnav from "../../../containers/main/Topnav/Topnav";
-import GradeCateg from "../../../containers/main/GradeCateg/GradeCateg";
-import GradeTile from "../../../components/main/Tiles/GradeTile/GradeTile";
-import Button from "../../../components/main/buttons/Button";
+import GradeCateg from "../../../containers/Main/GradeCateg/GradeCateg";
+import Button from "../../../components/Main/buttons/Button";
+import Tile from "../../../components/Main/Tiles/Tile";
 
 const Grade = () => {
 
@@ -16,17 +14,17 @@ const Grade = () => {
 
   const midSchoolArr = [6, 7, 8];
   const midSchoolTiles = midSchoolArr.map((grade, index) => (
-    <GradeTile key={index} number={grade} />
+    <Tile key={index} number={grade} />
   ));
 
   const secSchoolArr = [9, 10];
   const secSchoolTiles = secSchoolArr.map((grade, index) => (
-    <GradeTile key={index} number={grade} />
+    <Tile key={index} number={grade} />
   ));
 
   const senSecSchoolArr = [11, 12];
   const senSecSchoolTiles = senSecSchoolArr.map((grade, index) => (
-    <GradeTile key={index} number={grade} />
+    <Tile key={index} number={grade} />
   ));
 
   const content = (

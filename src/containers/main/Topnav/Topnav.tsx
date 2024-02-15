@@ -2,7 +2,7 @@ import './topnav.scss';
 
 type PropsType = {
     customButton?: JSX.Element,
-    text?: string,
+    title?: string,
     combo?: string | JSX.Element,
     marbles?: string | JSX.Element,
     xp?: string | JSX.Element,
@@ -13,8 +13,9 @@ type PropsType = {
 const Topnav = (props: PropsType) => {
 
     const navItemLength = Object.values(props).filter(prop => prop !== undefined).length;
+    const navItems = Object.keys(props).filter(prop => prop !== undefined);
     
-    let navbarClass;
+    let navbarClass: string;
     switch (navItemLength) {
         case 2:
             navbarClass = 'top-navbar-2';
@@ -31,9 +32,9 @@ const Topnav = (props: PropsType) => {
 
     return (
         <div className={`top-navbar ${navbarClass}`}>
-            {Object.values(props).map((prop, index) => (
-                <div key={index} className="navbar-item">
-                    {prop}
+            {Object.values(props).map((navItem, index) => (
+                <div key={index} className={`navbar-item navbar-item--${navItems[index]}`}>
+                    {navItem}
                 </div>
             ))}
         </div>

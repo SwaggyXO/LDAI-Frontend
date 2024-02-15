@@ -1,0 +1,41 @@
+.tile--subject {
+    display: flex;
+    flex-direction: column;
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+    background-color: hsla(191, 100%, 43%, 0.4);
+    padding: 10px;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+
+    cursor: pointer;
+
+    .svg-container {
+        padding-bottom: 5px;
+    }
+
+    .name {
+        font-family: var(--ofont-family);
+        font-weight: 600;
+    }
+}
+
+.tile--grade {
+    display: flex;
+    width: 12.5vh;
+    height: 12.5vh;
+    background-color: #00B4DD;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    cursor: pointer;
+
+    p {
+        font-family: var(--ofont-family);
+        font-size: 3rem;
+        font-weight: 700;
+        color: #fff;
+    }
+}
