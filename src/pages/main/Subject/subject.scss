@@ -1,0 +1,30 @@
+.subjects-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 12.5vh 2.5vh 1vh 1vh;
+}
+
+.button-next_container {
+    display: flex;
+    justify-content: center;
+    padding-top: 2.5vh;
+    padding-bottom: 5vh;
+
+    .button-next {
+        width: 20vh;
+        height: 7.5vh;
+        background-color: var(--color-bg);
+        border: none;
+        border-radius: 10px;
+
+        font-family: var(--ofont-family);
+        font-size: 1.25rem;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+        cursor: pointer;
+    }
+}

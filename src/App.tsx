@@ -11,6 +11,8 @@ import Subject from "./pages/main/Subject/Subject";
 import GradeLayout from "./layouts/main/GradeLayout/GradeLayout";
 import SubjectLayout from "./layouts/main/SubjectLayout/SubjectLayout";
 
+import { SampleSubject } from "./pages/main/Subject/SampleSubject";
+
 const App = () => {
   
   return (
@@ -21,13 +23,13 @@ const App = () => {
       </Route>
 
       <Route path='/home' element={<Home />} />
-      
+
       <Route path='/grade' element={<GradeLayout />}>
         <Route index element={<Grade />} />  
       </Route>
 
       <Route path='/subject' element={<SubjectLayout />}>
-        <Route index element={<Subject />} />
+        <Route index element={<Subject subjects={SampleSubject}/>} />
       </Route>
 
       <Route path='/profile' element={<Profile />} />

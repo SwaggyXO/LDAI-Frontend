@@ -1,10 +1,10 @@
-import './tiles.scss'
+import './gradetile.scss'
 
 type TilesProps = {
   number: number;
 }
 
-const Tiles = (props: TilesProps) => {
+const GradeTile = (props: TilesProps) => {
   return (
     <div className="tile">
       <p>{props.number}</p>
@@ -12,4 +12,4 @@ const Tiles = (props: TilesProps) => {
   );
 };
 
-export default Tiles;
+export default GradeTile;

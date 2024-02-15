@@ -3,7 +3,7 @@ import './grade.scss'
 import BackButton from "../../../components/main/buttons/BackButton";
 import Topnav from "../../../containers/main/Topnav/Topnav";
 import GradeCateg from "../../../containers/main/GradeCateg/GradeCateg";
-import Tiles from "../../../components/main/Tiles/Tiles";
+import GradeTile from "../../../components/main/Tiles/GradeTile/GradeTile";
 import Button from "../../../components/main/buttons/Button";
 
 const Grade = () => {
@@ -16,17 +16,17 @@ const Grade = () => {
 
   const midSchoolArr = [6, 7, 8];
   const midSchoolTiles = midSchoolArr.map((grade, index) => (
-    <Tiles key={index} number={grade} />
+    <GradeTile key={index} number={grade} />
   ));
 
   const secSchoolArr = [9, 10];
   const secSchoolTiles = secSchoolArr.map((grade, index) => (
-    <Tiles key={index} number={grade} />
+    <GradeTile key={index} number={grade} />
   ));
 
   const senSecSchoolArr = [11, 12];
   const senSecSchoolTiles = senSecSchoolArr.map((grade, index) => (
-    <Tiles key={index} number={grade} />
+    <GradeTile key={index} number={grade} />
   ));
 
   const content = (
@@ -44,11 +44,11 @@ const Grade = () => {
 
   return (
     isAuthenticated && (
-      <div>
+      <>
         {error && <p>Authentication Error</p>}
         {!error && isLoading && <p>Loading...</p>}
         {!error && !isLoading && content}
-      </div>
+      </>
     )
   )
 }
