@@ -20,6 +20,7 @@ import { SampleSubject } from "./pages/Main/Subject/SampleSubject";
 import Intro from "./layouts/Main/Gameplay/Quiz/Start/Intro";
 import Question from "./layouts/Main/Gameplay/Quiz/Question/Question";
 import Completion from "./layouts/Main/Gameplay/Quiz/Result/Completion";
+import HomeLayout from "./layouts/Main/HomeLayout/HomeLayout";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -29,7 +30,9 @@ export const routes = createBrowserRouter(
         <Route path="*" element={<Navigate to={"/"} replace />} />
       </Route>
 
-      <Route path="/home" element={<Home />} />
+      <Route path="" element={<HomeLayout />}>
+        <Route path="/home" element={<Home />} />
+      </Route>
 
       <Route path="/grade" element={<GradeLayout />}>
         <Route index element={<Grade />} />

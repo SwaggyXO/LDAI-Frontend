@@ -13,7 +13,7 @@ const Tile = (props: PropsType) => {
     </div>
   ) : (
     <div className={`tile--subject`}>
-      <img src={props.svg} className="svg-container"></img>
+      <img src={props.svg} className="svg-container" />
       <div className="name">{props.name}</div>
     </div>
   );
