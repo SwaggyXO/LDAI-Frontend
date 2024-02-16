@@ -1,12 +1,12 @@
 import { Outlet } from "react-router-dom";
 import Topnav from "../../../containers/Main/Topnav/Topnav";
-import BackButton from "../../../components/Main/buttons/BackButton";
+import NavButton from "../../../components/Main/buttons/NavButton";
 
 const SubjectLayout = () => {
 
   const content = (
     <>
-        <Topnav customButton={<BackButton to='/grade'/>} title='Choose a subject'/>
+        <Topnav customButton={<NavButton to='/grade' className="back-button"/>} title='Choose a subject'/>
         <div>
             <Outlet />
         </div>

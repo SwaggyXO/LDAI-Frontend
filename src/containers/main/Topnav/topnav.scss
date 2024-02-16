@@ -34,7 +34,7 @@
         }        
     }
 
-    .navbar-item--xp {
+    .navbar-item:nth-child(2) {
         flex: 1;
         justify-content: center;
         text-align: center;

@@ -1,3 +1,4 @@
+import './bottomnav.scss';
 
 const Bottomnav = () => {
   return (
