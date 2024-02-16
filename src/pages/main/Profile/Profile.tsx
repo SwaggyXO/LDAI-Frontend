@@ -4,6 +4,7 @@ import Logout from '../Auth/Logout';
 const Profile = () => {
 
     const { user } = useAuth0();
+    console.log(user);
 
     return (
         <div className="column">
