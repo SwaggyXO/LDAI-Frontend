@@ -25,7 +25,7 @@ const NavButton = (props: NavButtonProps) => {
         <button className={className} onClick={handleNav}>
             {className === 'back-button' ? 
                 <FontAwesomeIcon icon={faArrowLeft} size='2x' color='#fff'/> :
-                <img src={vector} className={className} />
+                <img src={vector} />
             }
         </button>
     );
