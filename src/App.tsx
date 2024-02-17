@@ -32,6 +32,7 @@ export const routes = createBrowserRouter(
 
       <Route path="" element={<HomeLayout />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
       <Route path="/grade" element={<GradeLayout />}>
@@ -47,8 +48,7 @@ export const routes = createBrowserRouter(
         <Route path="result" element={<Completion />} />
         <Route path="*" element={<Navigate to={"/quiz"} replace />} />
       </Route>
-
-      <Route path="/profile" element={<Profile />} />
+      
     </>
   )
 );
