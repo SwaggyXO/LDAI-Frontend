@@ -31,7 +31,7 @@ const Topnav = (props: PropsType) => {
     }
 
     return (
-        <div className={`top-navbar ${navbarClass}`}>
+        <div className={`top-navbar ${navbarClass} sticky`}>
             {Object.values(props).map((navItem, index) => (
                 <div key={index} className={`navbar-item navbar-item--${navItems[index]}`}>
                     {navItem}

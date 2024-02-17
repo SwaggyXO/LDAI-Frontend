@@ -21,6 +21,9 @@ import Intro from "./layouts/Main/Gameplay/Quiz/Start/Intro";
 import Question from "./layouts/Main/Gameplay/Quiz/Question/Question";
 import Completion from "./layouts/Main/Gameplay/Quiz/Result/Completion";
 import HomeLayout from "./layouts/Main/HomeLayout/HomeLayout";
+import Challenges from "./pages/Main/Challenges/Challenges";
+import DRS from "./pages/Main/DRS/DRS";
+import PowerUps from "./pages/Main/PowerUps/PowerUps";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +35,9 @@ export const routes = createBrowserRouter(
 
       <Route path="" element={<HomeLayout />}>
         <Route path="/home" element={<Home />} />
+        <Route path="/challenges" element={<Challenges />} />
+        <Route path="/drs" element={<DRS />} />
+        <Route path="/powerups" element={<PowerUps />} />
         <Route path="/profile" element={<Profile />} />
       </Route>
 
