@@ -1,12 +1,12 @@
 import './topnav.scss';
 
 type PropsType = {
-    customButton?: JSX.Element,
-    title?: string,
-    combo?: string | JSX.Element,
-    marbles?: string | JSX.Element,
-    xp?: string | JSX.Element,
-    subject?: string | JSX.Element,
+    customButton?: JSX.Element
+    title?: string
+    combo?: string | JSX.Element
+    marbles?: string | JSX.Element
+    xp?: string | JSX.Element
+    subject?: string | JSX.Element
     streak?: string | JSX.Element
 }
 

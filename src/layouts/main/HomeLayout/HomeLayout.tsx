@@ -3,6 +3,7 @@ import Topnav from "../../../containers/Main/Topnav/Topnav";
 import Bottomnav from "../../../containers/Main/Bottomnav/Bottomnav";
 import { Calendar, Marble, XpBadgeOne } from "../../../containers/Main/Topnav/imports";
 import { History } from "../../../pages/Main/Subject/imports";
+import { Challenges, DRS, Home, PowerUps, Profile } from "../../../containers/Main/Bottomnav/imports";
 
 
 const HomeLayout = () => {
@@ -39,7 +40,7 @@ const HomeLayout = () => {
             <div>
                 <Outlet />
             </div>
-            <Bottomnav />
+            <Bottomnav home={Home} drs={DRS} challenges={Challenges} powerups={PowerUps} profile={Profile} />
         </>
     );
 
