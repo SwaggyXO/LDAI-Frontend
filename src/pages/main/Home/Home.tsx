@@ -18,7 +18,6 @@ const Home = () => {
         {error && <p>Authentication Error</p>}
         {!error && isLoading && <p>Loading...</p>}
         {!error && !isLoading && content}
-        <Button title="Profile" color="var(--color-footer)" route="/profile" />
         <Button title="Grade" color="var(--color-footer)" route="/grade" />
         <Logout />
       </div>
