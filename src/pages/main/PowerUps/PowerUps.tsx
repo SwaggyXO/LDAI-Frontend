@@ -2,7 +2,7 @@ import './powerups.scss';
 
 const PowerUps = () => {
   return (
-    <div>PowerUps</div>
+    <div className='powerups'>PowerUps</div>
   )
 }
 

@@ -4,7 +4,7 @@ import Bottomnav from "../../../containers/Main/Bottomnav/Bottomnav";
 import { Calendar, Marble, XpBadgeOne } from "../../../containers/Main/Topnav/imports";
 import { History } from "../../../pages/Main/Subject/imports";
 import { Challenges, DRS, Home, PowerUps, Profile } from "../../../containers/Main/Bottomnav/imports";
-
+import './homelayout.scss';
 
 const HomeLayout = () => {
 
@@ -37,7 +37,7 @@ const HomeLayout = () => {
     const content = (
         <>
             <Topnav xp={xpBadge} subject={subject} streak={streak} marbles={marbles} />
-            <div>
+            <div className="Layout">
                 <Outlet />
             </div>
             <Bottomnav home={Home} drs={DRS} challenges={Challenges} powerups={PowerUps} profile={Profile} />
