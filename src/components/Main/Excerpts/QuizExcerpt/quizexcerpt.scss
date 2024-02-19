@@ -1,0 +1,29 @@
+.quiz-excerpt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 7.5%;
+    border-radius: 2vh;
+    background-color: rgba(95, 158, 160, 0.4);
+    
+    cursor: pointer;
+
+    p {
+        font-family: var(--ofont-family);
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+
+    .quiz-play_button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 4%;
+        border: none;
+        border-radius: 50%;
+
+        background-color: var(--color-bg);
+
+        cursor: pointer;
+    }
+}

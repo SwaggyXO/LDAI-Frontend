@@ -6,8 +6,13 @@ import './home.scss'
 import TextContainer from "../../../containers/Main/TextContainer/TextContainer";
 import Button from "../../../components/Main/buttons/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { CloseChest } from "../../../assets/Chest/import";
+import QuizExcerpt from "../../../components/Main/Excerpts/QuizExcerpt/QuizExcerpt";
+import { SampleQuizzes } from "./SampleQuizzes";
 
 const Home = () => {
+
+  const quizzes = SampleQuizzes;
 
   const { user, isAuthenticated, error, isLoading } = useAuth0();
 
@@ -29,26 +34,40 @@ const Home = () => {
   }, []);
 
   const buttonElements = (
-    <p>Play {<FontAwesomeIcon icon={faPlay} color="#fff"/>}</p>
+    <p>Play &nbsp;{<FontAwesomeIcon icon={faPlay} color="black"/>}</p>
   )
 
   const textContainerElements = (
     <>
       <p>Welcome</p>
-      <p>Participate in Quizzes, earn Marbles and unlock items with experience</p>
+      <p>Participate in Quizzes, <br />earn Marbles and unlock items with experience</p>
       <Button buttonText={buttonElements} className="home-play_button" to="/grade" />
     </>
-    
   )
 
   const content = (
     <>
       <div className="intro-half">
         <div className="intro-half_header">
-          <p className="intro-half_header--greeting">{timedGreeting}!</p>
-          <p className="intro-half_header--username">{user?.name}</p>
+          <div className="intro-half_header--text">
+            <p>{timedGreeting}!</p>
+            <p>{user?.name}</p>
+          </div>
+          <div className="intro-half_header--chest">
+            <img src={CloseChest} alt="Closed Chest" />
+          </div>
         </div>
         <TextContainer elements={textContainerElements} className="home" />
+      </div>
+      <div className="new-half">
+        <div className="new-half_header">
+          <p>New Quizzes</p>
+        </div>
+        <div className="new-half_quizzes">
+          {quizzes.map((quiz) => (
+            <QuizExcerpt key={quiz.name} quiz={quiz} />
+          ))}
+        </div>
       </div>
     </>
     
