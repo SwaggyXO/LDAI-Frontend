@@ -6,8 +6,13 @@
 .section-starter--quiz-name {
     margin-top: 2%;
     h1 {
+        font-family: var(--mfont-family);
         font-size: 1.8rem;
     }
+}
+
+.section-starter--quiz-type {
+    font-family: var(--ofont-family);
 }
 
 .quiz-body--intro {
@@ -42,6 +47,7 @@
     padding: 4%;
 
     .section-overview--heading {
+        font-family: var(--mfont-family);
         padding: 2%;
     }
 
@@ -49,6 +55,7 @@
         background-color: #a4a3a3;
         border-radius: 14px;
         height: 12vh;
+        font-family: var(--ofont-family);
         
         p {
             padding: 4%;
@@ -60,6 +67,11 @@
     display: flex;
     justify-content: space-between;
     padding: 6%;
+    font-family: var(--mfont-family);
+}
+
+.capsule-container {
+    font-family: var(--mfont-family);
 }
 
 .quiz-intro--start-button {

@@ -6,6 +6,7 @@
     z-index: 1;
     background-color: #eeeeee;
     border-radius: 22px 22px 0 0;
+    font-family: var(--mfont-family);
 }
 
 .result--hero {
@@ -70,7 +71,7 @@
         display: flex;
 
         .user-rewards-xp {
-            margin: auto 13%;
+            margin: auto 14%;
         }
 
         .user-rewards-marbles {
@@ -78,7 +79,7 @@
         }
 
         .user-rewards-score {
-            margin: auto 5%;
+            margin: auto 6%;
         }
     }
 
@@ -114,20 +115,28 @@
         .user-stats--headings {
             display: flex;
             justify-content: space-evenly;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
 
             .per-question-heading {
-                margin-left: 5%;
+                margin-left: 8%;
             }
 
             .total-time-heading {
-                margin-right: 5%;
+                margin-right: 8%;
             }
         }
 
         .capsule-container {
             display: flex;
             justify-content: center;
+
+            .capsule--left {
+                width: 18vh;
+            }
+
+            .capsule--right {
+                width: 18vh;
+            }
         }
     }
 }
@@ -137,7 +146,7 @@
     justify-content: center;
 
     button {
-        width: 15vh;
+        width: 18vh;
         height: 7vh;
         border-radius: 19px;
         font-weight: bold;

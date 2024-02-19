@@ -4,13 +4,13 @@ import "./Question.scss";
 const Question = () => {
   const content = (
     <div className="quiz-body--question">
-      <section className="section-question--boosters">
-        <div className="section-question--ellipse" />
-        <div className="section-question--ellipse" />
-        <div className="section-question--ellipse" />
+      <section className="question--boosters">
+        <div className="question--ellipse" />
+        <div className="question--ellipse" />
+        <div className="question--ellipse" />
       </section>
 
-      <section className="section-question--start">
+      <section className="question--start">
         <div className="question-count">
           <p>
             Question <span> X </span> out of Y

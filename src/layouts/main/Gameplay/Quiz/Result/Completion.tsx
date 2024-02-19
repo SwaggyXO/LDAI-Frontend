@@ -70,13 +70,13 @@ const Completion = () => {
           </div>
           <div className="user-rewards-headings">
               <div className="user-rewards-xp">
-                <h3>XP</h3>
+                <h4>XP</h4>
               </div>
               <div className="user-rewards-marbles">
-                <h3>Marbles</h3>
+                <h4>Marbles</h4>
               </div>
               <div className="user-rewards-score">
-                <h3>Accuracy</h3>
+                <h4>Accuracy</h4>
               </div>
           </div>
 
@@ -89,7 +89,7 @@ const Completion = () => {
                 <img src={doubleMarbles} alt="2xMarbles" />
               </div>
             </div>
-            <h3>Boosters Used</h3>
+            <h4>Boosters Used</h4>
           </div>
         </div>
 

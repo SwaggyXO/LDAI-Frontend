@@ -15,7 +15,7 @@ const Intro = () => {
       colors: ["#00B4D8", "#65BE0D", "#E1B03A"],
     },
     {
-      values: ["Avg. User", "400", "750"],
+      values: ["Avg.", "400", "750"],
       colors: ["#00B4D8", "#65BE0D", "#E1B03A"],
     },
   ];
