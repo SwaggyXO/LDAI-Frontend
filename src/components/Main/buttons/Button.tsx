@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 type PropsType = {
-    buttonText: string
+    buttonText: string | JSX.Element
     onClick?: (() => Promise<void>) | (() => void)
     className: string
     to?: string

@@ -1,9 +1,11 @@
 import { useAuth0 } from "@auth0/auth0-react"
 import { useState, useEffect } from "react";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
 import './home.scss'
-import { Button } from "../../../components/notmain"
 import TextContainer from "../../../containers/Main/TextContainer/TextContainer";
+import Button from "../../../components/Main/buttons/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Home = () => {
 
@@ -26,10 +28,15 @@ const Home = () => {
     getGreeting();
   }, []);
 
+  const buttonElements = (
+    <p>Play {<FontAwesomeIcon icon={faPlay} color="#fff"/>}</p>
+  )
+
   const textContainerElements = (
     <>
       <p>Welcome</p>
       <p>Participate in Quizzes, earn Marbles and unlock items with experience</p>
+      <Button buttonText={buttonElements} className="home-play_button" to="/grade" />
     </>
     
   )
@@ -37,12 +44,11 @@ const Home = () => {
   const content = (
     <>
       <div className="intro-half">
-        <div className="header">
-          <p>{timedGreeting}!</p>
-          <p>{user?.name}</p>
+        <div className="intro-half_header">
+          <p className="intro-half_header--greeting">{timedGreeting}!</p>
+          <p className="intro-half_header--username">{user?.name}</p>
         </div>
         <TextContainer elements={textContainerElements} className="home" />
-        <Button title="Grade" color="var(--color-footer)" route="/grade" />
       </div>
     </>
     
