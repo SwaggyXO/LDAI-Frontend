@@ -10,7 +10,7 @@ type PropsType = {
 const Capsule = (props: PropsType) => {
     const content = (
         <div className={`capsule--${props.capsulePosition}`} style={{backgroundColor: props.bgColor, color: props.textColor}}>
-            {props.text}
+            <p> {props.text} </p>
         </div>
     )
 

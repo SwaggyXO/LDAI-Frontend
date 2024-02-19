@@ -15,7 +15,7 @@ const Subject = (props: SubjectsProps) => {
     const {isAuthenticated, error, isLoading } = useAuth0();
 
     const handleNext = () => {
-
+        
     }
 
     const content = (
@@ -26,7 +26,7 @@ const Subject = (props: SubjectsProps) => {
                 ))}
             </div>
             <div className="button-next_container">
-                <Button buttonText="Next" onClick={handleNext} className="button-next" to="/home"/>
+                <Button buttonText="Next" onClick={handleNext} className="button-next" to="/quiz"/>
             </div>
         </div>
         

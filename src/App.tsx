@@ -24,6 +24,7 @@ import HomeLayout from "./layouts/Main/HomeLayout/HomeLayout";
 import Challenges from "./pages/Main/Challenges/Challenges";
 import DRS from "./pages/Main/DRS/DRS";
 import PowerUps from "./pages/Main/PowerUps/PowerUps";
+import QuizLayout from "./layouts/Main/Gameplay/Quiz/QuizLayout";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -49,10 +50,10 @@ export const routes = createBrowserRouter(
         <Route index element={<Subject subjects={SampleSubject} />} />
       </Route>
 
-      <Route path="/quiz" element={<Intro />}>
+      <Route path="/quiz" element={<QuizLayout />} >
+        <Route index element={<Intro />} />
         <Route path="question" element={<Question />} />
         <Route path="result" element={<Completion />} />
-        <Route path="*" element={<Navigate to={"/quiz"} replace />} />
       </Route>
       
     </>

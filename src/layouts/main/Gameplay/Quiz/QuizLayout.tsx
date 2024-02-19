@@ -1,12 +1,19 @@
 import { Outlet } from "react-router-dom"
+import Topnav from "../../../../containers/Main/Topnav/Topnav"
+import "./QuizLayout.scss"
 
-// Not using right now.
 const QuizLayout = () => {
   return (
-    <div>
-        QuizLayout
+    <>
+      <Topnav streak={"14"} marbles={"10K"} />
+      <div className="loading-bar">
+        <div className="loading-box left"></div>
+        <div className="loading-box right"></div>
+      </div>  
+      <div className="quiz-wrapper">
         <Outlet />
-    </div>
+      </div>
+    </>
   )
 }
 

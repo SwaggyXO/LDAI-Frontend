@@ -1,5 +1,4 @@
 import "./Intro.scss";
-import Topnav from "../../../../../containers/Main/Topnav/Topnav";
 import Capsule from "../../../../../components/Main/Capsule/Capsule";
 import CapsuleContainer from "../../../../../containers/Main/Reward/CapsuleContainer";
 import Button from "../../../../../components/Main/buttons/Button";
@@ -41,50 +40,49 @@ const Intro = () => {
 
   // Todo: add animations?
   const content = (
-    <>
-      <div className="quiz-intro-wrapper">
-        <Topnav streak={"14"} marbles={"10K"} />
-        <div className="quiz-intro--body">
-          <section className="quiz-intro--section-starter">
-            <div className="section-starter--quiz-name">
-              <h1>Quiz name</h1>
-            </div>
-            <div className="section-starter--ellipse" />
-            <div className="section-starter--quiz-type">
-              <h2>Standard</h2>
-            </div>
-          </section>
-
-          <section className="quiz-intro--section-overview">
-            <div className="section-overview--heading">
-              <h3>Overview</h3>
-            </div>
-            <div className="section-overview--quiz-description">
-              <p>Short description about the quiz and the questions in it</p>
-            </div>
-          </section>
-
-          <section className="quiz-intro--section-rewards">
-            <div className="section-rewards--headings">
-              <h3>Rewards</h3>
-              <h3>XP</h3>
-              <h3>Marbles</h3>
-            </div>
-
-            {rewardData.map((data, index) => (
-              <CapsuleContainer
-                key={index}
-                capsules={generateRewardCapsules([data])}
-              />
-            ))}
-          </section>
-
-          <div className="quiz-intro--start-button">
-            <Button buttonText="Start Quiz" className="quiz-intro--start-button" />
-          </div>
+    <div className="quiz-body--intro">
+      <section className="quiz-intro--section-starter">
+        <div className="section-starter--quiz-name">
+          <h1>Quiz name</h1>
         </div>
+        <div className="section-starter--ellipse" />
+        <div className="section-starter--quiz-type">
+          <h2>Standard</h2>
+        </div>
+      </section>
+
+      <section className="quiz-intro--section-overview">
+        <div className="section-overview--heading">
+          <h3>Overview</h3>
+        </div>
+        <div className="section-overview--quiz-description">
+          <p>Short description about the quiz and the questions in it</p>
+        </div>
+      </section>
+
+      <section className="quiz-intro--section-rewards">
+        <div className="section-rewards--headings">
+          <h3>Rewards</h3>
+          <h3>XP</h3>
+          <h3>Marbles</h3>
+        </div>
+
+        {rewardData.map((data, index) => (
+          <CapsuleContainer
+            key={index}
+            capsules={generateRewardCapsules([data])}
+          />
+        ))}
+      </section>
+
+      <div className="quiz-intro--start-button">
+        <Button
+          buttonText="Start Quiz"
+          className="quiz-intro--start-button"
+          to="/quiz/question"
+        />
       </div>
-    </>
+    </div>
   );
 
   return content;
