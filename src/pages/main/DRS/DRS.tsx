@@ -1,5 +1,6 @@
 import { DRSMascot } from '../../../assets/Mascot/imports';
 import { AccuracyVec } from '../../../assets/imports';
+import TextContainer from '../../../containers/Main/TextContainer/TextContainer';
 import './drs.scss';
 
 const DRS = () => {
@@ -7,6 +8,10 @@ const DRS = () => {
   const drsText = "Dot was really impressed by your performance that last quiz. Here are some key findings it wanted us to share with you!";
 
   const accuracy = 90;
+
+  const textContainerElements = (
+    <p>{drsText}</p>
+  );
 
   const content = (
     <>
@@ -16,11 +21,7 @@ const DRS = () => {
       <div className="drs-mascot">
         <img src={DRSMascot} alt="Mascot" />
       </div>
-      <div className="drs-text">
-        <div className="drs-text_container">
-          <p>{drsText}</p>
-        </div>        
-      </div>
+      <TextContainer elements={textContainerElements} className='drs' />
       <div className="drs-accuracy">
         <div className="vec-container">
           <img src={AccuracyVec} alt="accuracy vector" />
