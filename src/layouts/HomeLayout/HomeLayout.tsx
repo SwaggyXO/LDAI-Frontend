@@ -10,7 +10,7 @@ const HomeLayout = () => {
 
     const xpBadge = (
         <div className="xp-container">
-            <img src={XpBadgeOne} alt='xpBadgeOne'/>
+            <img src={XpBadgeOne} alt='xpBadgeOne' />
             <p>2</p> 
         </div>
     )
