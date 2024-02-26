@@ -6,25 +6,25 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import { Layout } from "./containers/notmain";
+import { Layout } from "./containers";
 
-import Landing from "./pages/notmain/Landing/Landing";
-import Home from "./pages/Main/Home/Home";
-import Profile from "./pages/Main/Profile/Profile";
-import Grade from "./pages/Main/Grade/Grade";
-import Subject from "./pages/Main/Subject/Subject";
-import GradeLayout from "./layouts/Main/GradeLayout/GradeLayout";
-import SubjectLayout from "./layouts/Main/SubjectLayout/SubjectLayout";
+import Landing from "./pages/Landing/Landing";
+import Home from "./pages/Home/Home";
+import Profile from "./pages/Profile/Profile";
+import Grade from "./pages/Grade/Grade";
+import Subject from "./pages/Subject/Subject";
+import GradeLayout from "./layouts/GradeLayout/GradeLayout";
+import SubjectLayout from "./layouts/SubjectLayout/SubjectLayout";
 
-import { SampleSubject } from "./pages/Main/Subject/SampleSubject";
-import Intro from "./layouts/Main/Gameplay/Quiz/Start/Intro";
-import Question from "./layouts/Main/Gameplay/Quiz/Question/Question";
-import Completion from "./layouts/Main/Gameplay/Quiz/Result/Completion";
-import HomeLayout from "./layouts/Main/HomeLayout/HomeLayout";
-import Challenges from "./pages/Main/Challenges/Challenges";
-import DRS from "./pages/Main/DRS/DRS";
-import PowerUps from "./pages/Main/PowerUps/PowerUps";
-import QuizLayout from "./layouts/Main/Gameplay/Quiz/QuizLayout";
+import { SampleSubject } from "./pages/Subject/SampleSubject";
+import Intro from "./layouts/Start/Intro";
+import Question from "./layouts/Question/Question";
+import Completion from "./layouts/Result/Completion";
+import HomeLayout from "./layouts/HomeLayout/HomeLayout";
+import Challenges from "./pages/Challenges/Challenges";
+import DRS from "./pages/DRS/DRS";
+import PowerUps from "./pages/PowerUps/PowerUps";
+import QuizLayout from "./layouts/Quiz/QuizLayout";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
