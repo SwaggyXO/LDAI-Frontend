@@ -17,14 +17,14 @@ import GradeLayout from "./layouts/GradeLayout/GradeLayout";
 import SubjectLayout from "./layouts/SubjectLayout/SubjectLayout";
 
 import { SampleSubject } from "./pages/Subject/SampleSubject";
-import Intro from "./layouts/Start/Intro";
-import Question from "./layouts/Question/Question";
-import Completion from "./layouts/Result/Completion";
+import Intro from "./pages/Gameplay/Start/Intro";
+import Question from "./pages/Gameplay/Question/Question";
+import Completion from "./pages/Gameplay/Result/Completion";
 import HomeLayout from "./layouts/HomeLayout/HomeLayout";
 import Challenges from "./pages/Challenges/Challenges";
 import DRS from "./pages/DRS/DRS";
 import PowerUps from "./pages/PowerUps/PowerUps";
-import QuizLayout from "./layouts/Quiz/QuizLayout";
+import QuizLayout from "./layouts/QuizLayout/QuizLayout";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(

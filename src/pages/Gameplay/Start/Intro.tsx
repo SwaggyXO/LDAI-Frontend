@@ -1,7 +1,7 @@
 import "./Intro.scss";
-import Capsule from "../../components/Capsule/Capsule";
-import CapsuleContainer from "../../containers/Reward/CapsuleContainer";
-import Button from "../../components/buttons/Button";
+import Capsule from "../../../components/Capsule/Capsule";
+import CapsuleContainer from "../../../containers/Reward/CapsuleContainer";
+import Button from "../../../components/buttons/Button";
 
 type RewardData = {
   values: string[];

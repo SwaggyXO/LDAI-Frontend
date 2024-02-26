@@ -4,4 +4,4 @@ export { default as Header } from './header/Header';
 export { default as Login } from './login/Login';
 export { default as Whatlearn } from './whatlearn/Whatlearn';
 export { default as Softend } from './softend/Softend';
-export { default as Layout } from '../layouts/layout/Layout';
+export { default as Layout } from '../layouts/LandingLayout/Layout';

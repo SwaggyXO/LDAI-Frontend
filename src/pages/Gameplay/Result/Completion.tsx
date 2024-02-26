@@ -1,9 +1,9 @@
 import "./Completion.scss";
-import doubleMarbles from "../../assets/Marbles/Double Marble.svg";
-import doubleXP from "../../assets/XP/Double XP.svg";
-import Capsule from "../../components/Capsule/Capsule";
-import CapsuleContainer from "../../containers/Reward/CapsuleContainer";
-import Button from "../../components/buttons/Button";
+import doubleMarbles from "../../../assets/Marbles/Double Marble.svg";
+import doubleXP from "../../../assets/XP/Double XP.svg";
+import Capsule from "../../../components/Capsule/Capsule";
+import CapsuleContainer from "../../../containers/Reward/CapsuleContainer";
+import Button from "../../../components/buttons/Button";
 
 type ResultData = {
   values: string[];
