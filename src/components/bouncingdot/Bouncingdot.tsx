@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 
-import dotvector from "../../assets/bouncingdot.svg"
+import dotvector from "../../assets/VectorSVGs/bouncingdot.svg"
 
 
 const bounceTransition = {

@@ -7,8 +7,8 @@ import XpBadgeSix from "../../assets/Badges/6.svg";
 
 import Marble from "../../assets/Marbles/Marble.svg";
 
-import Calendar from "../../assets/Calender.svg";
-import Streak from "../../assets/Streak.svg";
+import Calendar from "../../assets/Streak/Calender.svg";
+import Streak from "../../assets/Streak/Streak.svg";
 
 export {
     XpBadgeOne,

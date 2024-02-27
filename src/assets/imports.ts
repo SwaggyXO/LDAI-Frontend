@@ -1,4 +1,4 @@
-import AccuracyVec from "./Accuracy.svg";
+import AccuracyVec from "./VectorSVGs/Accuracy.svg";
 
 export {
     AccuracyVec

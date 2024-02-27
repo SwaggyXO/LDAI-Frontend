@@ -1,6 +1,6 @@
 
 import "./footer.scss"
-import staticdotcomma from '../../assets/static.svg'
+import staticdotcomma from '../../assets/VectorSVGs/static.svg'
 import { Button } from '../../components'
 // Awesome Footer
 
