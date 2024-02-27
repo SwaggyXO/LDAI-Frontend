@@ -5,6 +5,7 @@ import { Calendar, Marble, XpBadgeOne } from "../../containers/Topnav/imports";
 import { History } from "../../pages/Subject/imports";
 import { Challenges, DRS, Home, PowerUps, Profile } from "../../containers/Bottomnav/imports";
 import './homelayout.scss';
+import { TopNavMascot } from "../../assets/Mascot/imports";
 
 const HomeLayout = () => {
 
@@ -17,7 +18,7 @@ const HomeLayout = () => {
 
     const subject = (
         <div className="subject-container">
-            <img src={History} alt="History" />
+            <img src={TopNavMascot} alt="History" />
         </div>
     )
 
