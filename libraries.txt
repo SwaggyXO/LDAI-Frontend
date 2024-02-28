@@ -1,0 +1,13 @@
+Visualizations:
+Chart.js
+
+Components API:
+1. React-Bootstrap
+2. MUI
+
+Motion Libraries:
+1.GSAP
+2.Popmotion
+3.Anime.js
+4.Mo.js
+5.Spirit
