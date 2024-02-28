@@ -1,3 +1,32 @@
-/* .challenges {
-    height: 100vh;
-} */
+.challenges {
+    display: flex;
+    flex-direction: column;
+    padding: 2vh;
+    width: 100%;
+
+    .challenges-header {
+        p:nth-child(1) {
+            font-family: var(--mfont-family);
+            font-size: 1.5rem;
+            font-weight: 700;
+            padding: 2.5vh 0;
+            letter-spacing: 1px;
+        }
+
+        p:nth-child(2) {
+            font-family: var(--ofont-family);
+            font-size: 1.25rem;
+            font-weight: 600;
+            word-spacing: 2px;
+            letter-spacing: 1px;
+            color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            padding: 1vh 0 2.5vh 0;
+            
+            span {
+                font-weight: 700;
+            }
+        }
+        
+    }
+}

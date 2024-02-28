@@ -14,7 +14,7 @@ const ChallengeExcerpt = (props: ChallengeProps) => {
 
     const normalise = (value: number, MIN: number, MAX: number) => ((value - MIN) * 100) / (MAX - MIN);
 
-    const  LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
+    const  LinearProgressWithLabel = (props: LinearProgressProps & { value: number, actualval: number }) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%', mr: 1 }}>
@@ -22,8 +22,8 @@ const ChallengeExcerpt = (props: ChallengeProps) => {
             </Box>
             <Box sx={{ minWidth: 35 }}>
               <Typography variant="body2" color="text.secondary">{`${Math.round(
-                props.value,
-              )}%`}</Typography>
+                props.actualval,
+              )}`}</Typography>
             </Box>
           </Box>
         );
@@ -37,16 +37,21 @@ const ChallengeExcerpt = (props: ChallengeProps) => {
     const level = challenge.level;
 
     
-    const reward = level === 1 ? 100 : level === 2 ? 250 : 500; 
+    const reward = level === 1 ? 100 : level === 2 ? 250 : 500;
+    const tier = level === 1 ? "I" : level === 2 ? "II" : "III";
 
     const content = (
         <div className='challenge-excerpt'>
-            <div className="challenge-excerpt_level"><p>{level}</p></div>
+            <div className="challenge-excerpt_level">
+                <div className="challenge-excerpt_level--bg">
+                    <p>{tier}</p>
+                </div>
+            </div>
             <div className="challenge-excerpt_content">
-                <p>{name}</p>
+                <p className='challenge-excerpt_content--title'>{name}</p>
                 <p>{desc}</p>
                 <Box sx={{ width: '100%' }}>
-                    <LinearProgressWithLabel value={progress} />
+                    <LinearProgressWithLabel value={progress} actualval={1000} />
                 </Box>
             </div>
             <div className="challenge-excerpt_reward">

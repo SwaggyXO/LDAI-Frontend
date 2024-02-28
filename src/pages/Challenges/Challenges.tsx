@@ -15,8 +15,8 @@ const Challenges = () => {
   const content = (
     <div className="challenges">
       <div className="challenges-header">
-        <div className="challenges-header_main">Challenges</div>
-        <div className="challenges-header_completed">Completed {completed} of 3</div>
+        <p>Challenges</p>
+        <p>COMPLETED <span>{completed}</span> OF 3</p>
       </div>
       <div className="challenges-excerpts">
         {challenges.map((challenge) => (
