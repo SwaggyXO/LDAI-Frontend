@@ -27,7 +27,7 @@ const Challenges = () => {
   const content = (
     <div className="challenges">
       <div className="challenges-header">
-        <p>Challenges</p>
+        <p>Dailies</p>
         <p>COMPLETED <span>{completed}</span> OF 3</p>
       </div>
       <div className="challenges-excerpts">
