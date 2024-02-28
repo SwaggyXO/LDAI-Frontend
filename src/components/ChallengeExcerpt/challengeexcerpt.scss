@@ -3,7 +3,6 @@
     justify-content:space-between;
     padding: 3vh 0;
     background-color: #0077B6;
-    margin-bottom: 1vh;
     border-radius: 2vh;
 
     .challenge-excerpt_level {
@@ -11,9 +10,10 @@
         align-items: center;
         justify-content: center;
         width: 15%;
+        background-color: #E1B03A;
 
         .challenge-excerpt_level--bg {
-
+            
             // border-bottom: 25px solid transparent; 
             // border-left: 60px solid #E1B03A; 
             // border-top: 25px solid transparent;
@@ -22,7 +22,6 @@
                 font-family: var(--mfont-family);
                 font-size: 1.5rem;
                 font-weight: 500;
-                color: var(--color-text);
             }
         }
     }

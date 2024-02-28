@@ -3,6 +3,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import './challenges.scss';
 import { SampleChallenges } from './SampleChallenges';
 import ChallengeExcerpt from '../../components/ChallengeExcerpt/ChallengeExcerpt';
+import Button from '../../components/buttons/Button';
+import { Marble } from '../../containers/Topnav/imports';
 
 const Challenges = () => {
 
@@ -11,6 +13,16 @@ const Challenges = () => {
   const completed = 0;
 
   const challenges = SampleChallenges;
+
+  const rewardButtonContent = (
+    <>
+      <p>Good Job!</p>
+      <div className="rewards">
+        <img src={Marble} alt="Marbles" />
+        <p>5000</p>
+      </div>
+    </>
+  ) 
 
   const content = (
     <div className="challenges">
@@ -24,7 +36,7 @@ const Challenges = () => {
         ))}
       </div>
       <div className="challenges-reward">
-
+          <Button buttonText={rewardButtonContent} className='challenges-reward_button' />
       </div>
     </div>
     
