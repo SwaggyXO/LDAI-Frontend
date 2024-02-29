@@ -1,14 +1,24 @@
 .learn__whatlearn-content {
     color: var(--color-text);
     text-align: center;
-    font-family: var(--mfont-family);
+    font-family: var(--rfont-family);
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: -0.07rem;
 
-    .learn__whatlearn-content__typer {
-        background: linear-gradient(90deg, rgba(238, 130, 238, 1) 0%, rgba(0, 0, 255, 1) 100%);
-    }
+    .container {
+        height: 100%;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+      }
+      .text {
+        font-weight: 100;
+        font-size: 28px;
+        color: #fafafa;
+      }
+      .dud {
+        color: #757575;
+      }
 }
-
-

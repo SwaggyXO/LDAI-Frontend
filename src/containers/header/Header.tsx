@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <div className='learn__header'>
       <div className='learn__header-content'>
-        <h1 className='gradient__text'>LEARN.AI</h1>
+        <h1>LEARN.AI</h1>
       </div>
     </div>
   )
