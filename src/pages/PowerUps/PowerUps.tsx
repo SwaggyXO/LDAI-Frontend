@@ -3,7 +3,7 @@ import './powerups.scss';
 import { useAuth0 } from '@auth0/auth0-react';
 
 import { Boosters } from './Boosters';
-import BoosterTile from '../../components/BoosterTile/BoosterTile';
+import Tile from '../../components/Tiles/Tile';
 
 const PowerUps = () => {
 
@@ -18,7 +18,7 @@ const PowerUps = () => {
       </div>
       <div className="powerups-container">
         {boosters.map((booster) => (
-          <BoosterTile booster={booster} />
+          <Tile booster={booster} />
         ))}
       </div>
     </div>
