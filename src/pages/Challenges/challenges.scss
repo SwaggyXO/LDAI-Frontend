@@ -1,7 +1,7 @@
 .challenges {
     display: flex;
     flex-direction: column;
-    padding: 2vh;
+    padding: 0 2vh;
     width: 100%;
 
     .challenges-header {
@@ -9,7 +9,7 @@
             font-family: var(--mfont-family);
             font-size: 1.5rem;
             font-weight: 700;
-            padding: 2.5vh 0;
+            padding: 3.5vh 0 2.5vh 0;
             letter-spacing: 1px;
         }
 
@@ -21,7 +21,7 @@
             letter-spacing: 1px;
             color: rgba(0, 0, 0, 0.5);
             text-align: center;
-            padding: 1vh 0 2.5vh 0;
+            padding: 0 0 3.25vh 0;
             
             span {
                 font-weight: 700;
@@ -40,6 +40,7 @@
         display: flex;
         width: 100%;
         justify-content: center;
+        padding: 1.4vh 0;
 
         .challenges-reward_button {
             display: flex;
