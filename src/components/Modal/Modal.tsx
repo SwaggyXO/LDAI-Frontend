@@ -2,17 +2,23 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import './modal.scss';
 
-const Modal: React.FC<{ isOpen: boolean; onClose: () => void; children: JSX.Element[] }> = ({ isOpen, onClose, children }) => {
+type ModalProps = {
+    isOpen: boolean;
+    onClose: () => void;
+    children: JSX.Element[];
+}
+
+const Modal = (props: ModalProps) => {
     return (
         <AnimatePresence>
-            {isOpen && (
+            {props.isOpen && (
                 <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.3 }}
                 className='backdrop'
-                onClick={onClose}
+                onClick={props.onClose}
                 >
                     <motion.div
                         initial={{ y: '-100%' }}
@@ -22,7 +28,7 @@ const Modal: React.FC<{ isOpen: boolean; onClose: () => void; children: JSX.Elem
                         className='modal'
                         onClick={(e) => e.stopPropagation()}
                     >
-                        {children}
+                        {props.children}
                     </motion.div>
                 </motion.div>
             )}
