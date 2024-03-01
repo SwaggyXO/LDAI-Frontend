@@ -1,27 +1,30 @@
-import { Features, Login, Whatlearn, Softend } from '../../containers';
+import { Features, Login, Whatlearn, Softend } from "../../containers";
+import background from "../../assets/js_files/StaryNights.json";
 
-import { Dotcomma } from '../../components';
+import { Dotcomma } from "../../components";
 
-import './landing.scss';
+import "./landing.scss";
+import Lottie from "lottie-react";
 
 const Landing = () => {
+  let content = (
+    <>
+      <Dotcomma />
+      <Whatlearn />
+      <Login />
+      <Features />
+      <Softend />
+    </>
+  );
 
-    let content = (
-        <>
-            <Dotcomma />
-            <Whatlearn />
-            <Login />
-            <Features />
-            <Softend />
-        </>
-    )
-    
-    return (
-        <div className="landing">
-            {content}
-        </div>
-    )
-}
+  return (
+    <div className="landing foreground-content">
+      <div>
+        <Lottie className="background-animation" animationData={background} />
+        {content}
+      </div>
+    </div>
+  );
+};
 
-export default Landing
-
+export default Landing;

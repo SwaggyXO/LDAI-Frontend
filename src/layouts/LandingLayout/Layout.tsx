@@ -10,18 +10,11 @@ const animationOptions = {
   autoplay: true,
 };
 
-// const BackgroundAnimation = () => {
-//   return </>;
-// };
-
 const Layout = () => {
   return (
     <div className="layout-container">
       <Header/>
-      <div className="foreground-content">
-        <Lottie className="background-animation" animationData={background} />
-        <Outlet />
-      </div>
+      <Outlet />
       <Footer/>
     </div>
   );
