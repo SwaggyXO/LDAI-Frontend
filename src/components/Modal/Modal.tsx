@@ -5,7 +5,7 @@ import './modal.scss';
 type ModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    children: JSX.Element[];
+    children: JSX.Element;
 }
 
 const Modal = (props: ModalProps) => {

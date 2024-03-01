@@ -7,7 +7,17 @@ import Tile from '../../components/Tiles/Tile';
 import { useState } from 'react';
 
 import Modal from '../../components/Modal/Modal';
+import Button from '../../components/buttons/Button';
 
+import { Marble } from '../../containers/Topnav/imports';
+
+type Booster = {
+  name: string;
+  svg: string;
+  quantity: number;
+  desc: string;
+  rarity: string;
+}
 
 const PowerUps = () => {
 
@@ -16,8 +26,54 @@ const PowerUps = () => {
   const {isAuthenticated, error, isLoading} = useAuth0();
 
   const [modalOpen, setModalOpen] = useState(false);
-  const close = () => setModalOpen(false);
-  const open = () => setModalOpen(true);
+  const [selectedBooster, setSelectedBooster] = useState<Booster | null>(null);
+
+
+  const close = () => {
+    setModalOpen(false);
+    setSelectedBooster(null);
+  }
+
+  const open = (booster: Booster) => {
+    setSelectedBooster(booster);
+    setModalOpen(true);
+  }
+
+  const price = 
+    selectedBooster?.rarity === 'Common' ? 5000 
+      : selectedBooster?.rarity === 'Rare' ? 8000 
+        : selectedBooster?.rarity === 'Epic' ? 15000 
+          : 30000;
+
+
+  const modalContent = (
+    <>
+      <div className="header-nontext">
+        <div className="price">
+          <img src={Marble} alt="Marble" />
+          <p>{price}</p>
+        </div>
+        <div className="booster-image">
+          <img src={selectedBooster?.svg} alt={selectedBooster?.name} />
+        </div>
+        <div className="quantity-capsule">
+          <p>Capsule</p>
+        </div>
+      </div>
+      <div className="header-text">
+        <div className="booster-name">
+          <p>{selectedBooster?.name}</p>
+        </div>
+        <div className="booster-rarity">
+          <p className={`booster-${selectedBooster?.rarity}`}>{selectedBooster?.rarity}</p>
+        </div>
+      </div>
+      <div className="content">
+        <p>{selectedBooster?.desc}</p>
+        <Button buttonText={'Buy'} className='content-buy' onClick={close}/>
+      </div>
+    </>
+  );
 
   const content = (
     <div className="powerups">
@@ -26,14 +82,14 @@ const PowerUps = () => {
       </div>
       <div className="powerups-container">
         {boosters.map((booster) => (
-          <Tile booster={booster} onClick={() => (modalOpen ? close() : open())}/>
+          <Tile booster={booster} onClick={() => open(booster)}/>
         ))}
       </div>
-      {modalOpen && (<Modal isOpen={modalOpen} onClose={close}>
-        <h2>Modal Content</h2>
-        <p>This is the content of the modal</p>
-        <button onClick={close}>Close</button>
-      </Modal>)}
+      {modalOpen && selectedBooster && (
+        <Modal isOpen={modalOpen} onClose={close}>
+          {modalContent}
+        </Modal>
+      )}
     </div>
   );
 

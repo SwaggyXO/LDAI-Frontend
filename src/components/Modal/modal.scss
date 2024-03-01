@@ -7,14 +7,131 @@
     background-color: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
-    align-items: center;
-    z-index: 1000;
+    align-items: flex-end;
+    z-index: 2;
                     
 }
 
 .modal {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    max-width: 80%;
+    background-color: #0C0D2F;
+    padding: 2vh;
+    border-radius: 2vh 2vh 0 0;
+    max-width: 100%;
+    color: white;
+    margin-bottom: 10vh;
+
+    font-family: var(--ofont-family);
+
+    .header-nontext {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 0 2vh 0;
+        
+        .price {
+            display: flex;
+            width: 30%;
+            justify-content: center;
+            align-items: center;
+            background-color: #050652;
+            padding: 1vh;
+            border-radius: 1vh;
+
+            img {
+                width: 4vh;
+                margin-right: 0.5vh;
+            }
+
+            p {
+                font-weight: 500;
+            }
+        }
+
+        .booster-image {
+            width: 40%;
+            display: flex;
+            justify-content: center;
+
+            img {
+                width: 10vh;
+            }
+        }
+
+        .quantity-capsule {
+            width: 30%;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    .header-text {
+        display: flex;
+        
+        padding: 0 0 2vh 0;
+        text-align: center;
+        align-items: center;
+
+        .booster-name {
+            width: 50%;
+
+            p {
+                font-size: 1.2rem;
+                font-weight: 600;
+            }
+        }
+
+        .booster-rarity {
+            width: 50%;
+
+            p {
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        padding: 0 2vh;
+        text-align: center;
+        gap: 2vh;
+        align-items: center;
+
+        .content-buy {
+            font-family: var(--ofont-family);
+            font-size: 1.15rem;
+            font-weight: 600;
+            background-color: #050652;
+            border: none;
+            border-radius: 1vh;
+            color: var(--color-text);
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 30%;
+            height: 4vh;
+
+            cursor: pointer;
+        }
+    }
+}
+
+.booster-Common {
+    color: #7D83BC;
+}
+
+.booster-Rare {
+    color: #27ae60;
+}
+
+.booster-Epic {
+    color: #9b59b6;
+}
+
+.booster-Legendary {
+    background: linear-gradient(90deg, rgba(255, 255, 0, 1) 0%, rgba(0, 188, 212, 1) 50%, rgba(238, 130, 238, 1) 100%);
+    -webkit-text-fill-color: transparent; 
+    -webkit-background-clip: text; 
 }
