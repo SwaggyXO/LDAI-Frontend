@@ -1,19 +1,30 @@
 import { Outlet } from "react-router-dom";
 import { Header, Footer } from "../../containers";
+import Lottie from "lottie-react";
+import background from "../../assets/js_files/StaryNights.json";
+import "./layout.scss"; // Assuming this is the name of your SCSS file
+
+const animationOptions = {
+  animationData: background,
+  loop: true,
+  autoplay: true,
+};
+
+// const BackgroundAnimation = () => {
+//   return </>;
+// };
 
 const Layout = () => {
-
-  const content = (
-    <>
-      <Header />
-      <div>
+  return (
+    <div className="layout-container">
+      <Header/>
+      <div className="foreground-content">
+        <Lottie className="background-animation" animationData={background} />
         <Outlet />
       </div>
-      <Footer />
-    </>
-  )
+      <Footer/>
+    </div>
+  );
+};
 
-  return content;
-}
-
-export default Layout
+export default Layout;

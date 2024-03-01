@@ -3,6 +3,18 @@ import './grade.scss'
 import GradeCateg from "../../containers/GradeCateg/GradeCateg";
 import Button from "../../components/buttons/Button";
 import Tile from "../../components/Tiles/Tile";
+// import Lottie from "lottie-react";
+// import background from "../../assets/js_files/StaryNights.json";
+
+// const animationOptions = {
+//   animationData: background,
+//   loop: true,
+//   autoplay: true,
+// };
+
+// const BackgroundAnimation = () => {
+//   return <Lottie animationData={background} />;
+// };
 
 const Grade = () => {
 
