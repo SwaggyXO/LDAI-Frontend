@@ -2,13 +2,19 @@
 import "./footer.scss"
 import staticdotcomma from '../../assets/VectorSVGs/static.svg'
 import { Button } from '../../components'
+import { useAuth0 } from "@auth0/auth0-react";
 // Awesome Footer
 
 const Footer = () => {
+
+  const { loginWithRedirect } = useAuth0();
+
+  const onLogin = () => loginWithRedirect();
+  
   return (
     <div className="learn__footer section__padding">
       <div className="learn__footer-btn">
-        <Button title="Start Learning Now!" color="#92B600" borderRadius="0.05" route="/register"/>
+        <Button title="Start Learning Now!" color="#92B600" borderRadius="0.05" onClick={onLogin}/>
       </div>
 
       <div className="learn__footer-links">
