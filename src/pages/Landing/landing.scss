@@ -1,5 +1,37 @@
 .landing {
+    position: relative;
     margin: 0;
     padding: 0;
     background-color: var(--color-bg);
+    z-index: 1;
+}
+
+.bg {
+    position: absolute;
+    // position: absolute;
+    // width: 100%;
+    // height: 100%;
+    margin-top: 0;
+    margin-left: 0;
+    z-index: -1;
+}
+.bg-2 {
+    position: absolute;
+    // position: absolute;
+    // width: 100%;
+    // height: 100%;
+    padding-top: 698px;
+    // margin-top: 1920;
+    margin-left: 0;
+    z-index: -2;
+}
+.bg-3 {
+    position: absolute;
+    // position: absolute;
+    // width: 100%;
+    // height: 100%;
+    padding-top: 1396px;
+    // margin-top: 1920;
+    margin-left: 0;
+    z-index: -2;
 }

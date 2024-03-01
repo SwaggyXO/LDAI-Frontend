@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Header, Footer } from "../../containers";
 import Lottie from "lottie-react";
 import background from "../../assets/js_files/StaryNights.json";
-import "./layout.scss"; // Assuming this is the name of your SCSS file
+import "./layout.scss";
 
 const animationOptions = {
   animationData: background,
@@ -10,19 +10,22 @@ const animationOptions = {
   autoplay: true,
 };
 
-// const BackgroundAnimation = () => {
-//   return </>;
-// };
+const BackgroundAnimation = () => {
+  return <Lottie animationData={background} />;
+};
 
 const Layout = () => {
   return (
     <div className="layout-container">
-      <Header/>
+      <Header />
+      {/* <div className="background-animation">
+        <Outlet />
+        <BackgroundAnimation />
+      </div> */}
       <div className="foreground-content">
-        <Lottie className="background-animation" animationData={background} />
         <Outlet />
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
