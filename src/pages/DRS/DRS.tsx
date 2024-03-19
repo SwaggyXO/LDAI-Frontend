@@ -1,9 +1,12 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { DRSMascot } from '../../assets/Mascot/imports';
 import { AccuracyVec } from '../../assets/imports';
 import TextContainer from '../../containers/TextContainer/TextContainer';
 import './drs.scss';
 
 const DRS = () => {
+
+  const { isAuthenticated, isLoading, error } = useAuth0();
 
   const drsText = "Dot was really impressed by your performance that last quiz. Here are some key findings it wanted us to share with you!";
 
@@ -36,7 +39,15 @@ const DRS = () => {
     
   );
 
-  return content;
+  return (
+    isAuthenticated && (
+      <>
+        {error && <p>Authentication Error</p>}
+        {!error && isLoading && <p>Loading...</p>}
+        {!error && !isLoading && content}
+      </>
+    )
+  )
 }
 
 export default DRS

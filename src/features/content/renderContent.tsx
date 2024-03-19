@@ -1,25 +1,24 @@
-import React from 'react'
+import { useGetContentQuery } from "../../api/contentApiSlice";
 
 type File = {
     name: string
     url: string
 }
 
-type ApiRes = {
-    code: number
-    status: string
-    data: {
-        svg: File[]
-    }
-    error: string | null
-}
+const renderContent = (contentParent: string, content: string, fileName: string ): JSX.Element => {
 
-const renderContent = (data: ApiRes | undefined, fileName: string ): JSX.Element => {
+    const { 
+        data, 
+        error: contentError, 
+        isLoading: isContentLoading 
+      } = useGetContentQuery({ contentParent, content });
 
     const svg = data?.data?.svg || [];
     const file = svg.find((item: File) => item.name === fileName);
     
     return (
+        isContentLoading ? <div>Loading...</div> :
+        contentError ? <div>Error</div> :
         <img 
             src={file?.url || ''}
             alt={file?.name || ''}     

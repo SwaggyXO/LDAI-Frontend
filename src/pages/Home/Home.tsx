@@ -10,8 +10,6 @@ import { CloseChest } from "../../assets/Chest/import";
 import QuizExcerpt from "../../components/QuizExcerpt/QuizExcerpt";
 import { SampleQuizzes } from "./SampleQuizzes";
 
-import { UseDispatch, useSelector } from "react-redux";
-import { useGetContentQuery } from "../../api/contentApiSlice";
 import renderContent from "../../features/content/renderContent";
 
 const Home = () => {
@@ -37,19 +35,6 @@ const Home = () => {
     getGreeting();
   }, []);
 
-  const { 
-    data, 
-    error: contentError, 
-    isLoading: isContentLoading 
-  } = useGetContentQuery({ contentParent: "app", content: "Chest"});
-
-  const imgElement = (
-    isContentLoading ? <div>Loading...</div> :
-    contentError ? <div>Error</div> :
-
-    renderContent(data, 'closed')
-  )
-
   const buttonElements = (
     <p>Play &nbsp;{<FontAwesomeIcon icon={faPlay} color="black"/>}</p>
   )
@@ -71,8 +56,7 @@ const Home = () => {
             <p>{user?.name}</p>
           </div>
           <div className="intro-half_header--chest">
-            {/* <img src={CloseChest} alt="Closed Chest" /> */}
-            {imgElement}
+            {renderContent('app', 'Chest', 'closed')}
           </div>
         </div>
         <TextContainer elements={textContainerElements} className="home" />
