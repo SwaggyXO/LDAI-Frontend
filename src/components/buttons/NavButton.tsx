@@ -1,11 +1,12 @@
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import renderContent from '../../features/content/renderContent';
 
 type NavButtonProps = {
     key?: number
   to: string
-  vector?: string
+  vector: string
   className: string
 };
 
@@ -25,7 +26,7 @@ const NavButton = (props: NavButtonProps) => {
         <button className={className} onClick={handleNav}>
             {className === 'back-button' ? 
                 <FontAwesomeIcon icon={faArrowLeft} size='2x' color='#fff'/> :
-                <img src={vector} />
+                renderContent('icons', 'BottomNavbar', vector)
             }
         </button>
     );

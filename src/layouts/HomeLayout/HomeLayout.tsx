@@ -1,37 +1,37 @@
 import { Outlet } from "react-router-dom";
 import Topnav from "../../containers/Topnav/Topnav";
 import Bottomnav from "../../containers/Bottomnav/Bottomnav";
-import { Calendar, Marble, XpBadgeOne } from "../../containers/Topnav/imports";
-import { History } from "../../pages/Subject/imports";
+
 import { Challenges, DRS, Home, PowerUps, Profile } from "../../containers/Bottomnav/imports";
 import './homelayout.scss';
-import { TopNavMascot } from "../../assets/Mascot/imports";
+
+import renderContent from "../../features/content/renderContent";
 
 const HomeLayout = () => {
 
     const xpBadge = (
         <div className="xp-container">
-            <img src={XpBadgeOne} alt='xpBadgeOne' />
+            {renderContent('badges', 'Level', '1')}
             <p>2</p> 
         </div>
     )
 
     const subject = (
-        <div className="subject-container">
-            <img src={TopNavMascot} alt="History" />
+        <div className="mascot-container">
+            {renderContent('app', 'Mascot', 'wave')}
         </div>
     )
 
     const streak = (
         <div className="streak-container">
-            <img src={Calendar} alt="streak" />
+            {renderContent('badges', 'Streak', 'Calendar')}
             <p>7</p>
         </div>
     )
 
     const marbles = (
         <div className="marbles-container">
-            <img src={Marble} alt="Marbles" />
+            {renderContent('app', 'Marble', 'Marble')}
             <p>7000</p>
         </div>
     )
@@ -41,7 +41,7 @@ const HomeLayout = () => {
             <div className="Layout">
                 <Outlet />
             </div>
-            <Bottomnav home={Home} drs={DRS} challenges={Challenges} powerups={PowerUps} profile={Profile} />
+            <Bottomnav home='Home' drs='Drs' challenges='Challenges' powerups='PowerUps' profile='Profile' />
         </>
     );
 

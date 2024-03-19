@@ -1,10 +1,11 @@
+import renderContent from "../../features/content/renderContent";
 import "./Tile.scss";
 
 type PropsType = {
   number?: number;
   name?: string;
   svg?: string;
-  booster?: { name: string, svg: string, quantity: number, desc: string, rarity: string };
+  booster?: { name: string, quantity: number, desc: string, rarity: string };
   onClick?: (() => Promise<void>) | (() => void)
 };
 
@@ -19,7 +20,7 @@ const Tile = (props: PropsType) => {
   ) : props.booster ? (
     <div className="booster-tile" onClick={props.onClick}>
       <p>{props.booster.name}</p>
-      <img src={props.booster.svg} alt={props.booster.name} />
+      {renderContent('boosters', `${props.booster.name}`, `${props.booster.name}`)}
       <div className="booster-quantity">
         <p>{props.booster.quantity}</p>
       </div>

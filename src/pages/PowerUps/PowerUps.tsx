@@ -9,11 +9,10 @@ import { useState } from 'react';
 import Modal from '../../components/Modal/Modal';
 import Button from '../../components/buttons/Button';
 
-import { Marble } from '../../containers/Topnav/imports';
+import renderContent from '../../features/content/renderContent';
 
 type Booster = {
   name: string;
-  svg: string;
   quantity: number;
   desc: string;
   rarity: string;
@@ -50,11 +49,11 @@ const PowerUps = () => {
     <>
       <div className="header-nontext">
         <div className="price">
-          <img src={Marble} alt="Marble" />
+          {renderContent('app', 'Marble', 'Marble')}
           <p>{price}</p>
         </div>
         <div className="booster-image">
-          <img src={selectedBooster?.svg} alt={selectedBooster?.name} />
+          {renderContent('boosters', `${selectedBooster?.name}`, `${selectedBooster?.name}`)}
         </div>
         <div className="quantity-capsule">
           <p>Capsule</p>

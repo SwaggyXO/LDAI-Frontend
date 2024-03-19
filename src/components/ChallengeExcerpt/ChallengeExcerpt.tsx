@@ -5,6 +5,7 @@ import { useState } from 'react';
 import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import renderContent from '../../features/content/renderContent';
 
 type ChallengeProps = {
     challenge: { name: string, desc: string, level: number }
@@ -55,8 +56,8 @@ const ChallengeExcerpt = (props: ChallengeProps) => {
                 </Box>
             </div>
             <div className="challenge-excerpt_reward">
-                <img src={Marble} alt="Marble" />
-                <p>{reward}</p>
+              {renderContent('app', 'Marble', 'Marble')}
+              <p>{reward}</p>
             </div>
         </div>
     )

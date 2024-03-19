@@ -5,6 +5,7 @@ import { SampleChallenges } from './SampleChallenges';
 import ChallengeExcerpt from '../../components/ChallengeExcerpt/ChallengeExcerpt';
 import Button from '../../components/buttons/Button';
 import { Marble } from '../../containers/Topnav/imports';
+import renderContent from '../../features/content/renderContent';
 
 const Challenges = () => {
 
@@ -18,7 +19,7 @@ const Challenges = () => {
     <>
       <p>Good Job!</p>
       <div className="rewards">
-        <img src={Marble} alt="Marbles" />
+        {renderContent('app', 'Marble', 'Marble')}
         <p>5000</p>
       </div>
     </>

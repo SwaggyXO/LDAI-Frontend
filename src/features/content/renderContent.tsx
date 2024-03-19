@@ -14,10 +14,11 @@ const renderContent = (contentParent: string, content: string, fileName: string 
       } = useGetContentQuery({ contentParent, content });
 
     const svg = data?.data?.svg || [];
-    const file = svg.find((item: File) => item.name === fileName);
+    const png = data?.data?.png || [];
+    const file = svg.find((item: File) => item.name === fileName) || png.find((item: File) => item.name === fileName);
     
     return (
-        isContentLoading ? <div>Loading...</div> :
+        isContentLoading ? <div>...</div> :
         contentError ? <div>Error</div> :
         <img 
             src={file?.url || ''}

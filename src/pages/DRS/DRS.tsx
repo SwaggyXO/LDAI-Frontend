@@ -3,6 +3,7 @@ import { DRSMascot } from '../../assets/Mascot/imports';
 import { AccuracyVec } from '../../assets/imports';
 import TextContainer from '../../containers/TextContainer/TextContainer';
 import './drs.scss';
+import renderContent from '../../features/content/renderContent';
 
 const DRS = () => {
 
@@ -22,7 +23,7 @@ const DRS = () => {
         <p>Dot's Review System</p>
       </div>
       <div className="drs-mascot">
-        <img src={DRSMascot} alt="Mascot" />
+        {renderContent('app', 'Mascot', 'DRS')}   
       </div>
       <TextContainer elements={textContainerElements} className='drs' />
       <div className="drs-accuracy">
