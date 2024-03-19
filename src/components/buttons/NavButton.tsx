@@ -6,7 +6,7 @@ import renderContent from '../../features/content/renderContent';
 type NavButtonProps = {
     key?: number
   to: string
-  vector: string
+  vector?: string
   className: string
 };
 
@@ -26,7 +26,7 @@ const NavButton = (props: NavButtonProps) => {
         <button className={className} onClick={handleNav}>
             {className === 'back-button' ? 
                 <FontAwesomeIcon icon={faArrowLeft} size='2x' color='#fff'/> :
-                renderContent('icons', 'BottomNavbar', vector)
+                renderContent('icons', 'BottomNavbar', vector!)
             }
         </button>
     );
