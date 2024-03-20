@@ -81,7 +81,7 @@ const PowerUps = () => {
       </div>
       <div className="powerups-container">
         {boosters.map((booster, idx) => (
-          <Tile index={idx} booster={booster} onClick={() => open(booster)}/>
+          <Tile key={idx} booster={booster} onClick={() => open(booster)}/>
         ))}
       </div>
       {modalOpen && selectedBooster && (
