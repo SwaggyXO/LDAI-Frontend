@@ -7,18 +7,17 @@ type PropsType = {
   svg?: string;
   booster?: { name: string, quantity: number, desc: string, rarity: string };
   onClick?: (() => Promise<void>) | (() => void)
+  index: number
 };
 
 const Tile = (props: PropsType) => {
 
-  
-
   const content = props.number ? (
-    <div className={`tile--grade`}>
+    <div className={`tile--grade`} key={props.index}>
       <p>{props.number}</p>
     </div>
   ) : props.booster ? (
-    <div className="booster-tile" onClick={props.onClick}>
+    <div className="booster-tile" onClick={props.onClick} key={props.index}>
       <p>{props.booster.name}</p>
       {renderContent('boosters', `${props.booster.name}`, `${props.booster.name}`)}
       <div className="booster-quantity">
@@ -26,7 +25,7 @@ const Tile = (props: PropsType) => {
       </div>
     </div>
   ) : (
-    <div className={`tile--subject`}>
+    <div className={`tile--subject`} key={props.index}>
       <img src={props.svg} className="svg-container" />
       <div className="name">{props.name}</div>
     </div>

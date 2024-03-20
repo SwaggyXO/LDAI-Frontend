@@ -80,8 +80,8 @@ const PowerUps = () => {
         <p>Inventory</p>
       </div>
       <div className="powerups-container">
-        {boosters.map((booster) => (
-          <Tile booster={booster} onClick={() => open(booster)}/>
+        {boosters.map((booster, idx) => (
+          <Tile index={idx} booster={booster} onClick={() => open(booster)}/>
         ))}
       </div>
       {modalOpen && selectedBooster && (
