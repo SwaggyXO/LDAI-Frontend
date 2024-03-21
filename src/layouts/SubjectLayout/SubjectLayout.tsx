@@ -1,8 +1,12 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Topnav from "../../containers/Topnav/Topnav";
 import NavButton from "../../components/buttons/NavButton";
+import useAuth from "../../hooks/useAuth";
 
 const SubjectLayout = () => {
+
+  const { authChecked, intendedPath } = useAuth();
+
 
   const content = (
     <>
@@ -13,7 +17,15 @@ const SubjectLayout = () => {
     </>
   )
 
-  return content;
+  if (!authChecked) {
+    return <div>Loading...</div>
+  }
+
+  if (!intendedPath) {
+      return content;
+  }
+
+  return <Navigate to="/" replace />;
 }
 
 export default SubjectLayout

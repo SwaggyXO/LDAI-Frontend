@@ -41,13 +41,11 @@ const DRS = () => {
   );
 
   return (
-    isAuthenticated && (
-      <>
-        {error && <p>Authentication Error</p>}
-        {!error && isLoading && <p>Loading...</p>}
-        {!error && !isLoading && content}
-      </>
-    )
+    <>
+      {isLoading && <p>Loading...</p>}
+      {error && <p>Authentication Error</p>}
+      {!isLoading && isAuthenticated && content}
+    </>
   )
 }
 

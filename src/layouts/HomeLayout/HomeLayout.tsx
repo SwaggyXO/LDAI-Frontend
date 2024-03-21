@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import Topnav from "../../containers/Topnav/Topnav";
 import Bottomnav from "../../containers/Bottomnav/Bottomnav";
 
@@ -6,8 +6,11 @@ import { Challenges, DRS, Home, PowerUps, Profile } from "../../containers/Botto
 import './homelayout.scss';
 
 import renderContent from "../../features/content/renderContent";
+import useAuth from "../../hooks/useAuth";
 
 const HomeLayout = () => {
+
+    const { authChecked, intendedPath } = useAuth();
 
     const xpBadge = (
         <div className="xp-container">
@@ -45,7 +48,16 @@ const HomeLayout = () => {
         </>
     );
 
-    return content;
+    if (!authChecked) {
+        return <div>Loading...</div>
+    }
+    
+    if (!intendedPath) {
+        return content;
+    }
+
+    return <Navigate to="/" replace />;
+    
 }
 
 export default HomeLayout

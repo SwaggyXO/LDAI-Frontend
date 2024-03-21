@@ -15,7 +15,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       authorizationParams={{
         redirect_uri: `${import.meta.env.VITE_AUTH0_REDIRECT_URI_F}`,
       }}
-      useRefreshTokens={true}
+      useRefreshTokens
+      cacheLocation="localstorage"
     >
       <Provider store={store}>
         <RouterProvider router={routes} />
