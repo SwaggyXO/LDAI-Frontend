@@ -11,6 +11,8 @@ const Profile = () => {
         <div className="column">
             {user?.picture && <img src={user.picture} alt={user?.name} />}
             <h2>{user?.name}</h2>
+            <p>{user?.sub}</p>
+            <p>{Intl.DateTimeFormat().resolvedOptions().timeZone}</p>
             <ul>
                 {/* {Object.keys(user as Object).map((objKey, i) => <li key={i}>{objKey}: {user![objKey]} </li>)} */}
             </ul>
