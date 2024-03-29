@@ -25,6 +25,7 @@ import Challenges from "./pages/Challenges/Challenges";
 import DRS from "./pages/DRS/DRS";
 import PowerUps from "./pages/PowerUps/PowerUps";
 import QuizLayout from "./layouts/QuizLayout/QuizLayout";
+import { SampleUserStats } from "./pages/Profile/SampleUserStats";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -39,7 +40,7 @@ export const routes = createBrowserRouter(
         <Route path="/challenges" element={<Challenges />} />
         <Route path="/drs" element={<DRS />} />
         <Route path="/powerups" element={<PowerUps />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile stats={SampleUserStats} />} />
       </Route>
 
       <Route path="/grade" element={<GradeLayout />}>

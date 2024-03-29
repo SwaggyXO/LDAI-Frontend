@@ -83,3 +83,22 @@
         }
     }
 }
+
+.stat-tile {
+    display: flex;
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+    background-color: hsla(191, 100%, 43%, 0.4);
+    padding: 10px;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+
+    div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+    }
+}

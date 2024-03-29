@@ -11,7 +11,7 @@ type PropsType = {
 
 const Tile = (props: PropsType) => {
 
-  const content = props.number ? (
+  const content = props.number && !props.name ? (
     <div className={`tile--grade`}>
       <p>{props.number}</p>
     </div>
@@ -23,10 +23,15 @@ const Tile = (props: PropsType) => {
         <p>{props.booster.quantity}</p>
       </div>
     </div>
-  ) : (
+  ) : props.svg ? (
     <div className={`tile--subject`}>
       <img src={props.svg} className="svg-container" />
       <div className="name">{props.name}</div>
+    </div>
+  ) : (
+    <div className="stat-tile">
+      <div className="stat-tile_name">{props.name}</div>
+      <div className="stat-tile_val">{props.number}</div>
     </div>
   );
 

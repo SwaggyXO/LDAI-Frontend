@@ -3,8 +3,15 @@ import Logout from '../Auth/Logout';
 
 import './profile.scss';
 import { Badge1, Badge2, Badge3, Badge4 } from '../../assets/Badges/import';
+import Tile from '../../components/Tiles/Tile';
 
-const Profile = () => {
+type UserStats = {
+    stats: { name: string, val: number }[];
+};
+
+const Profile = (props: UserStats) => {
+
+    const userStats = props.stats;
 
     const { user } = useAuth0();
 
@@ -56,7 +63,9 @@ const Profile = () => {
                         Statistics
                     </div>
                     <div className="profile-stats_container">
-                        
+                        {userStats.map((stat, idx) => (
+                            <Tile key={idx} name={stat.name} number={stat.val} />
+                        ))}
                     </div>
                 </div>
             </div>
