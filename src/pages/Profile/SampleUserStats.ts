@@ -4,7 +4,7 @@ export const SampleUserStats = [
         val: 100
     },
     {
-        name: "Total XP",
+        name: "XP",
         val: 88000
     },
     {

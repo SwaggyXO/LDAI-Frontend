@@ -40,7 +40,7 @@ export const routes = createBrowserRouter(
         <Route path="/challenges" element={<Challenges />} />
         <Route path="/drs" element={<DRS />} />
         <Route path="/powerups" element={<PowerUps />} />
-        <Route path="/profile" element={<Profile stats={SampleUserStats} />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
 
       <Route path="/grade" element={<GradeLayout />}>

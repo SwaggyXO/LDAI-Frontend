@@ -86,19 +86,31 @@
 
 .stat-tile {
     display: flex;
-    width: calc(50% - 10px);
-    margin-bottom: 20px;
-    background-color: hsla(191, 100%, 43%, 0.4);
-    padding: 10px;
+    width: calc(50% - 3vh);
+    margin-bottom: 3vh;
+    background-color: #96BFE5;
+    padding: 2vh;
     box-sizing: border-box;
     justify-content: center;
     align-items: center;
-    border-radius: 15px;
+    border-top-right-radius: 2vh;
+    border-bottom-left-radius: 2vh;
 
     div {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 50%;
+        font-family: var(--mfont-family);
+        font-weight: 500;
+        white-space: nowrap;
+    }
+
+    div:nth-child(1) {
+        width: 65%;
+        justify-content: flex-start;
+    }
+
+    div:nth-child(2) {
+        width: 35%;
     }
 }

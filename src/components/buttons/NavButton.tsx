@@ -5,9 +5,9 @@ import renderContent from '../../features/content/renderContent';
 
 type NavButtonProps = {
     key?: number
-  to: string
-  vector?: string
-  className: string
+    to: string
+    vector?: string
+    className: string
 };
 
 const NavButton = (props: NavButtonProps) => {

@@ -1,0 +1,48 @@
+{
+    "stats": [
+        {
+            "name": "Games",
+            "val": 100
+        },
+        {
+            "name": "XP",
+            "val": 88000
+        },
+        {
+            "name": "Streak",
+            "val": 21
+        },
+        {
+            "name": "Accuracy",
+            "val": 40
+        }
+    ],
+    "achievements": [
+      {
+        "name": "Quiz Wiz",
+        "description": "Complete a quiz with 75% Accuracy",
+        "level": 1
+      },
+      {
+        "name": "Mega Mind",
+        "description": "Achieve an overall Average Accuracy of 70%",
+        "level": 2
+      },
+      {
+        "name": "Time Artist",
+        "description": "Finish a quiz under 12 mins",
+        "level": 3
+      },
+      {
+        "name": "Early Adopter",
+        "description": "Do a newly releazed quiz.",
+        "level": 1
+      },
+      {
+        "name": "Analyst",
+        "description": "Take 5 DRS'",
+        "level": 2
+      }
+    ]
+  }
+  

@@ -1,10 +1,11 @@
 .profile {
     padding: 0 1vh;
+
     .profile-header {
         display: flex;
         flex-direction: column;
         width: 100%;
-
+        
         .profile-header_banner {
             height: 20vh;
         }
@@ -15,6 +16,31 @@
             background-color: var(--color-bg);
             border-top-left-radius: 2vh; 
             border-top-right-radius: 2vh; 
+        }
+
+        .profile-stats {
+            display: flex;
+            flex-direction: column;
+            background-color: #283389;
+            padding: 1.5vh 0;
+            border-radius: 2vh;
+            margin-top: -2vh;
+            
+            .profile-stats_header {
+                margin: 2vh 0 2vh 2vh;
+                font-family: var(--mfont-family);
+                color: white;
+                font-weight: 600;
+                font-size: 1.15rem;
+                letter-spacing: 2px;
+            }
+    
+            .profile-stats_container {
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+                margin: 2vh 1vh 2vh 1vh;
+            }
         }
 
         .profile-header_info--first {
@@ -28,6 +54,7 @@
                     border: 0.5vh solid #D9D9D9;
                     border-radius: 50%;
                     margin: 0 1vh 1vh;
+                    width: 100%;
                 }
             }
         }
@@ -43,7 +70,7 @@
                 margin-top: -3vh;
                 font-family: var(--mfont-family);
                 font-weight: 600;
-                font-size: 1.25rem;
+                font-size: 1.35rem;
                 white-space: nowrap;
             }
 
@@ -64,15 +91,25 @@
                     font-size: 1.1rem;
                     white-space: nowrap;
                 }
+
+                button {
+                    background: none;
+                    border: none;
+                    color: white;
+                    padding: none;
+                    outline: none;
+                    cursor: pointer;
+                }
             }
         }
 
         .profile-header_info--badges {
             display: flex;
             background-color: var(--color-bg);
-            height: 15vh;
+            height: 20vh;
             justify-content: space-evenly;
             align-items: center;
+            padding-bottom: 5vh;
 
             img {
                 width: 20%;
@@ -80,4 +117,101 @@
         }
         
     }
+
+    .profile-achievements {
+        padding: 5vh 0;
+        display: flex;
+        flex-direction: column;
+
+        .profile-achievements_header {
+            padding: 0 0 3vh 1vh;
+            font-family: var(--ofont-family);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .profile-achievements_container {
+            height: 50vh;
+            overflow-y: scroll;
+            border: 3px solid;
+            border-color: rgba(255, 255, 255, 0.8);
+            border-radius: 2vh;
+            background-color: hsl(233, 40%, 30%);
+            color: white;
+
+            .parent {
+                display: flex;
+                border-bottom: 2px solid white;
+                border-radius: 1vh;
+                height: 12.5vh;
+                padding: 3vh 1vh;
+                gap: 2vh;
+
+                .level {
+                    border: 0.5px solid white;
+                    background-color: #E1B03A;
+                    color: black;
+                    border-radius: 50%;
+                    display: flex;
+                    flex-direction: column;
+                    width: 15%;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 2vh;
+
+                    font-family: var(--mfont-family);
+                    font-size: 1.5rem;
+                    font-weight: 600;
+                }
+
+                .info {
+                    display: flex;
+                    flex-direction: column;
+                    width: 85%;
+                    justify-content: center;
+                    gap: 1vh;
+                    font-family: var(--ofont-family);
+
+                    p:first-child {
+                        font-weight: 600;
+                        font-size: 1.15rem;
+                    }
+
+                    p:last-child {
+                        font-weight: 400;
+                        font-size: 0.9rem;
+                    }
+                }
+            }
+
+            .parent:last-child {
+                border: none;
+            }
+        }
+    }
+
+    .logout {
+        display: flex;
+        justify-content: center;
+        padding: 1vh 0 5vh 0;
+
+        button {
+            width: 20vh;
+            height: 6vh;
+            background-color: var(--color-bg);
+            border: none;
+            border-radius: 10px;
+
+            font-family: var(--ofont-family);
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+
+            cursor: pointer;
+        }
+    }
 }
+
