@@ -25,7 +25,6 @@ import Challenges from "./pages/Challenges/Challenges";
 import DRS from "./pages/DRS/DRS";
 import PowerUps from "./pages/PowerUps/PowerUps";
 import QuizLayout from "./layouts/QuizLayout/QuizLayout";
-import { SampleUserStats } from "./pages/Profile/SampleUserStats";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
