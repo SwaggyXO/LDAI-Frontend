@@ -3,26 +3,65 @@ import './subject.scss';
 import { useAuth0 } from "@auth0/auth0-react";
 import Button from '../../components/buttons/Button';
 import Tile from '../../components/Tiles/Tile';
+import { useGetUserInfoQuery, useGetUserSubjectsQuery, useUpdateUserInfoMutation } from '../../api/userApiSlice';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type SubjectsProps = {
     subjects: { id: number, name: string; svg: string }[];
 }
 
-const Subject = (props: SubjectsProps) => {
+type Subject = {
+    id: number;
+    name: string,
+    svg: string
+}
 
-    const subjects = props.subjects;
+const Subject = () => {
 
-    const {isAuthenticated, error, isLoading } = useAuth0();
+    const {isAuthenticated, error, isLoading, user } = useAuth0();
 
-    const handleNext = () => {
-        
+    const [selectedTile, setSelectedTile] = useState<string | null>(null);
+    const [subject, setSubject] = useState<string | null>(null);
+
+    const navigate = useNavigate();
+
+    const [updateUserInfo] = useUpdateUserInfoMutation();
+    const { data: userInfoData } = useGetUserInfoQuery();
+
+    const ciamid = user?.sub;
+
+    if (!userInfoData) {
+        return;
+    }
+
+    const existingUser = userInfoData.find((user) => user["ciamid"] === ciamid);
+
+    const { data: subjects } = useGetUserSubjectsQuery(existingUser?.grade!);
+
+    const handleNext = async () => {
+        try {
+            const response = await updateUserInfo({
+              id: existingUser?.id!,
+              data: { subject: subject }
+            });
+            console.log('User updated successfully:', response);
+            navigate("/subject");
+          } catch (error) {
+            console.error('Error adding user:', error);
+          }
+    }
+
+    const handleTileClick = (subject: string) => {
+        setSelectedTile(subject); 
+        setSubject(subject);
     }
 
     const content = (
         <div className='parent'>
             <div className="subjects-container">
-                {subjects.map((subject) => (
-                    <Tile key={subject.id} name={subject.name} svg={subject.svg} />
+                {subjects && subjects.map((subject: Subject, idx: number) => (
+                    <Tile key={idx} name={subject.name} svg={subject.svg} onClick={() => handleTileClick(subject.name)} selected={selectedTile === subject.name} />
                 ))}
             </div>
             <div className="button-next_container">

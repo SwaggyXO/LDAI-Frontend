@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseQuery = fetchBaseQuery({ baseUrl: 'https://ldai-content-ms.azurewebsites.net/api/ldai-content/v1' });
+const baseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-content-ms.azurewebsites.net/api/ldai-content/v1/' });
 
 export const contentApi = createApi({
     reducerPath: "contentApi",

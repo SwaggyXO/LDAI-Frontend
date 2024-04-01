@@ -47,7 +47,7 @@ export const routes = createBrowserRouter(
       </Route>
 
       <Route path="/subject" element={<SubjectLayout />}>
-        <Route index element={<Subject subjects={SampleSubject} />} />
+        <Route index element={<Subject />} />
       </Route>
 
       <Route path="/quiz" element={<QuizLayout />} >

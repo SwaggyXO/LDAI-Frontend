@@ -47,3 +47,6 @@ export const SampleSubject = [
         svg: Physics
     },
 ]
+
+const SampleSubjectJSON = JSON.stringify(SampleSubject);
+export default SampleSubjectJSON;

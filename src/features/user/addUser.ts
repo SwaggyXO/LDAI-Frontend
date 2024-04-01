@@ -14,13 +14,14 @@ const addUser = async (ciamId: string) => {
       }
 
       // Check if user already exists
-      const existingUser = userInfoData.find((user) => user["ciam-id"] === ciamId);
+      const existingUser = userInfoData.find((user) => user["ciamid"] === ciamId);
 
       if (!existingUser) {
         const newUser = {
           "id": uuidv4(),
           "ciam-id": ciamId,
           "grade": null,
+          "subject": null,
           "marbles": 0,
           "xp": 0,
           "isNew": true,

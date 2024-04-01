@@ -21,7 +21,7 @@ const HomeLayout = () => {
 
     const subject = (
         <div className="mascot-container">
-            {renderContent('app', 'Mascot', 'wave')}
+            {renderContent('app', 'Mascot', 'Wave')}
         </div>
     )
 

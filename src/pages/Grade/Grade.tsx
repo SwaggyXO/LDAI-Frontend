@@ -3,28 +3,62 @@ import './grade.scss'
 import GradeCateg from "../../containers/GradeCateg/GradeCateg";
 import Button from "../../components/buttons/Button";
 import Tile from "../../components/Tiles/Tile";
+import { useState } from "react";
+import { useGetUserInfoQuery, useUpdateUserInfoMutation } from "../../api/userApiSlice";
+import { useNavigate } from "react-router-dom";
 
 const Grade = () => {
 
-  const {isAuthenticated, error, isLoading } = useAuth0();
+  const {isAuthenticated, error, isLoading, user } = useAuth0();
 
-  const handleNext = () => {
+  const [selectedTile, setSelectedTile] = useState<number | null>(null);
+  const [grade, setGrade] = useState<number | null>(null);
 
+  const navigate = useNavigate();
+
+  const [updateUserInfo] = useUpdateUserInfoMutation();
+
+  const { data: userInfoData } = useGetUserInfoQuery();
+
+  const handleNext = async () => {
+    try {
+      const ciamid = user?.sub;
+      
+      if (!userInfoData) {
+        return;
+      }
+
+      const existingUser = userInfoData.find((user) => user["ciamid"] === ciamid);
+
+      const response = await updateUserInfo({
+        id: existingUser?.id!,
+        data: { grade: grade }
+      });
+      console.log('User updated successfully:', response);
+      navigate("/subject");
+    } catch (error) {
+      console.error('Error adding user:', error);
+    }
+  }
+
+  const handleTileClick = (grade: number) => {
+    setSelectedTile(grade); 
+    setGrade(grade);
   }
 
   const midSchoolArr = [6, 7, 8];
   const midSchoolTiles = midSchoolArr.map((grade, index) => (
-    <Tile key={index} number={grade} />
+    <Tile key={index} number={grade} onClick={() => handleTileClick(grade)} selected={selectedTile === grade} />
   ));
 
   const secSchoolArr = [9, 10];
   const secSchoolTiles = secSchoolArr.map((grade, index) => (
-    <Tile key={index} number={grade} />
+    <Tile key={index} number={grade} onClick={() => handleTileClick(grade)} selected={selectedTile === grade} />
   ));
 
   const senSecSchoolArr = [11, 12];
   const senSecSchoolTiles = senSecSchoolArr.map((grade, index) => (
-    <Tile key={index} number={grade} />
+    <Tile key={index} number={grade} onClick={() => handleTileClick(grade)} selected={selectedTile === grade} />
   ));
 
   const content = (
@@ -35,7 +69,7 @@ const Grade = () => {
         <GradeCateg heading="Senior Secondary School" tiles={senSecSchoolTiles}/>
       </div>
       <div className="button-next_container">
-        <Button buttonText="Next" onClick={handleNext} className="button-next" to="/subject"/>
+        <Button buttonText="Next" onClick={handleNext} className="button-next"/>
       </div>
     </>
   )

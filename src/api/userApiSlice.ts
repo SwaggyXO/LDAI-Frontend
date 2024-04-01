@@ -2,8 +2,9 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 type UserInfo = {
   id: string;
-  "ciam-id": string;
-  grade: string | null;
+  ciamid: string;
+  grade: number | null;
+  subject: string | null;
   marbles: number;
   xp: number;
   isNew: boolean;
@@ -22,6 +23,12 @@ type Achievement = {
   level: number;
 }
 
+type Subject = {
+  id: number;
+  name: string,
+  svg: string
+}
+
 const baseQuery = fetchBaseQuery({ baseUrl: 'http://localhost:3500' });
 
 export const userApi = createApi({
@@ -36,6 +43,9 @@ export const userApi = createApi({
     }),
     getUserAchievements: builder.query<Achievement[], void>({
       query: () => '/achievements',
+    }),
+    getUserSubjects: builder.query<Subject[], number>({
+      query: (grade) => `/grades/${grade}`,
     }),
     createUser: builder.mutation<void, Partial<UserInfo>>({
         query: (userData) => ({
@@ -72,6 +82,7 @@ export const {
   useGetUserInfoQuery,
   useGetUserStatsQuery,
   useGetUserAchievementsQuery,
+  useGetUserSubjectsQuery,
   useCreateUserMutation,
   useUpdateUserInfoMutation,
   useUpdateUserStatsMutation,
