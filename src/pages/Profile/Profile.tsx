@@ -5,13 +5,15 @@ import './profile.scss';
 import { Badge1, Badge2, Badge3, Badge4 } from '../../assets/Badges/import';
 import Tile from '../../components/Tiles/Tile';
 
-import { faE, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 
-type UserStats = {
+import useUserData from '../../hooks/useUserData';
+
+type Stat = {
     name: string;
     val: number;
 };
@@ -24,19 +26,52 @@ type Achievement = {
 
 const Profile = () => {
 
+    // const [achievements, setAchievements] = useState<Achievement[]>([]);
+    // const [userStats, setUserStats] = useState<UserStats[]>([]);
+
+    // useEffect(() => {
+    //     fetch("http://localhost:3500/achievements")
+    //       .then((response) => response.json())
+    //       .then((data) => setAchievements(data))
+    //       .catch((error) => console.error("Error fetching achievements: ", error));
+    //     fetch("http://localhost:3500/stats")
+    //       .then((response) => response.json())
+    //       .then((data) => setUserStats(data))
+    //       .catch((error) => console.error("Error fetching achievements: ", error));
+    //   }, []);
+
+
     const [achievements, setAchievements] = useState<Achievement[]>([]);
-    const [userStats, setUserStats] = useState<UserStats[]>([]);
+    const [userStats, setUserStats] = useState<Stat[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    const { data: achievementsData, error: achievementsError, loading: achievementsLoading } = useUserData("achievements");
+    const { data: statsData, error: statsError, loading: statsLoading } = useUserData("stats");
 
     useEffect(() => {
-        fetch("http://localhost:3500/achievements")
-          .then((response) => response.json())
-          .then((data) => setAchievements(data))
-          .catch((error) => console.error("Error fetching achievements: ", error));
-        fetch("http://localhost:3500/stats")
-          .then((response) => response.json())
-          .then((data) => setUserStats(data))
-          .catch((error) => console.error("Error fetching achievements: ", error));
-      }, []);
+    if (achievementsData) {
+        setAchievements(achievementsData);
+    }
+    if (statsData) {
+        setUserStats(statsData);
+    }
+    }, [achievementsData, statsData]);
+
+    useEffect(() => {
+        if (achievementsError) {
+            setError(achievementsError);
+        }
+        if (statsError) {
+            setError(statsError);
+        }
+      }, [achievementsError, statsError]);
+
+    useEffect(() => {
+    if (!achievementsLoading && !statsLoading) {
+        setLoading(false);
+    }
+    }, [achievementsLoading, statsLoading]);
 
 
     const navigate = useNavigate();
@@ -68,7 +103,7 @@ const Profile = () => {
                 <div className="profile-header_info">
                     <div className="profile-header_info--first">
                         <div className="profile-header_info--first__avatar">
-                            {user?.picture && <img src={user.picture} alt={user?.name} />}
+                            {user?.picture && <img src={user.picture} alt={user.name} />}
                         </div>
                         
                     </div>
@@ -137,7 +172,14 @@ const Profile = () => {
     //         <Logout />
     //     </div>
     // )
-    return content;
+    return (
+        <>
+            {loading && <p>Loading...</p>}
+            {error && <p>Error: {error}</p>}
+            {!loading && !error && content}
+        </>
+    )
+    
 }
 
 export default Profile

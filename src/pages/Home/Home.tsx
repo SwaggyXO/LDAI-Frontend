@@ -11,12 +11,17 @@ import QuizExcerpt from "../../components/QuizExcerpt/QuizExcerpt";
 import { SampleQuizzes } from "./SampleQuizzes";
 
 import renderContent from "../../features/content/renderContent";
+import addUser from "../../features/user/addUser";
 
 const Home = () => {
 
   const quizzes = SampleQuizzes;
 
   const { user, isAuthenticated, error, isLoading } = useAuth0();
+
+  if (isAuthenticated && user?.sub) {
+    addUser(user.sub);
+  }
 
   const [ timedGreeting, setTimedGreeting ] = useState<string>('');
 
@@ -73,8 +78,6 @@ const Home = () => {
       </div>
     </>
   )
-
-  console.log(isAuthenticated);
 
   return (
     <>
