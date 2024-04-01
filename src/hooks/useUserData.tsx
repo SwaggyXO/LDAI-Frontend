@@ -2,10 +2,6 @@ import { useGetUserInfoQuery, useGetUserAchievementsQuery, useGetUserStatsQuery 
 
 type DataType = 'info' | 'achievements' | 'stats';
 
-interface ErrorWithStatus extends Error {
-    status: number;
-}
-
 const useUserData = (dataType: DataType) => {
     const { data: userInfoData, error: userInfoError, isLoading: userInfoLoading } = useGetUserInfoQuery();
     const { data: achievementsData, error: achievementsError, isLoading: achievementsLoading } = useGetUserAchievementsQuery();

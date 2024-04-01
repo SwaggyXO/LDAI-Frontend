@@ -1,7 +1,6 @@
 import "./login.scss"
 import { Button } from '../../components'
 import { useAuth0 } from "@auth0/auth0-react";
-import addUser from "../../features/user/addUser";
 
 // Buttons for registration or guest session launch
 
