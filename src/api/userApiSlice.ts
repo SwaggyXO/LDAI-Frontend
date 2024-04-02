@@ -1,90 +1,51 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-type UserInfo = {
-  id: string;
-  ciamid: string;
-  grade: number | null;
-  subject: string | null;
-  marbles: number;
-  xp: number;
-  isNew: boolean;
-  timezone: string | null;
-  streak: number;
+const baseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/user' });
+
+type CreateUserRequest = {
+    ciamId: string;
+    timeZone: string;
 }
 
-type Stat = {
-  name: string;
-  val: number;
+type User = {
+    id: string;
+    ciamId: string;
+    grade: string;
+    subject: string | null;
+    marbles: number;
+    xp: number;
+    streak: number;
+    isNew: boolean;
+    timeZone: string;
 }
 
-type Achievement = {
-  name: string;
-  description: string;
-  level: number;
-}
-
-type Subject = {
-  id: number;
-  name: string,
-  svg: string
-}
-
-const baseQuery = fetchBaseQuery({ baseUrl: 'http://localhost:3500' });
-
-export const userApi = createApi({
-  reducerPath: 'userApi',
-  baseQuery,
-  endpoints: (builder) => ({
-    getUserInfo: builder.query<UserInfo[], void>({
-      query: () => '/info',
+export const usersApi = createApi({
+  reducerPath: 'usersApi',
+  baseQuery, 
+  endpoints: builder => ({
+    fetchUserById: builder.query<User, string>({
+        query: (userId) => `/fetch/${userId}`,
     }),
-    getUserStats: builder.query<Stat[], void>({
-      query: () => '/stats',
+    createUser: builder.mutation<User, CreateUserRequest>({
+      query: requestData => ({
+        url: '/create',
+        method: 'POST',
+        body: requestData,
+      }),
     }),
-    getUserAchievements: builder.query<Achievement[], void>({
-      query: () => '/achievements',
-    }),
-    getUserSubjects: builder.query<Subject[], number>({
-      query: (grade) => `/grades/${grade}`,
-    }),
-    createUser: builder.mutation<void, Partial<UserInfo>>({
-        query: (userData) => ({
-          url: '/info',
-          method: 'POST',
-          body: userData,
+    updateUser: builder.mutation<User, Partial<User>>({
+        query: (body) => ({
+          url: `/update`,
+          method: 'PATCH', // Adjust method to PATCH
+          body,
         }),
-    }),
-    updateUserInfo: builder.mutation<void, { id: string; data: Partial<UserInfo> }>({
-      query: ({ id, data }) => ({
-        url: `/info/${id}`,
-        method: 'PATCH',
-        body: data,
-      }),
-    }),
-    updateUserStats: builder.mutation<void, { data: Partial<Stat>[] }>({
-      query: ({ data }) => ({
-        url: '/stats',
-        method: 'PATCH',
-        body: data,
-      }),
-    }),
-    updateUserAchievements: builder.mutation<void, { data: Partial<Achievement>[] }>({
-      query: ({ data }) => ({
-        url: '/achievements',
-        method: 'PATCH',
-        body: data,
-      }),
     }),
   }),
 });
 
-export const {
-  useGetUserInfoQuery,
-  useGetUserStatsQuery,
-  useGetUserAchievementsQuery,
-  useGetUserSubjectsQuery,
-  useCreateUserMutation,
-  useUpdateUserInfoMutation,
-  useUpdateUserStatsMutation,
-  useUpdateUserAchievementsMutation,
-} = userApi;
+export const { 
+    useFetchUserByIdQuery,
+    useCreateUserMutation,
+    useUpdateUserMutation,
+
+} = usersApi;

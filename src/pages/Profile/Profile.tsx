@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 
 import useUserData from '../../hooks/useUserData';
+import { useFetchUserByIdQuery } from '../../api/userApiSlice';
 
 type Stat = {
     name: string;
@@ -26,20 +27,9 @@ type Achievement = {
 
 const Profile = () => {
 
-    // const [achievements, setAchievements] = useState<Achievement[]>([]);
-    // const [userStats, setUserStats] = useState<UserStats[]>([]);
-
-    // useEffect(() => {
-    //     fetch("http://localhost:3500/achievements")
-    //       .then((response) => response.json())
-    //       .then((data) => setAchievements(data))
-    //       .catch((error) => console.error("Error fetching achievements: ", error));
-    //     fetch("http://localhost:3500/stats")
-    //       .then((response) => response.json())
-    //       .then((data) => setUserStats(data))
-    //       .catch((error) => console.error("Error fetching achievements: ", error));
-    //   }, []);
-
+    const userId = "9f883d49-aa69-4e28-b318-ea723a26d31f";
+    const { data, error: fetchUserError, isLoading } = useFetchUserByIdQuery(userId);
+    // console.log(data); working
 
     const [achievements, setAchievements] = useState<Achievement[]>([]);
     const [userStats, setUserStats] = useState<Stat[]>([]);
@@ -160,22 +150,10 @@ const Profile = () => {
         </div>
     )
 
-    // return (
-    //     <div className="column">
-    //         {user?.picture && <img src={user.picture} alt={user?.name} />}
-    //         <h2>{user?.name}</h2>
-    //         <p>{user?.sub}</p>
-    //         <p>{Intl.DateTimeFormat().resolvedOptions().timeZone}</p>
-    //         <ul>
-    //             {/* {Object.keys(user as Object).map((objKey, i) => <li key={i}>{objKey}: {user![objKey]} </li>)} */}
-    //         </ul>
-    //         <Logout />
-    //     </div>
-    // )
     return (
         <>
-            {loading && <p>Loading...</p>}
-            {error && <p>Error: {error}</p>}
+            {loading && <p style={{height: "100vh"}}>Loading...</p>}
+            {error && <p style={{height: "100vh"}}>Error: {error}</p>}
             {!loading && !error && content}
         </>
     )

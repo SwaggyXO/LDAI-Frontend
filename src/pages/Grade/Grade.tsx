@@ -4,8 +4,9 @@ import GradeCateg from "../../containers/GradeCateg/GradeCateg";
 import Button from "../../components/buttons/Button";
 import Tile from "../../components/Tiles/Tile";
 import { useState } from "react";
-import { useGetUserInfoQuery, useUpdateUserInfoMutation } from "../../api/userApiSlice";
+import { useGetUserInfoQuery, useUpdateUserInfoMutation } from "../../api/oldUserApiSlice";
 import { useNavigate } from "react-router-dom";
+import { useUpdateUserMutation } from "../../api/userApiSlice";
 
 const Grade = () => {
 
@@ -16,23 +17,30 @@ const Grade = () => {
 
   const navigate = useNavigate();
 
-  const [updateUserInfo] = useUpdateUserInfoMutation();
+  const [updateUserMutation] = useUpdateUserMutation();
 
-  const { data: userInfoData } = useGetUserInfoQuery();
+  // const [updateUserInfo] = useUpdateUserInfoMutation();
+
+  // const { data: userInfoData } = useGetUserInfoQuery();
 
   const handleNext = async () => {
     try {
-      const ciamid = user?.sub;
+      // const ciamid = user?.sub;
       
-      if (!userInfoData) {
-        return;
-      }
+      // if (!userInfoData) {
+      //   return;
+      // }
 
-      const existingUser = userInfoData.find((user) => user["ciamid"] === ciamid);
+      // const existingUser = userInfoData.find((user) => user["ciamid"] === ciamid);
 
-      const response = await updateUserInfo({
-        id: existingUser?.id!,
-        data: { grade: grade }
+      const response = await updateUserMutation({
+        ciamId: user?.sub,
+        subject: null,
+        grade: grade?.toString(),
+        marbles: 0,
+        xp: 0,
+        streak: 0,
+        isNew: true,
       });
       console.log('User updated successfully:', response);
       navigate("/subject");

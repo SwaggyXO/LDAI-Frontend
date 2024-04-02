@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useCreateUserMutation, useGetUserInfoQuery } from '../../api/userApiSlice';
+import { useCreateUserMutation, useGetUserInfoQuery } from '../../api/oldUserApiSlice';
 import { v4 as uuidv4 } from 'uuid';
 
 const addUser = async (ciamId: string) => {

@@ -12,16 +12,23 @@ import { SampleQuizzes } from "./SampleQuizzes";
 
 import renderContent from "../../features/content/renderContent";
 import addUser from "../../features/user/addUser";
+import { useCreateUserMutation } from "../../api/userApiSlice";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../features/user/userSlice";
 
 const Home = () => {
 
   const quizzes = SampleQuizzes;
 
+  const dispatch = useDispatch();
+
   const { user, isAuthenticated, error, isLoading } = useAuth0();
 
-  if (isAuthenticated && user?.sub) {
-    addUser(user.sub);
-  }
+  const [createUser, { isLoading: isCreateUserLoading, error: isCreateUserError }] = useCreateUserMutation();
+
+  // if (isAuthenticated && user?.sub) {
+  //   addUser(user.sub);
+  // }
 
   const [ timedGreeting, setTimedGreeting ] = useState<string>('');
 
@@ -37,7 +44,25 @@ const Home = () => {
       setTimedGreeting(greeting);
     };
 
+    const createNewUser = async () => {
+      const ciamId = user?.sub!;
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      try {
+        const response = await createUser({ ciamId, timeZone });
+        if ('error' in response) {
+          console.error("An error occured", response);
+        } else {
+          console.log('User added successfully:', response);
+          dispatch(setUser(response.data));
+        }
+      } catch (error) {
+        console.error("An unexpected error occurred");
+      }
+    }
+
     getGreeting();
+    createNewUser();
   }, []);
 
   const buttonElements = (
@@ -81,9 +106,9 @@ const Home = () => {
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>Authentication Error</p>}
-      {!isLoading && isAuthenticated && content}
+      {isLoading || isCreateUserLoading && <p style={{height: "100vh"}}>Loading...</p>}
+      {error && <p style={{height: "100vh"}}>An Error Occured</p>}
+      {!isLoading && isAuthenticated && !isCreateUserLoading && !error && content}
     </>
   )
 }

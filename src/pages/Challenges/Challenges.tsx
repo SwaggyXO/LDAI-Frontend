@@ -46,8 +46,8 @@ const Challenges = () => {
   return (
     isAuthenticated && (
       <>
-        {error && <p>Authentication Error</p>}
-        {!error && isLoading && <p>Loading...</p>}
+        {error && <p style={{height: "100vh"}}>Authentication Error</p>}
+        {!error && isLoading && <p style={{height: "100vh"}}>Loading...</p>}
         {!error && !isLoading && content}
       </>
     )

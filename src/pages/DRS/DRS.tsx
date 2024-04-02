@@ -42,8 +42,8 @@ const DRS = () => {
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>Authentication Error</p>}
+      {isLoading && <p style={{height: "100vh"}}>Loading...</p>}
+      {error && <p style={{height: "100vh"}}>Authentication Error</p>}
       {!isLoading && isAuthenticated && content}
     </>
   )

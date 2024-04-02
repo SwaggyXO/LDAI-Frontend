@@ -1,4 +1,4 @@
-import { useGetUserInfoQuery, useGetUserAchievementsQuery, useGetUserStatsQuery } from '../api/userApiSlice'
+import { useGetUserInfoQuery, useGetUserAchievementsQuery, useGetUserStatsQuery } from '../api/oldUserApiSlice'
 
 type DataType = 'info' | 'achievements' | 'stats';
 
