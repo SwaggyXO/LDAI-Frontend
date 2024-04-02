@@ -18,7 +18,7 @@ const initialState: UserState = {
   marbles: 0,
   xp: 0,
   streak: 0,
-  isNew: false,
+  isNew: true,
   timeZone: null,
 };
 

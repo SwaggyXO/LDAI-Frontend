@@ -13,8 +13,12 @@ import { SampleQuizzes } from "./SampleQuizzes";
 import renderContent from "../../features/content/renderContent";
 import addUser from "../../features/user/addUser";
 import { useCreateUserMutation } from "../../api/userApiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../features/user/userSlice";
+import Modal from "../../components/Modal/Modal";
+import Intro from "../Gameplay/Start/Intro";
+import { RootState } from "../../app/store";
+import { useFetchLatestQuizzesQuery, useFetchQuizByIdQuery } from "../../api/quizApiSlice";
 
 const Home = () => {
 
@@ -22,15 +26,35 @@ const Home = () => {
 
   const dispatch = useDispatch();
 
-  const { user, isAuthenticated, error, isLoading } = useAuth0();
+  const currUser = useSelector((state: RootState) => state.user);
 
-  const [createUser, { isLoading: isCreateUserLoading, error: isCreateUserError }] = useCreateUserMutation();
+  const { user, isAuthenticated, error, isLoading } = useAuth0();
 
   // if (isAuthenticated && user?.sub) {
   //   addUser(user.sub);
   // }
 
   const [ timedGreeting, setTimedGreeting ] = useState<string>('');
+
+  const [modalOpen, setModalOpen] = useState(false);
+  
+  const close = () => {
+    setModalOpen(false);
+    // setSelectedBooster(null);
+  }
+
+  const open = () => {
+    // setSelectedBooster(booster);
+    setModalOpen(true);
+  }
+
+  const [createUser, { isLoading: isCreateUserLoading, error: isCreateUserError }] = useCreateUserMutation();
+
+  useEffect(() => {
+    if (currUser.isNew) {
+      open();
+    }
+  }, [currUser]);
 
   useEffect(() => {
     const getGreeting = () => {
@@ -65,6 +89,20 @@ const Home = () => {
     createNewUser();
   }, []);
 
+  const quizId = "e6aaf094-0be3-40df-bd91-e640282af1da";
+  const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(quizId);
+
+  const { data: latestQuizData, error: fetchLatestQuizError, isLoading: isFetchLatestQuizLoading } = useFetchLatestQuizzesQuery(1);
+
+  let modalContent;
+  if (isFetchLatestQuizLoading) modalContent = (<div>Loading...</div>);
+  if (fetchLatestQuizError) modalContent = (<div>Error</div>);
+  if (!latestQuizData) modalContent = null;
+
+  console.log(latestQuizData);
+
+  const quizIntroModalContent = latestQuizData && <Intro quiz={latestQuizData.data[0]} />
+
   const buttonElements = (
     <p>Play &nbsp;{<FontAwesomeIcon icon={faPlay} color="black"/>}</p>
   )
@@ -79,6 +117,11 @@ const Home = () => {
 
   const content = (
     <>
+      {modalOpen && (
+        <Modal isOpen={modalOpen} onClose={close} classname='quiz-intro-modal'>
+          {quizIntroModalContent!}
+        </Modal>
+      )}
       <div className="intro-half">
         <div className="intro-half_header">
           <div className="intro-half_header--text">

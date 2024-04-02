@@ -51,7 +51,7 @@ export const routes = createBrowserRouter(
       </Route>
 
       <Route path="/quiz" element={<QuizLayout />} >
-        <Route index element={<Intro />} />
+        {/* <Route index element={<Intro />} /> */}
         <Route path="question" element={<Question />} />
         <Route path="result" element={<Completion />} />
       </Route>

@@ -8,7 +8,22 @@ type RewardData = {
   colors: string[];
 };
 
-const Intro = () => {
+type Quiz = {
+  quiz: {
+    quizId: string;
+    questions: string[];
+    title: string;
+    description: string;
+    subject: string;
+    quizType: string;
+    timelimit: number;
+    imageUrl: string;
+  }
+}
+
+const Intro = (props: Quiz) => {
+  const quiz = props.quiz;
+
   const rewardData = [
     {
       values: ["Max", "500", "1000"],
@@ -43,11 +58,11 @@ const Intro = () => {
     <div className="quiz-body--intro">
       <section className="quiz-intro--section-starter">
         <div className="section-starter--quiz-name">
-          <h1>Quiz name</h1>
+          <h1>{quiz.title}</h1>
         </div>
         <div className="section-starter--ellipse" />
         <div className="section-starter--quiz-type">
-          <h2>Standard</h2>
+          <h2>{quiz.quizType}</h2>
         </div>
       </section>
 
@@ -56,7 +71,7 @@ const Intro = () => {
           <h3>Overview</h3>
         </div>
         <div className="section-overview--quiz-description">
-          <p>Short description about the quiz and the questions in it</p>
+          <p>{quiz.description}</p>
         </div>
       </section>
 

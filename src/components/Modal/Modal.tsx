@@ -6,6 +6,7 @@ type ModalProps = {
     isOpen: boolean;
     onClose: () => void;
     children: JSX.Element;
+    classname: string;
 }
 
 const Modal = (props: ModalProps) => {
@@ -25,7 +26,7 @@ const Modal = (props: ModalProps) => {
                         animate={{ y: 0 }}
                         exit={{ y: '100%' }}
                         transition={{ duration: 0.3, delay: 0.1 }}
-                        className='modal'
+                        className={props.classname}
                         onClick={(e) => e.stopPropagation()}
                     >
                         {props.children}

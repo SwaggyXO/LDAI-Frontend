@@ -50,7 +50,7 @@ const Subject = () => {
             //   data: { subject: subject }
             // });
             // console.log('User updated successfully:', response);
-            navigate("/quiz");
+            navigate("/home");
           } catch (error) {
             console.error('Error adding user:', error);
           }

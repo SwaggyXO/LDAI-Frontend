@@ -85,7 +85,7 @@ const PowerUps = () => {
         ))}
       </div>
       {modalOpen && selectedBooster && (
-        <Modal isOpen={modalOpen} onClose={close}>
+        <Modal isOpen={modalOpen} onClose={close} classname='booster-modal'>
           {modalContent}
         </Modal>
       )}
