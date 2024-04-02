@@ -4,6 +4,7 @@ import { oldUserApi } from '../api/oldUserApiSlice';
 import { usersApi } from '../api/userApiSlice';
 import { quizApi } from '../api/quizApiSlice';
 import userReducer from '../features/user/userSlice';
+import quizReducer from '../features/quiz/quizSlice';
 
 const store = configureStore({
     reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
         [oldUserApi.reducerPath]: oldUserApi.reducer,
         [usersApi.reducerPath]: usersApi.reducer,
         [quizApi.reducerPath]: quizApi.reducer,
-        user: userReducer
+        user: userReducer,
+        quiz: quizReducer
     },
     middleware: (getDefaultMiddleware) => 
         getDefaultMiddleware().concat(

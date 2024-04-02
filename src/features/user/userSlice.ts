@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface UserState {
-  id: string | null;
+  userId: string | null;
   ciamId: string | null;
   grade: string | null;
   marbles: number;
@@ -12,7 +12,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-  id: null,
+  userId: null,
   ciamId: null,
   grade: null,
   marbles: 0,
@@ -26,7 +26,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<UserState>) => {
+    setUser: (state, action: PayloadAction<Partial<UserState>>) => {
       return {
         ...state,
         ...action.payload,

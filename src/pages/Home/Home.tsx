@@ -19,6 +19,7 @@ import Modal from "../../components/Modal/Modal";
 import Intro from "../Gameplay/Start/Intro";
 import { RootState } from "../../app/store";
 import { useFetchLatestQuizzesQuery, useFetchQuizByIdQuery } from "../../api/quizApiSlice";
+import { updateQuizState } from "../../features/quiz/quizSlice";
 
 const Home = () => {
 
@@ -68,6 +69,10 @@ const Home = () => {
       setTimedGreeting(greeting);
     };
 
+    getGreeting();
+  }, []);
+
+  useEffect(() => {
     const createNewUser = async () => {
       const ciamId = user?.sub!;
       const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
@@ -78,19 +83,24 @@ const Home = () => {
           console.error("An error occured", response);
         } else {
           console.log('User added successfully:', response);
-          dispatch(setUser(response.data));
+          dispatch(setUser(response.data.data.user));
         }
       } catch (error) {
         console.error("An unexpected error occurred");
       }
     }
 
-    getGreeting();
     createNewUser();
-  }, []);
+  }, [user])
 
-  const quizId = "e6aaf094-0be3-40df-bd91-e640282af1da";
+  const quizId = "2c146b5e-1f29-428e-a03f-313e88c83df2";
   const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(quizId);
+
+  dispatch(updateQuizState({
+    id: quizData?.data.quizId,
+    questions: quizData?.data.questions,
+    timeLimit: quizData?.data.timelimit
+  }));
 
   // const { data: latestQuizData, error: fetchLatestQuizError, isLoading: isFetchLatestQuizLoading } = useFetchLatestQuizzesQuery(1);
 

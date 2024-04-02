@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft, faTimes } from '@fortawesome/free-solid-svg-icons';
 import renderContent from '../../features/content/renderContent';
+import { useDispatch } from 'react-redux';
+import { resetQuizState } from '../../features/quiz/quizSlice';
 
 type NavButtonProps = {
     key?: number
@@ -15,11 +17,13 @@ const NavButton = (props: NavButtonProps) => {
     const to = props.to;
     const vector = props.vector;
     const className = props.className;
+    const dispatch = useDispatch();
     
     const navigate = useNavigate();
 
     const handleNav = () => {
         if (to === "exit") {
+            dispatch(resetQuizState());
             navigate(-1);
         } else {
             navigate(to);

@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom';
 
 import useUserData from '../../hooks/useUserData';
 import { useFetchUserByIdQuery } from '../../api/userApiSlice';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
 
 type Stat = {
     name: string;
@@ -27,9 +29,10 @@ type Achievement = {
 
 const Profile = () => {
 
-    const userId = "9f883d49-aa69-4e28-b318-ea723a26d31f";
-    const { data, error: fetchUserError, isLoading } = useFetchUserByIdQuery(userId);
-    // console.log(data); working
+    const currUser = useSelector((state: RootState) => state.user);
+
+    const { data, error: fetchUserError, isLoading } = useFetchUserByIdQuery(currUser.ciamId!.replace(/\|/g, '%7C'));
+    console.log(data);
 
     const [achievements, setAchievements] = useState<Achievement[]>([]);
     const [userStats, setUserStats] = useState<Stat[]>([]);
@@ -102,9 +105,9 @@ const Profile = () => {
                             {shortener(user?.name!)}
                         </div>
                         <div className="profile-header_info--second__info">
-                            <div className="profile-header_info--xplevel">XPL 20</div>
+                            <div className="profile-header_info--xplevel">XPL {data?.data.xp}</div>
                             <div className="profile-header_info--grade">
-                                XII&nbsp;
+                                {data?.data.grade}&nbsp;
                                 <button onClick={handleNavigate}><FontAwesomeIcon icon={faEdit} /></button>
                             </div>
                         </div>

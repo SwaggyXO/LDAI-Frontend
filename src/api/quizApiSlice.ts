@@ -2,9 +2,16 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/quiz' });
 
+interface Question {
+    id: string;
+    text: string;
+    imageUrl: string | null;
+    options: string[];
+}
+
 interface Quiz {
   quizId: string;
-  questions: string[];
+  questions: Question[];
   title: string;
   description: string;
   subject: string;

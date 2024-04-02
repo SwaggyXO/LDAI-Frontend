@@ -40,6 +40,7 @@ export const routes = createBrowserRouter(
         <Route path="/drs" element={<DRS />} />
         <Route path="/powerups" element={<PowerUps />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/result" element={<Completion />} />
       </Route>
 
       <Route path="/grade" element={<GradeLayout />}>
@@ -50,10 +51,10 @@ export const routes = createBrowserRouter(
         <Route index element={<Subject />} />
       </Route>
 
-      <Route path="/quiz" element={<QuizLayout />} >
+      <Route path="/quiz/:quizid" element={<QuizLayout />} >
         {/* <Route index element={<Intro />} /> */}
-        <Route path="question" element={<Question />} />
-        <Route path="result" element={<Completion />} />
+        <Route path="question/:questionIndex" element={<Question />} />
+        
       </Route>
       
     </>

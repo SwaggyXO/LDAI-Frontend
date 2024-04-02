@@ -2,16 +2,26 @@ import "./Intro.scss";
 import Capsule from "../../../components/Capsule/Capsule";
 import CapsuleContainer from "../../../containers/Reward/CapsuleContainer";
 import Button from "../../../components/buttons/Button";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateTimeLeft } from "../../../features/quiz/quizSlice";
 
 type RewardData = {
   values: string[];
   colors: string[];
 };
 
+interface Question {
+  id: string;
+  text: string;
+  imageUrl: string | null;
+  options: string[];
+}
+
 type Quiz = {
   quiz: {
     quizId: string;
-    questions: string[];
+    questions: Question[];
     title: string;
     description: string;
     subject: string;
@@ -22,6 +32,10 @@ type Quiz = {
 }
 
 const Intro = (props: Quiz) => {
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const quiz = props.quiz;
 
   const rewardData = [
@@ -52,6 +66,11 @@ const Intro = (props: Quiz) => {
       })
       .flat();
   };
+
+  const handleQuizStart = () => {
+    navigate(`/quiz/${quiz.quizId}/question/0`);
+    dispatch(updateTimeLeft(quiz.timelimit));
+  }
 
   // Todo: add animations?
   const content = (
@@ -94,7 +113,7 @@ const Intro = (props: Quiz) => {
         <Button
           buttonText="Start Quiz"
           className="quiz-intro--start-button"
-          to="/quiz/question"
+          onClick={handleQuizStart}
         />
       </div>
     </div>

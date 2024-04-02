@@ -8,7 +8,7 @@ type CreateUserRequest = {
 }
 
 type User = {
-    id: string;
+    userId: string;
     ciamId: string;
     grade: string;
     subject: string | null;
@@ -19,14 +19,33 @@ type User = {
     timeZone: string;
 }
 
+interface ResponseData {
+  newlyCreated: boolean,
+  user: User
+}
+
+interface CreateResponse {
+  code: number;
+  status: string;
+  data: ResponseData;
+  error: Object | null;
+}
+
+interface FetchResponse {
+  code: number;
+  status: string;
+  data: User;
+  error: Object | null;
+}
+
 export const usersApi = createApi({
   reducerPath: 'usersApi',
   baseQuery, 
   endpoints: builder => ({
-    fetchUserById: builder.query<User, string>({
-        query: (userId) => `/fetch/${userId}`,
+    fetchUserById: builder.query<FetchResponse, string>({
+        query: (ciamId) => `/fetch/${ciamId}`,
     }),
-    createUser: builder.mutation<User, CreateUserRequest>({
+    createUser: builder.mutation<CreateResponse, CreateUserRequest>({
       query: requestData => ({
         url: '/create',
         method: 'POST',

@@ -7,15 +7,19 @@ import './homelayout.scss';
 
 import renderContent from "../../features/content/renderContent";
 import useAuth from "../../hooks/useAuth";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
 
 const HomeLayout = () => {
 
     const { authChecked, intendedPath } = useAuth();
 
+    const currUser = useSelector((state: RootState) => state.user);
+
     const xpBadge = (
         <div className="xp-container">
             {renderContent('badges', 'Level', '1')}
-            <p>2</p> 
+            <p>{currUser.xp}</p> 
         </div>
     )
 
@@ -28,14 +32,14 @@ const HomeLayout = () => {
     const streak = (
         <div className="streak-container">
             {renderContent('badges', 'Streak', 'Calendar')}
-            <p>7</p>
+            <p>{currUser.streak}</p>
         </div>
     )
 
     const marbles = (
         <div className="marbles-container">
             {renderContent('app', 'Marble', 'Marble')}
-            <p>7000</p>
+            <p>{currUser.marbles}</p>
         </div>
     )
     
