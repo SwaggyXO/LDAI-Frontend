@@ -38,6 +38,7 @@ const HomeLayout = () => {
             <p>7000</p>
         </div>
     )
+    
     const content = (
         <>
             <Topnav xp={xpBadge} subject={subject} streak={streak} marbles={marbles} />

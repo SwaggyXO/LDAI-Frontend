@@ -8,6 +8,7 @@ type PropsType = {
     xp?: string | JSX.Element
     subject?: string | JSX.Element
     streak?: string | JSX.Element
+    classname?: string
 }
 
 const Topnav = (props: PropsType) => {
@@ -31,12 +32,19 @@ const Topnav = (props: PropsType) => {
     }
 
     return (
-        <div className={`top-navbar ${navbarClass} sticky`}>
-            {Object.values(props).map((navItem, index) => (
+        <div className={`top-navbar ${navbarClass} sticky ${props.classname}`}>
+            {props.classname ? 
+                Object.values(props).slice(0, -1).map((navItem, index) => (
+                    <div key={index} className={`navbar-item navbar-item--${navItems[index]}`}>
+                        {navItem}
+                    </div>
+                )) : 
+                Object.values(props).map((navItem, index) => (
                 <div key={index} className={`navbar-item navbar-item--${navItems[index]}`}>
                     {navItem}
                 </div>
-            ))}
+                ))
+            }
         </div>
     )
 }

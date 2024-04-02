@@ -47,5 +47,4 @@ export const {
     useFetchUserByIdQuery,
     useCreateUserMutation,
     useUpdateUserMutation,
-
 } = usersApi;

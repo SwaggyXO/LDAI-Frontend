@@ -92,16 +92,12 @@ const Home = () => {
   const quizId = "e6aaf094-0be3-40df-bd91-e640282af1da";
   const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(quizId);
 
-  const { data: latestQuizData, error: fetchLatestQuizError, isLoading: isFetchLatestQuizLoading } = useFetchLatestQuizzesQuery(1);
+  // const { data: latestQuizData, error: fetchLatestQuizError, isLoading: isFetchLatestQuizLoading } = useFetchLatestQuizzesQuery(1);
 
-  let modalContent;
-  if (isFetchLatestQuizLoading) modalContent = (<div>Loading...</div>);
-  if (fetchLatestQuizError) modalContent = (<div>Error</div>);
-  if (!latestQuizData) modalContent = null;
+  //console.log(latestQuizData);
+  console.log(quizData);
 
-  console.log(latestQuizData);
-
-  const quizIntroModalContent = latestQuizData && <Intro quiz={latestQuizData.data[0]} />
+  const quizIntroModalContent = quizData && <Intro quiz={quizData.data} />
 
   const buttonElements = (
     <p>Play &nbsp;{<FontAwesomeIcon icon={faPlay} color="black"/>}</p>

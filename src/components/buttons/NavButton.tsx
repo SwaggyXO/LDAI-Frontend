@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft, faTimes } from '@fortawesome/free-solid-svg-icons';
 import renderContent from '../../features/content/renderContent';
 
 type NavButtonProps = {
@@ -19,13 +19,19 @@ const NavButton = (props: NavButtonProps) => {
     const navigate = useNavigate();
 
     const handleNav = () => {
-        navigate(to);
+        if (to === "exit") {
+            navigate(-1);
+        } else {
+            navigate(to);
+        }
     }
 
     return (
         <button className={className} onClick={handleNav}>
             {className === 'back-button' ? 
                 <FontAwesomeIcon icon={faArrowLeft} size='2x' color='#fff'/> :
+                className === 'cross-button' ?
+                <FontAwesomeIcon icon={faTimes} size='2x' color='#fff' /> :
                 renderContent('icons', 'BottomNavbar', vector!)
             }
         </button>

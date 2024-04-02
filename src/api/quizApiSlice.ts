@@ -16,6 +16,13 @@ interface Quiz {
 interface Response {
     code: number;
     status: string;
+    data: Quiz;
+    error: Object | null;
+}
+
+interface ArrayResponse {
+    code: number;
+    status: string;
     data: Array<Quiz>;
     error: Object | null;
 }
@@ -24,10 +31,10 @@ export const quizApi = createApi({
   reducerPath: 'quizApi',
   baseQuery, 
   endpoints: (builder) => ({
-    fetchQuizById: builder.query<Quiz, string>({
-      query: (quizId) => `/fetch/${quizId}`,
+    fetchQuizById: builder.query<Response, string>({
+      query: (quizId) => `/${quizId}`,
     }),
-    fetchLatestQuizzes: builder.query<Response, number>({
+    fetchLatestQuizzes: builder.query<ArrayResponse, number>({
         query: (limit) => `/fetch/latest?limit=${limit}`,
     }),
   }),

@@ -30,21 +30,25 @@
 }
 
 .top-navbar-4 {
-    justify-content: space-around;
+    gap: 5%;
 
+    .navbar-item {
+        width: 20%;
+    }
+    
     .navbar-item:nth-child(1) {
-        
+
         img {
             display: block;
-            width: 3.5rem;
+            width: 7vh;
+            position: relative;
         }
 
         p {
             position: absolute;
-            top: 50%;
-            left: 15%;
-            transform: translate(-30%, -70%);
-
+            top: 31%;
+            left: 12.9%;
+            
             font-family: var(--ofont-family);
             font-weight: 600;
             text-align: center;
@@ -55,7 +59,7 @@
     .navbar-item:nth-child(2) {
 
         img {
-            width: 5vh;
+            width: 4.75vh;
             cursor: pointer;
         }
     }
@@ -63,7 +67,7 @@
     .navbar-item:nth-child(3) {
 
         img {
-            width: 3vh;
+            width: 4.5vh;
         }
 
         p {        
@@ -111,5 +115,36 @@
         font-family: var(--ofont-family);
         font-size: 1.4rem; 
         font-weight: 500;
+    }
+}
+
+.quiz-layout {
+    display: flex;
+    gap: 60%;
+    
+    .navbar-item:nth-child(1) {
+        width: 20%;
+
+        .cross-button {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            background-color: var(--color-bg);
+            border: none;
+        }
+    }
+
+    .navbar-item:nth-child(2) {
+        width: 20%;
+
+        img {
+            width: 4vh;
+        }
+
+        p {        
+            font-family: var(--ofont-family);
+            font-weight: 600;
+            text-align: center;
+        }
     }
 }
