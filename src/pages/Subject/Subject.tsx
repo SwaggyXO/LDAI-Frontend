@@ -6,24 +6,39 @@ import Tile from '../../components/Tiles/Tile';
 import { useGetUserInfoQuery, useGetUserSubjectsQuery, useUpdateUserInfoMutation } from '../../api/oldUserApiSlice';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useFetchSubjectsByGradeQuery } from '../../api/subjectApiSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../app/store';
+import renderContent from '../../features/content/renderContent';
+import { useUpdateUserMutation } from '../../api/userApiSlice';
+import { setUser } from '../../features/user/userSlice';
 
 type SubjectsProps = {
     subjects: { id: number, name: string; svg: string }[];
 }
 
-type Subject = {
-    id: number;
-    subjects: string[]
-}
+interface Subject {
+    name: string;
+    description: string;
+    grade: string;
+    imageUrl: string;
+  }
 
 const Subject = () => {
 
     const {isAuthenticated, error, isLoading, user } = useAuth0();
 
+    const currUser = useSelector((state: RootState) => state.user);
+
     const [selectedTile, setSelectedTile] = useState<string | null>(null);
+    const [selected, setSelected] = useState<boolean>(true);
     const [subject, setSubject] = useState<string | null>(null);
 
     const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+
+  const [updateUserMutation] = useUpdateUserMutation();
 
     // const { data: userInfoData } = useGetUserInfoQuery();
 
@@ -43,6 +58,13 @@ const Subject = () => {
 
     // const [updateUserInfo] = useUpdateUserInfoMutation();
 
+    const { data: subjectsData, error: fetchSubjectsError, isLoading: isFetchSubjectsLoading } = useFetchSubjectsByGradeQuery(currUser.grade!);
+
+    const subjects = subjectsData?.data;
+
+    console.log(subjectsData?.data);
+
+
     const handleNext = async () => {
         try {
             // const response = await updateUserInfo({
@@ -50,6 +72,17 @@ const Subject = () => {
             //   data: { subject: subject }
             // });
             // console.log('User updated successfully:', response);
+
+            const response = await updateUserMutation({
+                ciamId: user?.sub,
+                subject: subject,
+                marbles: 0,
+                xp: 0,
+                streak: 0,
+                isNew: true,
+              });
+              console.log('User updated successfully:', response);
+              dispatch(setUser(response.data.data));
             navigate("/home");
           } catch (error) {
             console.error('Error adding user:', error);
@@ -58,18 +91,21 @@ const Subject = () => {
 
     const handleTileClick = (subject: string) => {
         setSelectedTile(subject); 
+        setSelected(false);
         setSubject(subject);
     }
+
+    
 
     const content = (
         <div className='parent'>
             <div className="subjects-container">
-                {/* {subjects && subjects.map((subject: Subject, idx: number) => (
-                    <Tile key={idx} name={subject.name} svg={subject.svg} onClick={() => handleTileClick(subject.name)} selected={selectedTile === subject.name} />
-                ))} */}
+                {subjects && subjects.map((subject: Subject, idx: number) => (
+                    <Tile key={idx} name={subject.name} subjectSvg={true} onClick={() => handleTileClick(subject.name)} selected={selectedTile === subject.name} />
+                ))}
             </div>
             <div className="button-next_container">
-                <Button buttonText="Next" onClick={handleNext} className="button-next" />
+                <Button buttonText="Next" onClick={handleNext} className="button-next" check={selected}/>
             </div>
         </div>
         

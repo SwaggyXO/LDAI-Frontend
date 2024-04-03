@@ -22,4 +22,8 @@
 
         cursor: pointer;
     }
+
+    .button-next:disabled {
+        background-color: rgba(3, 4, 94, 0.8);
+    }
 }

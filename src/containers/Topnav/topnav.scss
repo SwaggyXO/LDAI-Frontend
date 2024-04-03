@@ -148,3 +148,16 @@
         }
     }
 }
+
+.top-navbar-1 {
+    .navbar-item:nth-child(1) {
+        flex: 1;
+        justify-content: center;
+        text-align: center;
+        margin: 0;
+
+        font-family: var(--ofont-family);
+        font-size: 1.4rem; 
+        font-weight: 500;
+    }
+}

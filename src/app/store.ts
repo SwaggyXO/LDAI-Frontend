@@ -3,6 +3,7 @@ import { contentApi } from '../api/contentApiSlice';
 import { oldUserApi } from '../api/oldUserApiSlice';
 import { usersApi } from '../api/userApiSlice';
 import { quizApi } from '../api/quizApiSlice';
+import { subjectApi } from '../api/subjectApiSlice';
 import userReducer from '../features/user/userSlice';
 import quizReducer from '../features/quiz/quizSlice';
 
@@ -12,6 +13,7 @@ const store = configureStore({
         [oldUserApi.reducerPath]: oldUserApi.reducer,
         [usersApi.reducerPath]: usersApi.reducer,
         [quizApi.reducerPath]: quizApi.reducer,
+        [subjectApi.reducerPath]: subjectApi.reducer,
         user: userReducer,
         quiz: quizReducer
     },
@@ -20,7 +22,8 @@ const store = configureStore({
             contentApi.middleware, 
             oldUserApi.middleware,
             usersApi.middleware,
-            quizApi.middleware
+            quizApi.middleware,
+            subjectApi.middleware
         ),
 });
 

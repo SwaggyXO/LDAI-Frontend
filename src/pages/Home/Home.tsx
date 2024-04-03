@@ -20,12 +20,15 @@ import Intro from "../Gameplay/Start/Intro";
 import { RootState } from "../../app/store";
 import { useFetchLatestQuizzesQuery, useFetchQuizByIdQuery } from "../../api/quizApiSlice";
 import { updateQuizState } from "../../features/quiz/quizSlice";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
 
   const quizzes = SampleQuizzes;
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const currUser = useSelector((state: RootState) => state.user);
 
@@ -45,17 +48,10 @@ const Home = () => {
   }
 
   const open = () => {
-    // setSelectedBooster(booster);
     setModalOpen(true);
   }
 
   const [createUser, { isLoading: isCreateUserLoading, error: isCreateUserError }] = useCreateUserMutation();
-
-  useEffect(() => {
-    if (currUser.isNew) {
-      open();
-    }
-  }, [currUser]);
 
   useEffect(() => {
     const getGreeting = () => {
@@ -84,6 +80,13 @@ const Home = () => {
         } else {
           console.log('User added successfully:', response);
           dispatch(setUser(response.data.data.user));
+
+          if (response.data.data.user.isNew && response.data.data.user.grade === null) {
+            console.log("Navigating to grade:", currUser)
+            navigate('/grade');    
+          } else {
+            open();  
+          }
         }
       } catch (error) {
         console.error("An unexpected error occurred");
@@ -92,6 +95,7 @@ const Home = () => {
 
     createNewUser();
   }, [user])
+
 
   const quizId = "2c146b5e-1f29-428e-a03f-313e88c83df2";
   const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(quizId);
@@ -161,5 +165,11 @@ const Home = () => {
     </>
   )
 }
+
+export const HomeLoader = async () => {
+
+}
+
+
 
 export default Home

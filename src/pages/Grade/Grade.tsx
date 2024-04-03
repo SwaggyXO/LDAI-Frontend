@@ -7,13 +7,18 @@ import { useState } from "react";
 import { useGetUserInfoQuery, useUpdateUserInfoMutation } from "../../api/oldUserApiSlice";
 import { useNavigate } from "react-router-dom";
 import { useUpdateUserMutation } from "../../api/userApiSlice";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../features/user/userSlice";
 
 const Grade = () => {
 
   const {isAuthenticated, error, isLoading, user } = useAuth0();
 
   const [selectedTile, setSelectedTile] = useState<number | null>(null);
+  const [selected, setSelected] = useState<boolean>(true);
   const [grade, setGrade] = useState<number | null>(null);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
@@ -35,7 +40,6 @@ const Grade = () => {
 
       const response = await updateUserMutation({
         ciamId: user?.sub,
-        subject: null,
         grade: grade?.toString(),
         marbles: 0,
         xp: 0,
@@ -43,14 +47,16 @@ const Grade = () => {
         isNew: true,
       });
       console.log('User updated successfully:', response);
+      dispatch(setUser(response.data.data));
       navigate("/subject");
     } catch (error) {
-      console.error('Error adding user:', error);
+      console.error('Error updating user:', error);
     }
   }
 
   const handleTileClick = (grade: number) => {
     setSelectedTile(grade); 
+    setSelected(false);
     setGrade(grade);
   }
 
@@ -77,7 +83,7 @@ const Grade = () => {
         <GradeCateg heading="Senior Secondary School" tiles={senSecSchoolTiles}/>
       </div>
       <div className="button-next_container">
-        <Button buttonText="Next" onClick={handleNext} className="button-next"/>
+        <Button buttonText="Next" onClick={handleNext} className="button-next" check={selected}/>
       </div>
     </>
   )

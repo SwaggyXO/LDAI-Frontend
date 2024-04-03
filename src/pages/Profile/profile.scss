@@ -142,6 +142,7 @@
 
             .parent {
                 display: flex;
+                flex-direction: row;
                 border-bottom: 2px solid white;
                 border-radius: 1vh;
                 height: 12.5vh;

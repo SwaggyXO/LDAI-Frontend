@@ -8,6 +8,7 @@ type PropsType = {
   booster?: { name: string, quantity: number, desc: string, rarity: string };
   onClick?: (() => Promise<void>) | (() => void);
   selected?: boolean;
+  subjectSvg?: boolean;
 };
 
 const Tile = (props: PropsType) => {
@@ -16,6 +17,10 @@ const Tile = (props: PropsType) => {
     if (props.onClick) {
       props.onClick();
     }
+  };
+
+  const capitalizeWords = (subjectName: string) => {
+    return subjectName.replace(/(?:^|\s)\S/g, a => { return a.toUpperCase(); });
   };
 
   const tileClass = `${props.selected ? 'selected' : ''}`;
@@ -32,10 +37,10 @@ const Tile = (props: PropsType) => {
         <p>{props.booster.quantity}</p>
       </div>
     </div>
-  ) : props.svg ? (
+  ) : props.subjectSvg ? (
     <div className={`tile--subject ${tileClass}`} onClick={handleClick}>
-      <img src={props.svg} className="svg-container" />
-      <div className="name">{props.name}</div>
+      {renderContent('app', 'Subjects', `${props.name}`)}
+      <div className="name">{capitalizeWords(props.name!)}</div>
     </div>
   ) : (
     <div className="stat-tile">

@@ -19,7 +19,7 @@ type User = {
     timeZone: string;
 }
 
-interface ResponseData {
+interface CreateResponseData {
   newlyCreated: boolean,
   user: User
 }
@@ -27,7 +27,7 @@ interface ResponseData {
 interface CreateResponse {
   code: number;
   status: string;
-  data: ResponseData;
+  data: CreateResponseData;
   error: Object | null;
 }
 
@@ -37,6 +37,11 @@ interface FetchResponse {
   data: User;
   error: Object | null;
 }
+
+interface UpdateResponse {
+  data: FetchResponse
+}
+
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
@@ -52,7 +57,7 @@ export const usersApi = createApi({
         body: requestData,
       }),
     }),
-    updateUser: builder.mutation<User, Partial<User>>({
+    updateUser: builder.mutation<UpdateResponse, Partial<User>>({
         query: (body) => ({
           url: `/update`,
           method: 'PATCH', // Adjust method to PATCH

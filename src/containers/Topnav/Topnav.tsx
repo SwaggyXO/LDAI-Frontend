@@ -18,6 +18,9 @@ const Topnav = (props: PropsType) => {
     
     let navbarClass: string;
     switch (navItemLength) {
+        case 1: 
+            navbarClass = 'top-navbar-1';
+            break;
         case 2:
             navbarClass = 'top-navbar-2';
             break;

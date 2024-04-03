@@ -5,6 +5,7 @@ type PropsType = {
     onClick?: (() => Promise<void>) | (() => void)
     className: string
     to?: string
+    check?: boolean
 }
 
 const Button = (props: PropsType) => {
@@ -13,6 +14,7 @@ const Button = (props: PropsType) => {
     const onClick = props.onClick;
     const className = props.className;
     const to = props.to!;
+    const check = props.check;
 
     const navigate = useNavigate();
 
@@ -23,7 +25,7 @@ const Button = (props: PropsType) => {
     const content = (
         to ? 
             <button onClick={handleNav} className={className}>{buttonText}</button> : 
-            <button onClick={onClick} className={className}>{buttonText}</button>
+            <button onClick={onClick} className={className} disabled={check}>{buttonText}</button>
     );
     
     return content;
