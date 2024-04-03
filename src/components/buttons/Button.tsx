@@ -23,7 +23,7 @@ const Button = (props: PropsType) => {
     }
 
     const content = (
-        to ? 
+        to && className !== 'answer-submit--button' ? 
             <button onClick={handleNav} className={className}>{buttonText}</button> : 
             <button onClick={onClick} className={className} disabled={check}>{buttonText}</button>
     );

@@ -3,7 +3,7 @@ import Button from "../../../components/buttons/Button";
 import "./Question.scss";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 const Question = () => {
   const { quizId, questionIndex } = useParams();
@@ -22,6 +22,15 @@ const Question = () => {
   } else {
     slicedQuestion = question.text;
   }
+
+  const [answer, setAnswer] = useState<string>('');
+
+  const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setAnswer(event.target.value);
+  };
+
+  const isAnswerEmpty: boolean = answer.trim() === '';
+  console.log(isAnswerEmpty);
 
   const content = (
     <div className="quiz-body--question">
@@ -45,7 +54,7 @@ const Question = () => {
         </div>
 
         <div className="answer-box">
-          <textarea />
+          <textarea value={answer} onChange={handleTextAreaChange} />
         </div>
 
         <div className="answer-submit">
@@ -54,12 +63,14 @@ const Question = () => {
               buttonText="Finish Quiz"
               className="answer-submit--button"
               to={`/result`}
+              check={isAnswerEmpty}
             /> 
           ) : (
             <Button
               buttonText="Submit"
               className="answer-submit--button"
               to={`/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`}
+              check={isAnswerEmpty}
             />
           )}
         </div>

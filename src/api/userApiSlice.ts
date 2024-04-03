@@ -11,7 +11,7 @@ type User = {
     userId: string;
     ciamId: string;
     grade: string;
-    subject: string | null;
+    subjectId: string | null;
     marbles: number;
     xp: number;
     streak: number;

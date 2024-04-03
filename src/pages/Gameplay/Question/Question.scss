@@ -98,21 +98,28 @@
     .answer-submit {
         width: fit-content;
         margin: auto;
-    }
 
-    .answer-submit--button {
-        border: none;
-        background-color: #03045E;
-        color: #eeeeee;
-        width: 20vh;
-        height: 6vh;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        padding: 1vh;
-        margin: 10% 0 0 0;
-    }
-
-    .answer-submit--button:hover{
-        cursor: pointer;
+        .answer-submit--button {
+            width: 20vh;
+            height: 6vh;
+            background-color: var(--color-bg);
+            border: none;
+            border-radius: 10px;
+            margin-top: 10%;
+    
+            font-family: var(--ofont-family);
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    
+            cursor: pointer;
+    
+        }
+    
+        .answer-submit--button:disabled {
+            background-color: rgba(3, 4, 94, 0.8);
+        }
     }
 }

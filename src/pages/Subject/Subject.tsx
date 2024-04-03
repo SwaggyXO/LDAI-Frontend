@@ -75,7 +75,7 @@ const Subject = () => {
 
             const response = await updateUserMutation({
                 ciamId: user?.sub,
-                subject: subject,
+                subjectId: subject,
                 marbles: 0,
                 xp: 0,
                 streak: 0,
@@ -94,8 +94,6 @@ const Subject = () => {
         setSelected(false);
         setSubject(subject);
     }
-
-    
 
     const content = (
         <div className='parent'>
