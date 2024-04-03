@@ -20,8 +20,8 @@ type User = {
 }
 
 interface CreateResponseData {
-  newlyCreated: boolean,
-  user: User
+  newlyCreated: boolean;
+  user: User;
 }
 
 interface CreateResponse {
@@ -39,7 +39,23 @@ interface FetchResponse {
 }
 
 interface UpdateResponse {
-  data: FetchResponse
+  data: FetchResponse;
+}
+
+interface CreateUserResponseResponse {
+  id: string;
+  userId: string;
+  questionId: string;
+  resultId: string;
+  response: string[];
+}
+
+interface CreateUserResponseRequest {
+  userId: string;
+  quizId: string;
+  questionId: string;
+  response: string[];
+  timeTaken: number;
 }
 
 
@@ -64,6 +80,13 @@ export const usersApi = createApi({
           body,
         }),
     }),
+    createUserResponse: builder.mutation<CreateUserResponseResponse, CreateUserResponseRequest>({
+      query: requestData => ({
+        url: '/response/create',
+        method: 'POST',
+        body: requestData,
+      }),
+    }),
   }),
 });
 
@@ -71,4 +94,5 @@ export const {
     useFetchUserByIdQuery,
     useCreateUserMutation,
     useUpdateUserMutation,
+    useCreateUserResponseMutation,
 } = usersApi;

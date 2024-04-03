@@ -1,8 +1,8 @@
 .quiz-body--question {
     display: flex;
     flex-direction: column;
-    height: 88vh;
-    margin-top: -1vh;
+    height: 90vh;
+    margin-top: -5vh;
     border-radius: 2vh 2vh 0 0;
     background-color: #eeeeee;
     font-family: var(--ofont-family);
@@ -27,6 +27,9 @@
     }
 
     .time-left {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-family: var(--mfont-family);
         font-weight: 600;
         font-size: 1.5rem;

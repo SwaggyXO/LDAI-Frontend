@@ -1,15 +1,21 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../../../components/buttons/Button";
 import "./Question.scss";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { ChangeEvent, useEffect, useState } from "react";
+import { useCreateUserResponseMutation } from "../../../api/userApiSlice";
+import { updateTimeLeft } from "../../../features/quiz/quizSlice";
 
 const Question = () => {
   const { quizId, questionIndex } = useParams();
   const questions = useSelector((state: RootState) => state.quiz.questions);
 
   const currQuizId = useSelector((state: RootState) => state.quiz.id);
+
+  const quiz = useSelector((state: RootState) => state.quiz);
+
+  const currUserId = useSelector((state: RootState) => state.user.userId);
 
   const numQuestionIndex = parseInt(questionIndex!);
   const question = questions[numQuestionIndex];
@@ -30,52 +36,119 @@ const Question = () => {
   };
 
   const isAnswerEmpty: boolean = answer.trim() === '';
-  console.log(isAnswerEmpty);
+
+  const [createUserResponse, { isLoading: isCreateUserResponseLoading, error: isCreateUserResponseError }] = useCreateUserResponseMutation();
+
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const quizTimeLimit = useSelector((state: RootState) => state.quiz.timeLimit);
+  const quizTimeLeft = useSelector((state: RootState) => state.quiz.timeLeft);
+
+  const [timeLeft, setTimeLeft] = useState<number>(quizTimeLimit * 60);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft(prevTimeLeft => {
+        if (prevTimeLeft > 0) {
+          return prevTimeLeft - 1;
+        } else {
+          clearInterval(interval);
+          navigate(`/result`);
+          return 0;
+        }
+      });
+    }, 1000);
+    dispatch(updateTimeLeft(timeLeft));
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [quizTimeLeft, navigate]);
+
+  // Calculate minutes and seconds from timeLeft
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
+  // Calculate progress width
+  const progressWidth = (timeLeft / (quizTimeLimit * 60)) * 100 + '%';
+
+  let newTimeLimit = quiz.timeLimit * 60;
+
+  const handleUserResponse = async () => {
+    
+    navigate(`/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`);
+
+    const requestBody = {
+      userId: currUserId!,
+      quizId: currQuizId!,
+      questionId: question.id,
+      response: [answer],
+      timeTaken: newTimeLimit - timeLeft,
+    }
+
+    try {
+      const response = await createUserResponse(requestBody);
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Response sent successfully:', response);
+        setAnswer('');
+        newTimeLimit = timeLeft;
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred");
+    }
+  } 
 
   const content = (
-    <div className="quiz-body--question">
-      <section className="question--boosters">
-        <div className="question--ellipse" />
-        <div className="question--ellipse" />
-        <div className="question--ellipse" />
-      </section>
+    <>
+      <div className="loading-bar">
+        <div className="loading-bar-inner" style={{ width: progressWidth }}></div>
+        <div className="time-left">{minutes}:{seconds < 10 ? '0' + seconds : seconds}</div>
+      </div> 
+      <div className="quiz-body--question">
+        <section className="question--boosters">
+          <div className="question--ellipse" />
+          <div className="question--ellipse" />
+          <div className="question--ellipse" />
+        </section>
 
-      <section className="question--start">
-        <div className="question-count">
-          <p>
-            Question <span> {numQuestionIndex + 1} </span> out of {questions.length}
-          </p>
-        </div>
+        <section className="question--start">
+          <div className="question-count">
+            <p>
+              Question <span> {numQuestionIndex + 1} </span> out of {questions.length}
+            </p>
+          </div>
 
-        <div className="question-text">
-          <p>
-            {slicedQuestion.length ? slicedQuestion : question.text}
-          </p>
-        </div>
+          <div className="question-text">
+            <p>
+              {slicedQuestion.length ? slicedQuestion : question.text}
+            </p>
+          </div>
 
-        <div className="answer-box">
-          <textarea value={answer} onChange={handleTextAreaChange} />
-        </div>
+          <div className="answer-box">
+            <textarea value={answer} onChange={handleTextAreaChange} />
+          </div>
 
-        <div className="answer-submit">
-          {numQuestionIndex + 1 === questions.length ? (
-            <Button
-              buttonText="Finish Quiz"
-              className="answer-submit--button"
-              to={`/result`}
-              check={isAnswerEmpty}
-            /> 
-          ) : (
-            <Button
-              buttonText="Submit"
-              className="answer-submit--button"
-              to={`/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`}
-              check={isAnswerEmpty}
-            />
-          )}
-        </div>
-      </section>
-    </div>
+          <div className="answer-submit">
+            {numQuestionIndex + 1 === questions.length ? (
+              <Button
+                buttonText="Finish Quiz"
+                className="answer-submit--button"
+                to={`/result`}
+                check={isAnswerEmpty}
+              /> 
+            ) : (
+              <Button
+                buttonText="Submit"
+                className="answer-submit--button"
+                onClick={handleUserResponse}
+                check={isAnswerEmpty}
+              />
+            )}
+          </div>
+        </section>
+      </div>
+    </>
   );
 
   return content;

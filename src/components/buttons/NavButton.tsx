@@ -24,7 +24,7 @@ const NavButton = (props: NavButtonProps) => {
     const handleNav = () => {
         if (to === "exit") {
             dispatch(resetQuizState());
-            navigate(-1);
+            navigate('/home');
         } else {
             navigate(to);
         }
