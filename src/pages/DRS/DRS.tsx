@@ -4,6 +4,10 @@ import { AccuracyVec } from '../../assets/imports';
 import TextContainer from '../../containers/TextContainer/TextContainer';
 import './drs.scss';
 import renderContent from '../../features/content/renderContent';
+import { useRef, useState } from 'react';
+
+import * as THREE from "three";
+import ModelView from './ModelView';
 
 const DRS = () => {
 
@@ -16,6 +20,10 @@ const DRS = () => {
   const textContainerElements = (
     <p>{drsText}</p>
   );
+
+  const small = useRef(new THREE.Group());
+  const cameraControlSmall = useRef();
+  const [smallRotation, setSmallRotation] = useState(0);
 
   const content = (
     <>
@@ -36,6 +44,16 @@ const DRS = () => {
       <h2 className="comparison-header">
         A Comparison
       </h2>
+      <div style={{"display":"flex","marginTop":"1.25rem","flexDirection":"column","alignItems":"center"}}>
+        <div style={{"overflow":"hidden","position":"relative","width":"100%","height":"75vh"}}>
+          <ModelView 
+            groupRef={small}
+            controlRef={cameraControlSmall}
+            setRotationState={setSmallRotation}
+          /> 
+        </div>
+      </div>
+       
     </>
     
   );
