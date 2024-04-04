@@ -58,6 +58,36 @@ interface CreateUserResponseRequest {
   timeTaken: number;
 }
 
+interface Winning {
+  amount: number;
+  currency: string;
+}
+
+interface Response {
+  questionId: string;
+  text: string;
+  options: string[];
+  response: string[];
+  score: number;
+}
+
+interface ResultData {
+  resultId: string;
+  userId: string;
+  quizId: string;
+  score: number;
+  timeTaken: string;
+  winnings: Winning[];
+  responses: Response[];
+}
+
+interface FetchUserResultResponse {
+  code: number;
+  status: string;
+  data: ResultData;
+  error: Object | null;
+}
+
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
@@ -87,6 +117,12 @@ export const usersApi = createApi({
         body: requestData,
       }),
     }),
+    fetchUserResult: builder.query<FetchUserResultResponse, [string, string]>({
+      query: ([userId, quizId]) => ({
+        url: `/result/${userId}/fetch/${quizId}`,
+        method: 'GET',
+      }),
+    })
   }),
 });
 
@@ -95,4 +131,5 @@ export const {
     useCreateUserMutation,
     useUpdateUserMutation,
     useCreateUserResponseMutation,
+    useFetchUserResultQuery
 } = usersApi;

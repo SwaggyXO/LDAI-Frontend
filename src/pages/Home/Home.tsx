@@ -84,7 +84,7 @@ const Home = () => {
           if (response.data.data.user.isNew && response.data.data.user.grade === null) {
             console.log("Navigating to grade:", currUser)
             navigate('/grade');    
-          } else {
+          } else if (response.data.data.user.isNew) {
             open();  
           }
         }
@@ -121,7 +121,7 @@ const Home = () => {
     <>
       <p>Welcome</p>
       <p>Participate in Quizzes, <br />earn Marbles and unlock items with experience</p>
-      <Button buttonText={buttonElements} className="home-play_button" to="/grade" />
+      {currUser.grade === null ? <Button buttonText={buttonElements} className="home-play_button" to="/grade" /> : <Button buttonText={buttonElements} className="home-play_button" to="/subject" />}
     </>
   )
 

@@ -61,28 +61,29 @@ const Question = () => {
       });
     }, 1000);
     dispatch(updateTimeLeft(timeLeft));
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    return () => clearInterval(interval);
   }, [quizTimeLeft, navigate]);
 
-  // Calculate minutes and seconds from timeLeft
+
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
-  // Calculate progress width
   const progressWidth = (timeLeft / (quizTimeLimit * 60)) * 100 + '%';
-
-  let newTimeLimit = quiz.timeLimit * 60;
 
   const handleUserResponse = async () => {
     
-    navigate(`/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`);
+    if (numQuestionIndex !== questions.length - 1) navigate(`/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`);
+
+    const timeTaken = (quizTimeLeft - timeLeft);
+
+    dispatch(updateTimeLeft(timeLeft));
 
     const requestBody = {
       userId: currUserId!,
       quizId: currQuizId!,
       questionId: question.id,
       response: [answer],
-      timeTaken: newTimeLimit - timeLeft,
+      timeTaken: timeTaken,
     }
 
     try {
@@ -92,7 +93,9 @@ const Question = () => {
       } else {
         console.log('Response sent successfully:', response);
         setAnswer('');
-        newTimeLimit = timeLeft;
+        if (numQuestionIndex === questions.length - 1) {
+          navigate('/result');
+        }
       }
     } catch (err) {
       console.error("An unexpected error occurred");
@@ -134,7 +137,7 @@ const Question = () => {
               <Button
                 buttonText="Finish Quiz"
                 className="answer-submit--button"
-                to={`/result`}
+                onClick={handleUserResponse}
                 check={isAnswerEmpty}
               /> 
             ) : (

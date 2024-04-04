@@ -4,6 +4,10 @@ import doubleXP from "../../../assets/XP/Double XP.svg";
 import Capsule from "../../../components/Capsule/Capsule";
 import CapsuleContainer from "../../../containers/Reward/CapsuleContainer";
 import Button from "../../../components/buttons/Button";
+import { useFetchUserResultQuery } from "../../../api/userApiSlice";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
 
 type ResultData = {
   values: string[];
@@ -12,12 +16,24 @@ type ResultData = {
 
 const Completion = () => {
 
-  const resultData = [
+  const { user, isAuthenticated, error, isLoading } = useAuth0();
+
+  const currUser = useSelector((state: RootState) => state.user);
+  const currQuiz = useSelector((state: RootState) => state.quiz);
+
+
+  const timeData = [
     {
       values: ["1:37", "16:16"],
       colors: ["#65BE0D", "#E1B03A"],
     }
   ];
+
+  const userId = currUser.userId!;
+  const quizId = currQuiz.id!;
+  const { data: resultData, error: fetchUserResultError, isLoading: isFetchUserResultLoading } = useFetchUserResultQuery([userId, quizId]);
+
+  console.log(resultData);
 
   const generateResultCapsules = (data: ResultData[]): React.ReactNode[] => {
     return data
@@ -105,7 +121,7 @@ const Completion = () => {
             </div>
           </div>
           
-          {resultData.map((data, index) => (
+          {timeData.map((data, index) => (
             <CapsuleContainer
               key={index}
               capsules={generateResultCapsules([data])}
@@ -121,7 +137,13 @@ const Completion = () => {
     </div>
   )
 
-  return content;
+  return (
+    <>
+      {isLoading && isFetchUserResultLoading && <p style={{height: "100vh"}}>Loading...</p>}
+      {error && fetchUserResultError && <p style={{height: "100vh"}}>Authentication Error</p>}
+      {!isLoading && isAuthenticated && content}
+    </>
+  );
 }
 
 export default Completion
