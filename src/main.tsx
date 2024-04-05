@@ -10,19 +10,17 @@ import { useCreateUserMutation } from "./api/userApiSlice.ts";
 import { setUser } from "./features/user/userSlice.ts";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <Auth0Provider
-      domain={`${import.meta.env.VITE_AUTH0_DOMAIN}`}
-      clientId= {`${import.meta.env.VITE_AUTH0_CLIENT_ID}`}
-      authorizationParams={{
-        redirect_uri: `${import.meta.env.VITE_AUTH0_REDIRECT_URI_F}`,
-      }}
-      useRefreshTokens
-      cacheLocation="localstorage"
-    >
-      <Provider store={store}>
-        <RouterProvider router={routes} />
-      </Provider>
-    </Auth0Provider>
-  </React.StrictMode>
+  <Auth0Provider
+    domain={`${import.meta.env.VITE_AUTH0_DOMAIN}`}
+    clientId= {`${import.meta.env.VITE_AUTH0_CLIENT_ID}`}
+    authorizationParams={{
+      redirect_uri: `${import.meta.env.VITE_AUTH0_REDIRECT_URI_F}`,
+    }}
+    useRefreshTokens
+    cacheLocation="localstorage"
+  >
+    <Provider store={store}>
+      <RouterProvider router={routes} />
+    </Provider>
+  </Auth0Provider>
 );

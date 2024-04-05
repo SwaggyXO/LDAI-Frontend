@@ -97,7 +97,7 @@ const Home = () => {
   }, [user])
 
 
-  const quizId = "5a9574c8-3eed-4a3c-868c-c81d81dd4d46";
+  const quizId = "0c8357c9-0454-4c58-addd-5f713eb432e2";
   const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(quizId);
 
   dispatch(updateQuizState({
