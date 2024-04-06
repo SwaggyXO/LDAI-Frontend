@@ -96,9 +96,23 @@ const Home = () => {
     createNewUser();
   }, [user])
 
+  // useEffect(() => {
+  //   const sse = new EventSource(`https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/user/result/stream`);
+
+  //   sse.onmessage = (e) => {
+  //     console.log(e.data);
+  //   }
+
+  //   return () => {
+  //     // Cleanup: remove event listener when component unmounts
+  //     sse.close();
+  //   };
+  // }, []);
+
 
   const quizId = "0c8357c9-0454-4c58-addd-5f713eb432e2";
-  const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(quizId);
+  const smallQuizId = "da0028a0-5216-4f13-885d-f97136cdebab"
+  const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(smallQuizId);
 
   dispatch(updateQuizState({
     id: quizData?.data.quizId,

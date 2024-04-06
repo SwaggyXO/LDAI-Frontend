@@ -4,7 +4,7 @@ import "./Question.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useCreateUserResponseMutation } from "../../../api/userApiSlice";
+import { useCreateUserResponseMutation, useFetchUserResultStreamQuery } from "../../../api/userApiSlice";
 import { updateTimeLeft } from "../../../features/quiz/quizSlice";
 
 const Question = () => {
@@ -36,6 +36,11 @@ const Question = () => {
   };
 
   const isAnswerEmpty: boolean = answer.trim() === '';
+
+  // if (numQuestionIndex === 8) {
+  //   const {data: streamData, isLoading, error} = useFetchUserResultStreamQuery([]);
+  //   console.log(streamData);
+  // }
 
   const [createUserResponse, { isLoading: isCreateUserResponseLoading, error: isCreateUserResponseError }] = useCreateUserResponseMutation();
 

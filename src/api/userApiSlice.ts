@@ -122,6 +122,12 @@ export const usersApi = createApi({
         url: `/result/${userId}/fetch/${quizId}`,
         method: 'GET',
       }),
+    }),
+    fetchUserResultStream: builder.query<ResultData, []>({
+      query: () => ({
+        url: `/result/stream`,
+        method: 'GET',
+      }),
     })
   }),
 });
@@ -131,5 +137,6 @@ export const {
     useCreateUserMutation,
     useUpdateUserMutation,
     useCreateUserResponseMutation,
-    useFetchUserResultQuery
+    useFetchUserResultQuery,
+    useFetchUserResultStreamQuery
 } = usersApi;

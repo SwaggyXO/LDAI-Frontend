@@ -4,22 +4,72 @@ import doubleXP from "../../../assets/XP/Double XP.svg";
 import Capsule from "../../../components/Capsule/Capsule";
 import CapsuleContainer from "../../../containers/Reward/CapsuleContainer";
 import Button from "../../../components/buttons/Button";
-import { useFetchUserResultQuery } from "../../../api/userApiSlice";
+import { useFetchUserByIdQuery, useFetchUserResultQuery } from "../../../api/userApiSlice";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
+import { useEffect, useState } from "react";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
+import { setUser } from "../../../features/user/userSlice";
 
-type ResultData = {
+type ResultDataF = {
   values: string[];
   colors: string[];
 };
+
+interface Winning {
+  amount: number;
+  currency: string;
+}
+
+interface Response {
+  questionId: string;
+  text: string;
+  options: string[];
+  response: string[];
+  score: number;
+}
+
+interface ResultData {
+  resultId: string;
+  userId: string;
+  quizId: string;
+  score: number;
+  timeTaken: string;
+  winnings: Winning[];
+  responses: Response[];
+}
+
+interface FetchUserResultResponse {
+  data: ResultData;
+  event: string;
+}
 
 const Completion = () => {
 
   const { user, isAuthenticated, error, isLoading } = useAuth0();
 
+  // const { data, error: fetchUserError } = useFetchUserByIdQuery(user!.sub!.replace(/\|/g, '%7C'));
+
+  // const dispatch = useDispatch();
+
+  // dispatch(setUser(data?.data!));
+
   const currUser = useSelector((state: RootState) => state.user);
   const currQuiz = useSelector((state: RootState) => state.quiz);
+
+  // useEffect(() => {
+  //   const sse = new EventSource(`https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/user/result/stream`);
+
+  //   sse.onmessage = (e) => {
+  //     console.log(e.data);
+  //   }
+
+  //   return () => {
+  //     // Cleanup: remove event listener when component unmounts
+  //     sse.close();
+  //   };
+  // }, []);
 
 
   const timeData = [
@@ -31,11 +81,19 @@ const Completion = () => {
 
   const userId = currUser.userId!;
   const quizId = currQuiz.id!;
-  const { data: resultData, error: fetchUserResultError, isLoading: isFetchUserResultLoading } = useFetchUserResultQuery([userId, quizId]);
 
-  console.log(resultData);
+  // try {
+  //   const { data: resultData, error: fetchUserResultError, isLoading: isFetchUserResultLoading, isSuccess } = useFetchUserResultQuery([userId, quizId]);
+  //   if (isSuccess) {
+  //     console.log(resultData);
+  //   } else if (resultData!.error) {
+  //     console.log("There was an error: ", resultData?.error);
+  //   }
+  // } catch (err) {
+  //   console.log("Unexpected Error")
+  // }
 
-  const generateResultCapsules = (data: ResultData[]): React.ReactNode[] => {
+  const generateResultCapsules = (data: ResultDataF[]): React.ReactNode[] => {
     return data
       .map((reward, setIndex) => {
         return reward.values.map((text, index) => (
@@ -139,8 +197,8 @@ const Completion = () => {
 
   return (
     <>
-      {isLoading && isFetchUserResultLoading && <p style={{height: "100vh"}}>Loading...</p>}
-      {error && fetchUserResultError && <p style={{height: "100vh"}}>Authentication Error</p>}
+      {isLoading && <p style={{height: "100vh"}}>Loading...</p>}
+      {error && <p style={{height: "100vh"}}>Authentication Error</p>}
       {!isLoading && isAuthenticated && content}
     </>
   );

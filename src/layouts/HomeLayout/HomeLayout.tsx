@@ -19,7 +19,7 @@ const HomeLayout = () => {
     const xpBadge = (
         <div className="xp-container">
             {renderContent('badges', 'Level', '1')}
-            <p>{currUser.xp}</p> 
+            <p>1</p> 
         </div>
     )
 

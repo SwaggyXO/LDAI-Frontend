@@ -1,5 +1,5 @@
 import AnimalCellModel from '../../Models/AnimalCellModel';
-import ThreeDComponent from '../../components/ThreeDComponent';
+import ThreeDComponent from '../../components/ThreeDComponent/ThreeDComponent';
 import Button from '../../components/buttons/Button';
 import ThreeHero from '../../containers/ThreeHero/ThreeHero';
 import ThreeQuestion from '../../containers/ThreeQuestion/ThreeQuestion';
