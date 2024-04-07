@@ -1,7 +1,7 @@
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as THREE from "three";
 import { GLTF, GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import plantCellScene from "../assets/ThreeModels/plant_cell.glb";
+import plantCellScene from "../../assets/ThreeModels/plant_cell.glb";
 import { useEffect, useRef, useState } from "react";
 import "./ThreeDComponent.scss";
 import * as TWEEN from "@tweenjs/tween.js";

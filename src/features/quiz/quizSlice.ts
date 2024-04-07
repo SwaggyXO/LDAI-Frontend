@@ -7,11 +7,35 @@ interface Question {
     options: string[];
 }
 
+interface Winning {
+    amount: number;
+    currency: string;
+}
+  
+  interface Response {
+    questionId: string;
+    text: string;
+    options: string[];
+    response: string[];
+    score: number;
+}
+
+interface Result {
+    resultId: string;
+    userId: string;
+    quizId: string;
+    score: number;
+    timeTaken: string;
+    winnings: Winning[];
+    responses: Response[];
+}
+
 interface QuizState {
     id: string | undefined;
     questions: Question[];
     timeLimit: number;
     timeLeft: number; 
+    result: Result | null;
 }
 
 const initialState: QuizState = {
@@ -19,6 +43,7 @@ const initialState: QuizState = {
     questions: [],
     timeLimit: 0,
     timeLeft: 0,
+    result: null
 };
 
 

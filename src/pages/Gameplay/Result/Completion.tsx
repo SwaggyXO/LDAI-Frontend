@@ -11,6 +11,7 @@ import { RootState } from "../../../app/store";
 import { useEffect, useState } from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { setUser } from "../../../features/user/userSlice";
+import { updateQuizState } from "../../../features/quiz/quizSlice";
 
 type ResultDataF = {
   values: string[];
@@ -49,38 +50,84 @@ const Completion = () => {
 
   const { user, isAuthenticated, error, isLoading } = useAuth0();
 
-  // const { data, error: fetchUserError } = useFetchUserByIdQuery(user!.sub!.replace(/\|/g, '%7C'));
+  const { data, error: fetchUserError } = useFetchUserByIdQuery(user!.sub!.replace(/\|/g, '%7C'));
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // dispatch(setUser(data?.data!));
 
   const currUser = useSelector((state: RootState) => state.user);
   const currQuiz = useSelector((state: RootState) => state.quiz);
 
-  // useEffect(() => {
-  //   const sse = new EventSource(`https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/user/result/stream`);
+  const userId = currUser.userId!;
+  const quizId = currQuiz.id!;
 
-  //   sse.onmessage = (e) => {
-  //     console.log(e.data);
-  //   }
+  // console.log(currUser, currQuiz);
 
-  //   return () => {
-  //     // Cleanup: remove event listener when component unmounts
-  //     sse.close();
-  //   };
-  // }, []);
+  const [result, setResult] = useState<ResultData | null>(null);
+  const [resError, setResError] = useState("");
 
+  // if (currQuiz.result === null) {
+  //   console.log("Here");
+  //   const { data: resultData, error: fetchUserResultError, isLoading: isFetchUserResultLoading, isSuccess } = useFetchUserResultQuery([userId, quizId]);
 
-  const timeData = [
+  //   if (!fetchUserResultError && !isFetchUserResultLoading) setResult(resultData!.data);
+  // }
+
+  let timeData = [
     {
-      values: ["1:37", "16:16"],
+      values: ["1:30", "15:30"],
       colors: ["#65BE0D", "#E1B03A"],
     }
   ];
 
-  const userId = currUser.userId!;
-  const quizId = currQuiz.id!;
+  useEffect(() => {
+    const sse = new EventSource(`${import.meta.env.VITE_CORE_MS_BASE_URL}/user/result/stream`);
+
+    sse.onerror = (err: any) => {
+      console.log(err);
+      setResError(err);
+    }
+
+    sse.addEventListener("HBT", (e: any) => {
+      console.log(e.data);
+    });
+
+    sse.addEventListener("RESRCD", (e: any) => {
+      console.log(e);
+      console.log(e.data.data);
+      const data: ResultData = JSON.parse(e.data);
+      console.log(data);
+      console.log(data.resultId);
+      console.log(data.winnings);
+      console.log(data.score);
+      console.log(data.timeTaken);
+
+      dispatch(updateQuizState({
+        result: data
+      }));
+
+      setResult(data);
+
+      timeData = [
+        {
+          values: [(parseInt(result!.timeTaken) / result!.responses.length).toString(), result!.timeTaken],
+          colors: ["#65BE0D", "#E1B03A"],
+        }
+      ];
+    });
+
+    sse.addEventListener("CNN", (e: any) => {
+      console.log(e.data);
+    })
+
+    return () => {
+      sse.close();
+    }
+  }, [resError, result])
+
+  console.log(result);
+  console.log(result?.resultId);
 
   // try {
   //   const { data: resultData, error: fetchUserResultError, isLoading: isFetchUserResultLoading, isSuccess } = useFetchUserResultQuery([userId, quizId]);
@@ -133,21 +180,21 @@ const Completion = () => {
 
           <div className="user-rewards-values">
               <div className="user-rewards-xp">
-                <h3>445</h3>
+                <h3>{result?.winnings[0].amount}</h3>
               </div>
               <div className="user-rewards-marbles">
-                <h3>789</h3>
+                <h3>{result?.winnings[1].amount}</h3>
               </div>
               <div className="user-rewards-score">
-                <h3>90%</h3>
+                <h3>{result?.score}</h3>
               </div>
           </div>
           <div className="user-rewards-headings">
               <div className="user-rewards-xp">
-                <h4>XP</h4>
+                <h4>{result?.winnings[0].currency}</h4>
               </div>
               <div className="user-rewards-marbles">
-                <h4>Marbles</h4>
+                <h4>{result?.winnings[0].currency}</h4>
               </div>
               <div className="user-rewards-score">
                 <h4>Accuracy</h4>
@@ -197,9 +244,9 @@ const Completion = () => {
 
   return (
     <>
-      {isLoading && <p style={{height: "100vh"}}>Loading...</p>}
-      {error && <p style={{height: "100vh"}}>Authentication Error</p>}
-      {!isLoading && isAuthenticated && content}
+      {(isLoading && result === null) && <p style={{height: "100vh"}}>Loading...</p>}
+      {error && resError && <p style={{height: "100vh"}}>Unexpected Error Occured</p>}
+      {!isLoading && isAuthenticated && result && content}
     </>
   );
 }
