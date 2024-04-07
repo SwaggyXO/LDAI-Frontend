@@ -50,7 +50,7 @@ const Completion = () => {
 
   const { user, isAuthenticated, error, isLoading } = useAuth0();
 
-  const { data, error: fetchUserError } = useFetchUserByIdQuery(user!.sub!.replace(/\|/g, '%7C'));
+  const { data: userData, error: fetchUserError } = useFetchUserByIdQuery(user!.sub!.replace(/\|/g, '%7C'));
 
   const dispatch = useDispatch();
 
@@ -74,13 +74,6 @@ const Completion = () => {
   //   if (!fetchUserResultError && !isFetchUserResultLoading) setResult(resultData!.data);
   // }
 
-  let timeData = [
-    {
-      values: ["1:30", "15:30"],
-      colors: ["#65BE0D", "#E1B03A"],
-    }
-  ];
-
   useEffect(() => {
     const sse = new EventSource(`${import.meta.env.VITE_CORE_MS_BASE_URL}/user/result/stream`);
 
@@ -94,27 +87,25 @@ const Completion = () => {
     });
 
     sse.addEventListener("RESRCD", (e: any) => {
-      console.log(e);
-      console.log(e.data.data);
-      const data: ResultData = JSON.parse(e.data);
-      console.log(data);
-      console.log(data.resultId);
-      console.log(data.winnings);
-      console.log(data.score);
-      console.log(data.timeTaken);
+      const {type, data} = e;
+
+      console.log(`Type: ${type}, Parsed data: ${JSON.parse(data)}`);
+      const parsedData: ResultData = JSON.parse(data);
+
+      console.log(parsedData);
+      console.log(parsedData.resultId);
+      console.log(parsedData.quizId);
+      console.log(parsedData.userId);
+      console.log(parsedData.score);
+      console.log(parsedData.timeTaken);
+      console.log(parsedData.winnings);
+      console.log(parsedData.responses);
 
       dispatch(updateQuizState({
-        result: data
+        result: parsedData
       }));
 
-      setResult(data);
-
-      timeData = [
-        {
-          values: [(parseInt(result!.timeTaken) / result!.responses.length).toString(), result!.timeTaken],
-          colors: ["#65BE0D", "#E1B03A"],
-        }
-      ];
+      setResult(parsedData);
     });
 
     sse.addEventListener("CNN", (e: any) => {
@@ -139,6 +130,26 @@ const Completion = () => {
   // } catch (err) {
   //   console.log("Unexpected Error")
   // }
+
+  let timeData: { values: string[]; colors: string[]; }[] = [];
+  if (result) {
+
+    const numTimeTaken = parseInt(result!.timeTaken);
+
+    const timeTakenMins = Math.floor(numTimeTaken / 60);
+    const timeTakenSecs = numTimeTaken % 60;
+
+    const timePerQuestion = Math.round(parseInt(result!.timeTaken) / result!.responses.length);
+    const timePerQuestionMins = Math.floor(timePerQuestion / 60);
+    const timePerQuestionSecs = timePerQuestion % 60;
+
+    timeData = [
+      {
+        values: [`${timePerQuestionMins}:${timePerQuestionSecs < 10 ? '0' + timePerQuestionSecs : timePerQuestionSecs}`, `${timeTakenMins}:${timeTakenSecs < 10 ? '0' + timeTakenSecs : timeTakenSecs}`],
+        colors: ["#65BE0D", "#E1B03A"],
+      }
+    ];
+  }
 
   const generateResultCapsules = (data: ResultDataF[]): React.ReactNode[] => {
     return data
@@ -173,9 +184,9 @@ const Completion = () => {
         <div className="user-rewards">
           
           <div className="user-rewards-icons">
-            <div className="reward--ellipse" />
-            <div className="reward--ellipse" />
-            <div className="reward--ellipse" />
+            <div className="reward--ellipse"></div>
+            <div className="reward--ellipse"></div>
+            <div className="reward--ellipse"></div>
           </div>
 
           <div className="user-rewards-values">
@@ -186,15 +197,15 @@ const Completion = () => {
                 <h3>{result?.winnings[1].amount}</h3>
               </div>
               <div className="user-rewards-score">
-                <h3>{result?.score}</h3>
+                <h3>{result?.score! * 100}</h3>
               </div>
           </div>
           <div className="user-rewards-headings">
               <div className="user-rewards-xp">
-                <h4>{result?.winnings[0].currency}</h4>
+                <h4>Marbles</h4>
               </div>
               <div className="user-rewards-marbles">
-                <h4>{result?.winnings[0].currency}</h4>
+                <h4>XP</h4>
               </div>
               <div className="user-rewards-score">
                 <h4>Accuracy</h4>
@@ -226,7 +237,7 @@ const Completion = () => {
             </div>
           </div>
           
-          {timeData.map((data, index) => (
+          {timeData!.map((data, index) => (
             <CapsuleContainer
               key={index}
               capsules={generateResultCapsules([data])}
@@ -244,7 +255,7 @@ const Completion = () => {
 
   return (
     <>
-      {(isLoading && result === null) && <p style={{height: "100vh"}}>Loading...</p>}
+      {isLoading || !result && <p style={{height: "100vh"}}>Loading...</p>}
       {error && resError && <p style={{height: "100vh"}}>Unexpected Error Occured</p>}
       {!isLoading && isAuthenticated && result && content}
     </>

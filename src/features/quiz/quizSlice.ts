@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
 interface Question {
     id: string;
@@ -69,6 +70,17 @@ const quizSlice = createSlice({
     },
   },
 });
+
+export const saveQuizToCookie = (quiz: QuizState) => {
+    const key = "Quiz";
+    Cookies.set(key, JSON.stringify(quiz));
+}
+
+export const getQuizFromCookie = () => {
+    const key = "Quiz";
+    const cookieValue = Cookies.get(key);
+    return cookieValue ? JSON.parse(cookieValue) : null;
+}
 
 export const { updateQuizState, updateTimeLeft, endQuiz, resetQuizState } = quizSlice.actions;
 export default quizSlice.reducer;

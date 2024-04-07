@@ -25,6 +25,7 @@
     "dotenv": "^16.4.1",
     "eventsource": "^2.0.2",
     "framer-motion": "^11.0.3",
+    "js-cookie": "^3.0.5",
     "json-server": "^1.0.0-alpha.23",
     "lottie-react": "^2.4.0",
     "react": "^18.2.0",
@@ -36,6 +37,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/uuid": "^9.0.8",
