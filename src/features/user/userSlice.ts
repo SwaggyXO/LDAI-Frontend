@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { removeUserCookie, setUserCookie } from './userCookieHandler';
 
-interface UserState {
+export interface UserState {
   userId: string | null;
   ciamId: string | null;
   grade: string | null;
@@ -27,12 +28,14 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<Partial<UserState>>) => {
+      setUserCookie(action.payload);
       return {
         ...state,
         ...action.payload,
       };
     },
-    clearUser: (state) => {
+    clearUser: () => {
+      removeUserCookie();
       return {
         ...initialState,
       };

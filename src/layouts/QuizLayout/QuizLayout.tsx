@@ -4,10 +4,8 @@ import "./QuizLayout.scss"
 import useAuth from "../../hooks/useAuth";
 import NavButton from "../../components/buttons/NavButton";
 import renderContent from "../../features/content/renderContent";
-import {  useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import { useEffect, useState } from "react";
-import { endQuiz, updateTimeLeft } from "../../features/quiz/quizSlice";
 
 const QuizLayout = () => {
 

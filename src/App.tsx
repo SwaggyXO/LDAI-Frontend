@@ -6,25 +6,23 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
+
 import { Layout } from "./containers";
+import GradeLayout from "./layouts/GradeLayout/GradeLayout";
+import SubjectLayout from "./layouts/SubjectLayout/SubjectLayout";
+import HomeLayout from "./layouts/HomeLayout/HomeLayout";
+import QuizLayout from "./layouts/QuizLayout/QuizLayout";
 
 import Landing from "./pages/Landing/Landing";
 import Home from "./pages/Home/Home";
 import Profile from "./pages/Profile/Profile";
 import Grade from "./pages/Grade/Grade";
 import Subject from "./pages/Subject/Subject";
-import GradeLayout from "./layouts/GradeLayout/GradeLayout";
-import SubjectLayout from "./layouts/SubjectLayout/SubjectLayout";
-
-import { SampleSubject } from "./pages/Subject/SampleSubject";
-import Intro from "./pages/Gameplay/Start/Intro";
 import Question from "./pages/Gameplay/Question/Question";
 import Completion from "./pages/Gameplay/Result/Completion";
-import HomeLayout from "./layouts/HomeLayout/HomeLayout";
 import Challenges from "./pages/Challenges/Challenges";
 import DRS from "./pages/DRS/DRS";
 import PowerUps from "./pages/PowerUps/PowerUps";
-import QuizLayout from "./layouts/QuizLayout/QuizLayout";
 import Three from "./pages/Three/Three";
 
 export const routes = createBrowserRouter(
@@ -53,7 +51,6 @@ export const routes = createBrowserRouter(
       </Route>
 
       <Route path="/quiz/:quizid" element={<QuizLayout />} >
-        {/* <Route index element={<Intro />} /> */}
         <Route path="question/:questionIndex" element={<Question />} />
       </Route>
       

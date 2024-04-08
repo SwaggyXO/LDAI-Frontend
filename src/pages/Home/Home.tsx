@@ -1,50 +1,42 @@
-import { useAuth0 } from "@auth0/auth0-react"
-import { useState, useEffect } from "react";
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
-
 import './home.scss'
+
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAuth0 } from "@auth0/auth0-react"
+
 import TextContainer from "../../containers/TextContainer/TextContainer";
 import Button from "../../components/buttons/Button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { CloseChest } from "../../assets/Chest/import";
 import QuizExcerpt from "../../components/QuizExcerpt/QuizExcerpt";
 import { SampleQuizzes } from "./SampleQuizzes";
-
-import renderContent from "../../features/content/renderContent";
-import addUser from "../../features/user/addUser";
-import { useCreateUserMutation } from "../../api/userApiSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../features/user/userSlice";
-import Modal from "../../components/Modal/Modal";
 import Intro from "../Gameplay/Start/Intro";
+import Modal from "../../components/Modal/Modal";
+
 import { RootState } from "../../app/store";
-import { useFetchLatestQuizzesQuery, useFetchQuizByIdQuery } from "../../api/quizApiSlice";
+import renderContent from "../../features/content/renderContent";
+import { useCreateUserMutation } from "../../api/userApiSlice";
+import { setUser } from "../../features/user/userSlice";
+import { useFetchQuizByIdQuery } from "../../api/quizApiSlice";
 import { updateQuizState } from "../../features/quiz/quizSlice";
-import { useNavigate } from "react-router-dom";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { MutatingDots } from 'react-loader-spinner';
+import Loader from '../Loader/Loader';
 
 const Home = () => {
 
-  const quizzes = SampleQuizzes;
-
-  const dispatch = useDispatch();
-
-  const navigate = useNavigate();
-
-  const currUser = useSelector((state: RootState) => state.user);
-
   const { user, isAuthenticated, error, isLoading } = useAuth0();
 
-  // if (isAuthenticated && user?.sub) {
-  //   addUser(user.sub);
-  // }
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const currUser = useSelector((state: RootState) => state.user);
 
   const [ timedGreeting, setTimedGreeting ] = useState<string>('');
-
   const [modalOpen, setModalOpen] = useState(false);
   
   const close = () => {
     setModalOpen(false);
-    // setSelectedBooster(null);
   }
 
   const open = () => {
@@ -96,34 +88,18 @@ const Home = () => {
     createNewUser();
   }, [user])
 
-  // useEffect(() => {
-  //   const sse = new EventSource(`https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/user/result/stream`);
-
-  //   sse.onmessage = (e) => {
-  //     console.log(e.data);
-  //   }
-
-  //   return () => {
-  //     // Cleanup: remove event listener when component unmounts
-  //     sse.close();
-  //   };
-  // }, []);
-
-
   const quizId = "0c8357c9-0454-4c58-addd-5f713eb432e2";
   const smallQuizId = "da0028a0-5216-4f13-885d-f97136cdebab"
   const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(smallQuizId);
 
-  dispatch(updateQuizState({
-    id: quizData?.data.quizId,
-    questions: quizData?.data.questions,
-    timeLimit: quizData?.data.timelimit
-  }));
+  useEffect(() => {
+    if (quizData) {
+      dispatch(updateQuizState(quizData.data));
+      console.log("Quiz fetched successfully", quizData);
+    }
+  }, [quizData]);
 
-  // const { data: latestQuizData, error: fetchLatestQuizError, isLoading: isFetchLatestQuizLoading } = useFetchLatestQuizzesQuery(1);
-
-  //console.log(latestQuizData);
-  console.log(quizData);
+  const quizzes = SampleQuizzes;
 
   const quizIntroModalContent = quizData && <Intro quiz={quizData.data} />
 
@@ -173,17 +149,11 @@ const Home = () => {
 
   return (
     <>
-      {isLoading || isCreateUserLoading && <p style={{height: "100vh"}}>Loading...</p>}
+      {isLoading || isCreateUserLoading && <Loader />}
       {error && <p style={{height: "100vh"}}>An Error Occured</p>}
       {!isLoading && isAuthenticated && !isCreateUserLoading && !error && content}
     </>
   )
 }
-
-export const HomeLoader = async () => {
-
-}
-
-
 
 export default Home

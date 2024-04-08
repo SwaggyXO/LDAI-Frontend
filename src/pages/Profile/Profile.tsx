@@ -15,6 +15,8 @@ import useUserData from '../../hooks/useUserData';
 import { useFetchUserByIdQuery } from '../../api/userApiSlice';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
+import Loader from '../Loader/Loader';
+import { getUserCookie } from '../../features/user/userCookieHandler';
 
 type Stat = {
     name: string;
@@ -28,6 +30,8 @@ type Achievement = {
 }
 
 const Profile = () => {
+
+    const { user, isAuthenticated } = useAuth0();
 
     const currUser = useSelector((state: RootState) => state.user);
 
@@ -73,7 +77,7 @@ const Profile = () => {
         navigate('/grade');
     }
 
-    const { user } = useAuth0();
+    
 
     const shortener = (fullName: string) => {
         let words = fullName.split(' ');
@@ -155,9 +159,9 @@ const Profile = () => {
 
     return (
         <>
-            {loading && <p style={{height: "100vh"}}>Loading...</p>}
-            {error && <p style={{height: "100vh"}}>Error: {error}</p>}
-            {!loading && !error && content}
+            {loading && <Loader />}
+            {error && !isAuthenticated && <p style={{height: "100vh"}}>Error: {error}</p>}
+            {!loading && isAuthenticated && !error && content}
         </>
     )
     

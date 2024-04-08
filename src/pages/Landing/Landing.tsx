@@ -1,12 +1,18 @@
-import { Features, Login, Whatlearn, Softend } from '../../containers';
-
-import { Dotcomma } from '../../components';
-
 import './landing.scss';
+
+import { Features, Login, Whatlearn, Softend } from '../../containers';
+import { Dotcomma } from '../../components';
+import { useDispatch } from 'react-redux';
+import { clearUser } from '../../features/user/userSlice';
+import { resetQuizState } from '../../features/quiz/quizSlice';
 
 const Landing = () => {
 
-    let content = (
+    const dispatch = useDispatch();
+    dispatch(clearUser());
+    dispatch(resetQuizState());
+
+    const content = (
         <>
             <Dotcomma />
             <Whatlearn />

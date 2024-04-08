@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
+import { removeQuizCookie, setQuizCookie } from './quizCookieHandler';
 
 interface Question {
     id: string;
@@ -31,7 +32,7 @@ interface Result {
     responses: Response[];
 }
 
-interface QuizState {
+export interface QuizState {
     id: string | undefined;
     questions: Question[];
     timeLimit: number;
@@ -53,6 +54,7 @@ const quizSlice = createSlice({
   initialState,
   reducers: {
     updateQuizState(state, action: PayloadAction<Partial<QuizState>>) {
+        setQuizCookie(action.payload);
         return {
           ...state,
           ...action.payload,
@@ -61,26 +63,13 @@ const quizSlice = createSlice({
     updateTimeLeft(state, action: PayloadAction<number>) {
         state.timeLeft = action.payload;
     },
-    endQuiz(state) {
-        state.timeLeft = 0;
-    },
     resetQuizState(state) {
+        removeQuizCookie();
         state.questions = [];
         state.timeLeft = 0;
     },
   },
 });
 
-export const saveQuizToCookie = (quiz: QuizState) => {
-    const key = "Quiz";
-    Cookies.set(key, JSON.stringify(quiz));
-}
-
-export const getQuizFromCookie = () => {
-    const key = "Quiz";
-    const cookieValue = Cookies.get(key);
-    return cookieValue ? JSON.parse(cookieValue) : null;
-}
-
-export const { updateQuizState, updateTimeLeft, endQuiz, resetQuizState } = quizSlice.actions;
+export const { updateQuizState, updateTimeLeft, resetQuizState } = quizSlice.actions;
 export default quizSlice.reducer;
