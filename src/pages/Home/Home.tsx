@@ -21,7 +21,6 @@ import { updateQuizState } from "../../features/quiz/quizSlice";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import { MutatingDots } from 'react-loader-spinner';
 import Loader from '../Loader/Loader';
 
 const Home = () => {

@@ -6,6 +6,7 @@ import NavButton from "../../components/buttons/NavButton";
 import renderContent from "../../features/content/renderContent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import Loader from "../../pages/Loader/Loader";
 
 const QuizLayout = () => {
 
@@ -31,7 +32,7 @@ const QuizLayout = () => {
   )
 
   if (!authChecked) {
-    return <div>Loading...</div>
+    return <Loader />;
   }
 
   if (!intendedPath) {

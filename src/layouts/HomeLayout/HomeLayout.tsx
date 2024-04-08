@@ -9,6 +9,7 @@ import renderContent from "../../features/content/renderContent";
 import useAuth from "../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
+import Loader from "../../pages/Loader/Loader";
 
 const HomeLayout = () => {
 
@@ -54,7 +55,7 @@ const HomeLayout = () => {
     );
 
     if (!authChecked) {
-        return <div>Loading...</div>
+        return <Loader />;
     }
     
     if (!intendedPath) {
