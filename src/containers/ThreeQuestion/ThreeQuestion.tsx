@@ -18,7 +18,7 @@ const ThreeQuestion = () => {
     const content = (
         <div className="info-box--inside">
             <p className="info-box--q">
-                What do you see below?
+                Answer according to the annotations.
             </p>
             <p className='info-box--wl'>Word Count: {wordCount}/{wordLimit}</p>
 
@@ -34,8 +34,10 @@ const ThreeQuestion = () => {
     )
 
     return (
-        <div className="info-box">
-            {content}
+        <div className="question-header">
+            <div className="info-box">
+                {content}
+            </div>
         </div>
     )
 }

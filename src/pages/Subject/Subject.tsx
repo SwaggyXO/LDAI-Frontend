@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Button from '../../components/buttons/Button';
 import Tile from '../../components/Tiles/Tile';
 import { useGetUserInfoQuery, useGetUserSubjectsQuery, useUpdateUserInfoMutation } from '../../api/oldUserApiSlice';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFetchSubjectsByGradeQuery } from '../../api/subjectApiSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -38,7 +38,7 @@ const Subject = () => {
 
     const dispatch = useDispatch();
 
-  const [updateUserMutation] = useUpdateUserMutation();
+    const [updateUserMutation] = useUpdateUserMutation();
 
     // const { data: userInfoData } = useGetUserInfoQuery();
 
@@ -62,7 +62,9 @@ const Subject = () => {
 
     const subjects = subjectsData?.data;
 
-    console.log(subjectsData?.data);
+    useEffect(() => {
+        console.log(subjectsData?.data);
+    }, [subjectsData]);
 
 
     const handleNext = async () => {
@@ -76,10 +78,6 @@ const Subject = () => {
             const response = await updateUserMutation({
                 ciamId: user?.sub,
                 subjectId: subject,
-                marbles: 0,
-                xp: 0,
-                streak: 0,
-                isNew: true,
               });
               console.log('User updated successfully:', response);
               dispatch(setUser(response.data.data));

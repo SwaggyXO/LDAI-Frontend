@@ -11,7 +11,7 @@ const Question = () => {
   const { quizId, questionIndex } = useParams();
   const questions = useSelector((state: RootState) => state.quiz.questions);
 
-  const currQuizId = useSelector((state: RootState) => state.quiz.id);
+  const currQuizId = useSelector((state: RootState) => state.quiz.quizId);
 
   const quiz = useSelector((state: RootState) => state.quiz);
 
@@ -48,7 +48,7 @@ const Question = () => {
 
   const dispatch = useDispatch();
 
-  const quizTimeLimit = useSelector((state: RootState) => state.quiz.timeLimit);
+  const quizTimeLimit = useSelector((state: RootState) => state.quiz.timelimit);
   const quizTimeLeft = useSelector((state: RootState) => state.quiz.timeLeft);
 
   const [timeLeft, setTimeLeft] = useState<number>(quizTimeLimit * 60);
@@ -68,7 +68,6 @@ const Question = () => {
     dispatch(updateTimeLeft(timeLeft));
     return () => clearInterval(interval);
   }, [quizTimeLeft, navigate]);
-
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;

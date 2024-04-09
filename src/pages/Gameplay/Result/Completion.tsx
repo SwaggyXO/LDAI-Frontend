@@ -11,7 +11,10 @@ import { RootState } from "../../../app/store";
 import { useEffect, useState } from "react";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { setUser } from "../../../features/user/userSlice";
-import { updateQuizState } from "../../../features/quiz/quizSlice";
+import { resetQuizState, updateQuizState } from "../../../features/quiz/quizSlice";
+import renderContent from "../../../features/content/renderContent";
+import Loader from "../../Loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 type ResultDataF = {
   values: string[];
@@ -54,13 +57,15 @@ const Completion = () => {
 
   const dispatch = useDispatch();
 
+  const navigate = useNavigate();
+
   // dispatch(setUser(data?.data!));
 
   const currUser = useSelector((state: RootState) => state.user);
   const currQuiz = useSelector((state: RootState) => state.quiz);
 
   const userId = currUser.userId!;
-  const quizId = currQuiz.id!;
+  const quizId = currQuiz.quizId!;
 
   // console.log(currUser, currQuiz);
 
@@ -75,47 +80,42 @@ const Completion = () => {
   // }
 
   useEffect(() => {
-    const sse = new EventSource(`${import.meta.env.VITE_CORE_MS_BASE_URL}/user/result/stream`);
+    if (!result) {
+      const sse = new EventSource(`${import.meta.env.VITE_CORE_MS_BASE_URL}/user/result/stream`);
 
-    sse.onerror = (err: any) => {
-      console.log(err);
-      setResError(err);
+      sse.onerror = (err: any) => {
+        console.log(err);
+        setResError(err);
+      }
+  
+      sse.addEventListener("HBT", (e: any) => {
+        console.log(e.data);
+      });
+  
+      sse.addEventListener("RESRCD", (e: any) => {
+        const {type, data} = e;
+  
+        console.log(`Type: ${type}, Parsed data: ${JSON.parse(data)}`);
+        const parsedData: ResultData = JSON.parse(data);
+  
+        console.log("Result Data Recieved", parsedData);
+  
+        dispatch(updateQuizState({
+          result: parsedData
+        }));
+  
+        setResult(parsedData);
+      });
+  
+      sse.addEventListener("CNN", (e: any) => {
+        console.log(e.data);
+      })
+  
+      return () => {
+        sse.close();
+      }
     }
-
-    sse.addEventListener("HBT", (e: any) => {
-      console.log(e.data);
-    });
-
-    sse.addEventListener("RESRCD", (e: any) => {
-      const {type, data} = e;
-
-      console.log(`Type: ${type}, Parsed data: ${JSON.parse(data)}`);
-      const parsedData: ResultData = JSON.parse(data);
-
-      console.log(parsedData);
-      console.log(parsedData.resultId);
-      console.log(parsedData.quizId);
-      console.log(parsedData.userId);
-      console.log(parsedData.score);
-      console.log(parsedData.timeTaken);
-      console.log(parsedData.winnings);
-      console.log(parsedData.responses);
-
-      dispatch(updateQuizState({
-        result: parsedData
-      }));
-
-      setResult(parsedData);
-    });
-
-    sse.addEventListener("CNN", (e: any) => {
-      console.log(e.data);
-    })
-
-    return () => {
-      sse.close();
-    }
-  }, [resError, result])
+  }, [])
 
   console.log(result);
   console.log(result?.resultId);
@@ -151,6 +151,11 @@ const Completion = () => {
     ];
   }
 
+  const handleQuizDone = () => {
+    dispatch(resetQuizState());
+    navigate('/home');
+  }
+
   const generateResultCapsules = (data: ResultDataF[]): React.ReactNode[] => {
     return data
       .map((reward, setIndex) => {
@@ -169,6 +174,12 @@ const Completion = () => {
       .flat();
   };
 
+  const renderMascotMood = (score: number): string => {
+    if (score < 50) return "Angry";
+    else if (score < 75) return "Unimpressed";
+    else if (score < 85) return "Good";
+    else return "Happy";
+  }
 
   const content = (
     <div className="quiz-body--result">
@@ -177,16 +188,15 @@ const Completion = () => {
           <h3> Quiz Completed </h3>
         </div>
 
-        <div className="result--ellipse" />
+        <div className="mascot--ellipse">{renderContent('app', 'Mascot', renderMascotMood(result?.score! * 100))}</div>
       </section>
 
       <section className="result--body">
         <div className="user-rewards">
-          
           <div className="user-rewards-icons">
-            <div className="reward--ellipse"></div>
-            <div className="reward--ellipse"></div>
-            <div className="reward--ellipse"></div>
+            <div className="reward--ellipse_parent"><div className="reward--ellipse">{renderContent('app', 'Marble', 'Marble')}</div></div>
+            <div className="reward--ellipse_parent"><div className="reward--ellipse">{renderContent('app', 'XP', 'XP')}</div></div>
+            <div className="reward--ellipse_parent"><div className="reward--ellipse">{renderContent('app', 'Vectors', 'Accuracy')}</div></div>
           </div>
 
           <div className="user-rewards-values">
@@ -215,10 +225,10 @@ const Completion = () => {
           <div className="boosters-used">
             <div className="boosters-info">
               <div className="booster">
-                <img src={doubleXP} alt="2xXP" />
+                {renderContent('boosters', 'Double XP', 'Double XP')}
               </div>
               <div className="booster">
-                <img src={doubleMarbles} alt="2xMarbles" />
+              {renderContent('boosters', 'Double Marbles', 'Double Marbles')}
               </div>
             </div>
             <h4>Boosters Used</h4>
@@ -248,14 +258,23 @@ const Completion = () => {
 
       <section className="result-buttons">
         <Button buttonText={"DRS"} className="result-button--drs" to="/drs" />
-        <Button buttonText={"Done"} className="result-button--done" to="/home" />
+        <Button buttonText={"Done"} className="result-button--done" onClick={handleQuizDone} />
       </section>
     </div>
   )
 
+  const loader = (
+    <>
+      <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
+        <p style={{fontFamily: "var(--ofont-family)", textAlign: "center"}}>Dot is compiling your result...</p>
+      </div>
+      <Loader />
+    </> 
+  )
+
   return (
     <>
-      {isLoading || !result && <p style={{height: "100vh"}}>Loading...</p>}
+      {isLoading || !result && loader}
       {error && resError && <p style={{height: "100vh"}}>Unexpected Error Occured</p>}
       {!isLoading && isAuthenticated && result && content}
     </>

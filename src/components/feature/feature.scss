@@ -23,6 +23,7 @@
     .learn__features-container__feature-title {
         justify-content: center;
         display: flex;
+        white-space: nowrap;
 
         h1 {
             color: var(--color-text);

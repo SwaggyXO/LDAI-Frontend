@@ -2,31 +2,40 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    background-color: #eeeeee;
-    font-family: var(--mfont-family);
-}
+    background-color: #96BFE5;
+    font-family: var(--ofont-family);
 
-.result--hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    .result--hero {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    
+        .hero-text {
+            margin: 3% 0 5% 0;
+        }
+    
+        .hero-text h3 {
+            font-size: 2rem;
+            text-align: center;
+        }
 
-    .hero-text {
-        margin: 5% 0;
+        .mascot--ellipse {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ac9b9b;
+            border-radius: 75px;
+            height: 120px;
+            width: 120px;
+
+            img {
+                width: 15vh;
+                height: 15vh;
+            }
+        }
     }
-
-    .hero-text h3 {
-        font-size: 2rem;
-        text-align: center;
-    }
 }
 
-.result--ellipse {
-    background-color: #a4a3a3;
-    border-radius: 75px;
-    height: 120px;
-    width: 120px;
-}
 
 .result--body {
     display: flex;
@@ -38,25 +47,43 @@
 
         .user-rewards-icons {
             display: flex;
-            justify-content: space-around;
+            width: 100%;
 
-            .reward--ellipse {
-                background-color: #03045E;
-                border-radius: 75px;
-                height: 50px;
-                width: 50px;
-                margin: 10% 0 5% 0;
-                z-index: 1;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+            .reward--ellipse_parent {
+                display: flex;
+                width: 33%;
+                justify-content: center;
+                align-items: center;
+                margin: 5% 0 2.5% 0;
+
+                .reward--ellipse {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: #03045E;
+                    border-radius: 75px;
+                    height: 7vh;
+                    width: 7vh;
+                    z-index: 1;
+                    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    
+                    img {
+                        width: 4vh;
+                        height: 4vh;
+                        margin: 20%;
+                    
+                    }
+                }
             }
         }
     }
 
     .user-rewards-values {
         display: flex;
-        justify-content: space-around;
+        width: 100%;
 
-        h3 {
+        div {
+            width: 33%;
             padding: 2%;
             text-align: center;
         }
@@ -64,17 +91,11 @@
 
     .user-rewards-headings {
         display: flex;
+        width: 100%;
 
-        .user-rewards-xp {
-            margin: auto 14%;
-        }
-
-        .user-rewards-marbles {
-            margin: auto 9%;
-        }
-
-        .user-rewards-score {
-            margin: auto 6%;
+        div {
+            width: 33%;
+            text-align: center;
         }
     }
 
@@ -100,6 +121,10 @@
                 height: 50px;
             }
         }
+
+        h4 {
+            padding-top: 1vh;
+        }
     }
     
     .user--stats {
@@ -110,7 +135,8 @@
         .user-stats--headings {
             display: flex;
             justify-content: space-evenly;
-            font-size: 0.8rem;
+            font-size: 1rem;
+            padding-bottom: 0.5vh;
 
             .per-question-heading {
                 margin-left: 8%;
@@ -139,7 +165,7 @@
 .result-buttons {
     display: flex;
     justify-content: center;
-    padding: 0 0 2vh 0;
+    padding: 0 0 1vh 0;
 
     button {
         width: 18vh;
@@ -150,14 +176,11 @@
         margin: 2%;
         border: none;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    }
-
-    button:hover {
         cursor: pointer;
     }
 
     .result-button--drs {
-        background-color: #00B4DD;
+        background-color: #0b9bbb;
     }
 
     .result-button--done {

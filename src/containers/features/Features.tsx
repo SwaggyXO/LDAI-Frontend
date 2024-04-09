@@ -1,6 +1,6 @@
 import { Feature } from "../../components";
 import { camera, learningvector, groupchat, chattingvector } from "./imports";
-import chat from "../../assets/js_files/Chat.json";
+import gameon from "../../assets/js_files/gameon.json";
 import ai from "../../assets/js_files/ai.json";
 import profile from "../../assets/js_files/profile.json";
 import Lottie from "lottie-react";
@@ -11,21 +11,21 @@ const Features = () => {
   return (
     <div className="learn__features">
       <Feature
-        title="Gamified Learning."
-        text="Studying with Learn is a dive into the future! We harness the power of upcoming techs such as Artificial Intelligence and Augmented Reality to develop a much more engaging and interactive learning experience for our learners."
+        title="Game On!"
+        text="Competing is fun! We use gamified elements such as Streaks, Power-Ups & 3D Models to develop a much more engaging and interactive learning experience for our users."
         vector={""}
         vectoralttext={""}
       />
       <Lottie
-        style={{ display: "flex", justifyContent: "center", margin: "auto" }}
+        style={{ display: "flex", justifyContent: "center", margin: "auto", height: "40vh" }}
         loop={true}
-        animationData={ai}
+        animationData={gameon}
       />
       <br />
       <br />
       <Feature
-        title="Profile Management."
-        text="We help our clients form a learning path suitable for them, fixate daily/weekly goals and analyze their daily schedule to help them achieve the same."
+        title="Achievement 🔓!"
+        text="We help our students form a learning habit, by providing them daily & weekly goals. They also get long term challenges that they can work towards and display them as badges of honor."
         vector={""}
         vectoralttext={""}
       />
@@ -37,15 +37,15 @@ const Features = () => {
       <br />
       <br />
       <Feature
-        title="Powered by  GenAI."
-        text="Witness the power of generative AI in your hands, hop in conversations with our Mascots, Dot & Comma as they take you lesson by lesson through the learning path."
+        title="Dot AI"
+        text="Using our state of the art model - Dot AI, we give our users an accurate and fair evaluation of their answers by utlizing Named Entity Recognition and Semantic Similarity."
         vector={""}
         vectoralttext={""}
       />
       <Lottie
         style={{ display: "flex", justifyContent: "center", margin: "auto" }}
         loop={true}
-        animationData={chat}
+        animationData={ai}
       />
       <br />
       <br />

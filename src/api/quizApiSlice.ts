@@ -37,12 +37,15 @@ interface ArrayResponse {
 export const quizApi = createApi({
   reducerPath: 'quizApi',
   baseQuery, 
+  tagTypes: ['Quiz'],
   endpoints: (builder) => ({
     fetchQuizById: builder.query<Response, string>({
       query: (quizId) => `/${quizId}`,
+      providesTags: ['Quiz'],
     }),
     fetchLatestQuizzes: builder.query<ArrayResponse, number>({
         query: (limit) => `/fetch/latest?limit=${limit}`,
+        providesTags: ['Quiz'],
     }),
   }),
 });

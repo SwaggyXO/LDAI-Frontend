@@ -7,8 +7,9 @@ import { useState } from "react";
 import { useGetUserInfoQuery, useUpdateUserInfoMutation } from "../../api/oldUserApiSlice";
 import { useNavigate } from "react-router-dom";
 import { useUpdateUserMutation } from "../../api/userApiSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../features/user/userSlice";
+import { RootState } from "../../app/store";
 
 const Grade = () => {
 
@@ -23,6 +24,8 @@ const Grade = () => {
   const navigate = useNavigate();
 
   const [updateUserMutation] = useUpdateUserMutation();
+
+  const currUser = useSelector((state: RootState) => state.user);
 
   // const [updateUserInfo] = useUpdateUserInfoMutation();
 
@@ -41,10 +44,6 @@ const Grade = () => {
       const response = await updateUserMutation({
         ciamId: user?.sub,
         grade: grade?.toString(),
-        marbles: 0,
-        xp: 0,
-        streak: 0,
-        isNew: true,
       });
       console.log('User updated successfully:', response);
       dispatch(setUser(response.data.data));

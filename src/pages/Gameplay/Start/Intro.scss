@@ -34,9 +34,9 @@
 
 .section-starter--ellipse {
   background-color: #a4a3a3;
-  border-radius: 75px;
-  height: 120px;
-  width: 120px;
+  border-radius: 50%;
+  height: 15vh;
+  width: 15vh;
   margin: 10% 0 5% 0;
   z-index: 1;
 }
@@ -65,9 +65,14 @@
 
 .section-rewards--headings {
     display: flex;
-    justify-content: space-between;
+    width: 100%;
     padding: 6%;
     font-family: var(--mfont-family);
+
+    h3 {
+        text-align: center;
+        width: 33%;
+    }
 }
 
 .capsule-container {
@@ -88,6 +93,9 @@
     border-radius: 12px;
     font-size: 1.2rem;
     padding: 2vh;
+
+    font-family: var(--ofont-family);
+    font-weight: 500;
 }
 
 .quiz-intro--start-button button:hover{

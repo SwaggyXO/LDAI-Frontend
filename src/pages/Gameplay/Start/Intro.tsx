@@ -5,6 +5,7 @@ import Button from "../../../components/buttons/Button";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateTimeLeft } from "../../../features/quiz/quizSlice";
+import renderContent from "../../../features/content/renderContent";
 
 type RewardData = {
   values: string[];
@@ -79,7 +80,7 @@ const Intro = (props: Quiz) => {
         <div className="section-starter--quiz-name">
           <h1>{quiz.title}</h1>
         </div>
-        <div className="section-starter--ellipse" />
+        <div className="section-starter--ellipse">{renderContent('app', 'Modes', `${quiz.quizType}`)}</div>
         <div className="section-starter--quiz-type">
           <h2>{quiz.quizType}</h2>
         </div>

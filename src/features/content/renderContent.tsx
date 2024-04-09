@@ -1,3 +1,4 @@
+import { Blocks } from "react-loader-spinner";
 import { useGetContentQuery } from "../../api/contentApiSlice";
 
 type File = {
@@ -18,7 +19,7 @@ const renderContent = (contentParent: string, content: string, fileName: string 
     const file = svg.find((item: File) => item.name === fileName) || png.find((item: File) => item.name === fileName);
     
     return (
-        isContentLoading ? <div>...</div> :
+        isContentLoading ? <Blocks height={30} width={30}/> :
         contentError ? <div>Error</div> :
         <img 
             src={file?.url || ''}

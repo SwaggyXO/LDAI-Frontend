@@ -33,17 +33,17 @@ interface Result {
 }
 
 export interface QuizState {
-    id: string | undefined;
+    quizId: string | undefined;
     questions: Question[];
-    timeLimit: number;
+    timelimit: number;
     timeLeft: number; 
     result: Result | null;
 }
 
 const initialState: QuizState = {
-    id: undefined,
+    quizId: undefined,
     questions: [],
-    timeLimit: 0,
+    timelimit: 0,
     timeLeft: 0,
     result: null
 };

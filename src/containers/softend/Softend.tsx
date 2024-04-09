@@ -1,5 +1,7 @@
 import "./softend.scss"
 import { Bouncingdot } from '../../components'
+import hat from '../../assets/js_files/hat.json'
+import Lottie from "lottie-react"
 // A soft ending of the page
 
 const Softend = () => {
@@ -7,10 +9,15 @@ const Softend = () => {
     <div className='learn__softend section__padding'>
         <div className='learn__softend-content gradient__text'>
           <h1 className='learn__softend-content-title'>
-            Start Learning a Course With Dot.
+            Start Learning With Dot.
           </h1>
           <div className='learn__softend-content__dotvector'>
-            <Bouncingdot />
+            {/* <Bouncingdot /> */}
+            <Lottie
+              style={{ display: "flex", justifyContent: "center", margin: "auto", height: "40vh"}}
+              loop={true}
+              animationData={hat}
+            />
           </div>
         </div>
     </div>

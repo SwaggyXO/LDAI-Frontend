@@ -8,7 +8,7 @@ type CreateUserRequest = {
 }
 
 type User = {
-    userId: string;
+    id: string;
     ciamId: string;
     grade: string;
     subjectId: string | null;
@@ -92,9 +92,11 @@ interface FetchUserResultResponse {
 export const usersApi = createApi({
   reducerPath: 'usersApi',
   baseQuery, 
+  tagTypes: ['User'],
   endpoints: builder => ({
     fetchUserById: builder.query<FetchResponse, string>({
-        query: (ciamId) => `/fetch/${ciamId}`,
+      query: (ciamId) => `/fetch/${ciamId}`,
+      providesTags: ['User'],
     }),
     createUser: builder.mutation<CreateResponse, CreateUserRequest>({
       query: requestData => ({
@@ -102,13 +104,15 @@ export const usersApi = createApi({
         method: 'POST',
         body: requestData,
       }),
+      invalidatesTags: ['User'],
     }),
     updateUser: builder.mutation<UpdateResponse, Partial<User>>({
         query: (body) => ({
           url: `/update`,
-          method: 'PATCH', // Adjust method to PATCH
+          method: 'PATCH',
           body,
         }),
+        invalidatesTags: ['User'],
     }),
     createUserResponse: builder.mutation<CreateUserResponseResponse, CreateUserResponseRequest>({
       query: requestData => ({

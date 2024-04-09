@@ -13,10 +13,12 @@ import { useNavigate } from 'react-router-dom';
 
 import useUserData from '../../hooks/useUserData';
 import { useFetchUserByIdQuery } from '../../api/userApiSlice';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../app/store';
 import Loader from '../Loader/Loader';
 import { getUserCookie } from '../../features/user/userCookieHandler';
+import { setUser } from '../../features/user/userSlice';
+import calculateXPLevel from '../../features/user/calculateXPLevel';
 
 type Stat = {
     name: string;
@@ -33,11 +35,20 @@ const Profile = () => {
 
     const { user, isAuthenticated } = useAuth0();
 
-    const currUser = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
 
-    const { data, error: fetchUserError, isLoading } = useFetchUserByIdQuery(currUser.ciamId!.replace(/\|/g, '%7C'));
-    console.log(data);
+    // const currUser = useSelector((state: RootState) => state.user);
+    const currUser = getUserCookie();
 
+    const { data, error: fetchUserError, isLoading } = useFetchUserByIdQuery(currUser!.ciamId!.replace(/\|/g, '%7C'));
+
+    useEffect(() => {
+        if (data) {
+          dispatch(setUser(data.data));
+          console.log("User fetched successfully", data);
+        }
+      }, [data]);
+    
     const [achievements, setAchievements] = useState<Achievement[]>([]);
     const [userStats, setUserStats] = useState<Stat[]>([]);
     const [loading, setLoading] = useState(true);
@@ -109,7 +120,7 @@ const Profile = () => {
                             {shortener(user?.name!)}
                         </div>
                         <div className="profile-header_info--second__info">
-                            <div className="profile-header_info--xplevel">XPL {data?.data.xp}</div>
+                            <div className="profile-header_info--xplevel">XPL {calculateXPLevel(data?.data.xp!)}</div>
                             <div className="profile-header_info--grade">
                                 {data?.data.grade}&nbsp;
                                 <button onClick={handleNavigate}><FontAwesomeIcon icon={faEdit} /></button>

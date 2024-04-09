@@ -8,7 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    z-index: 2;
+    z-index: 10;
                     
 }
 
@@ -139,7 +139,7 @@
 .quiz-intro-modal {
     margin-bottom: 90vh;
     width: 100%;
-    z-index: 1;
+    z-index: 10;
     background-color: #eeeeee;
     border-radius: 22px 22px 0 0;
 
