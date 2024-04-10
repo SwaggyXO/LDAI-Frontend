@@ -20,7 +20,7 @@ const Login = () => {
     <div className='learn__login section__padding'>
       <Button title="START LEARNING" color="var(--color-footer)" onClick={handleLogin}/>
       <br /><br />
-      <Button title="HAVE AN ACCOUNT?" color="#92B600"/>
+      <Button title="LEARN AS A GUEST" color="#92B600"/>
     </div>
   )
 }

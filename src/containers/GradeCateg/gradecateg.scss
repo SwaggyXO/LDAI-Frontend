@@ -17,9 +17,9 @@
             justify-content: center;
 
             font-family: var(--mfont-family);
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            color: rgba(0, 0, 0, 0.40);
+            color: rgba(0, 0, 0, 0.60);
         }
 
         .line-container {
@@ -29,7 +29,7 @@
             justify-content: center;
 
             .line {
-                background-color: rgba(0, 0, 0, 0.20);
+                background-color: rgba(0, 0, 0, 0.30);
                 flex-grow: 0.9;
                 height: 2px;        
             }
