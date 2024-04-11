@@ -5,11 +5,12 @@ type PropsType = {
     text: string,
     bgColor: string,
     textColor: "black" | "white",
+    onClick?: () => void
 }
 
 const Capsule = (props: PropsType) => {
     const content = (
-        <div className={`capsule--${props.capsulePosition}`} style={{backgroundColor: props.bgColor, color: props.textColor}}>
+        <div className={`capsule--${props.capsulePosition}`} style={{backgroundColor: props.bgColor, color: props.textColor}} onClick={props.onClick}>
             <p> {props.text} </p>
         </div>
     )

@@ -61,6 +61,25 @@
             width: 30%;
             display: flex;
             justify-content: center;
+
+            .capsule-container {
+                margin: 0;
+
+                .capsule--left {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 5vh;
+                }
+
+                .capsule--right {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 5vh;
+                    cursor: pointer;
+                }
+            }
         }
     }
 
@@ -114,6 +133,10 @@
             height: 4vh;
 
             cursor: pointer;
+        }
+
+        .content-buy:disabled {
+            background-color: rgba(185, 91, 91, 0.5);
         }
     }
 }

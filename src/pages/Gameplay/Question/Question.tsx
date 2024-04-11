@@ -4,8 +4,11 @@ import "./Question.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useCreateUserResponseMutation, useFetchUserResultStreamQuery } from "../../../api/userApiSlice";
+import { useCreateUserResponseMutation } from "../../../api/userApiSlice";
 import { updateTimeLeft } from "../../../features/quiz/quizSlice";
+import { Booster, useFetchAllBoostersQuery } from "../../../api/gameApiSlice";
+import renderContent from "../../../features/content/renderContent";
+import Questionbooster from "../../../components/QuestionBooster/Questionbooster";
 
 const Question = () => {
   const { quizId, questionIndex } = useParams();
@@ -106,6 +109,23 @@ const Question = () => {
     }
   } 
 
+  const { data: boosterData, error: boosterError } = useFetchAllBoostersQuery();
+
+  const [boosters, setBoosters] = useState<Booster[]>([]);
+
+  useEffect(() => {
+      if (boosterData) {
+        console.log(boosterData.data);
+        setBoosters(boosterData.data);
+      }
+    }, [boosterData]);
+
+  const boosterItem = (
+    boosters.map((booster, idx) => (
+      <Questionbooster booster={booster} key={idx}/>
+    ))
+  )
+
   const content = (
     <>
       <div className="loading-bar">
@@ -114,9 +134,13 @@ const Question = () => {
       </div> 
       <div className="quiz-body--question">
         <section className="question--boosters">
-          <div className="question--ellipse" />
-          <div className="question--ellipse" />
-          <div className="question--ellipse" />
+          <div className="question--boosters_heading">
+            <p>Active Boosters</p>
+          </div>
+          <div className="question--boosters_container">
+            {boosterItem}
+          </div>
+          
         </section>
 
         <section className="question--start">

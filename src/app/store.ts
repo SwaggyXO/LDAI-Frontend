@@ -6,6 +6,7 @@ import { quizApi } from '../api/quizApiSlice';
 import { subjectApi } from '../api/subjectApiSlice';
 import userReducer from '../features/user/userSlice';
 import quizReducer from '../features/quiz/quizSlice';
+import { boosterApi, inventoryApi } from '../api/gameApiSlice';
 
 const store = configureStore({
     reducer: {
@@ -14,6 +15,8 @@ const store = configureStore({
         [usersApi.reducerPath]: usersApi.reducer,
         [quizApi.reducerPath]: quizApi.reducer,
         [subjectApi.reducerPath]: subjectApi.reducer,
+        [boosterApi.reducerPath]: boosterApi.reducer,
+        [inventoryApi.reducerPath]: inventoryApi.reducer,
         user: userReducer,
         quiz: quizReducer
     },
@@ -23,7 +26,9 @@ const store = configureStore({
             oldUserApi.middleware,
             usersApi.middleware,
             quizApi.middleware,
-            subjectApi.middleware
+            subjectApi.middleware,
+            boosterApi.middleware,
+            inventoryApi.middleware
         ),
 });
 

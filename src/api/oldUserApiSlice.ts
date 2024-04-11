@@ -28,6 +28,13 @@ type Subject = {
   subjects: string[]
 }
 
+type Booster = {
+  id: string;
+  quantity: number;
+  desc: string;
+  rarity: string;
+}
+
 const baseQuery = fetchBaseQuery({ baseUrl: 'http://localhost:3500' });
 
 export const oldUserApi = createApi({
@@ -45,6 +52,9 @@ export const oldUserApi = createApi({
     }),
     getUserSubjects: builder.query<Subject[], number>({
       query: (grade) => `/grades/${grade.toString()}`,
+    }),
+    getUserBoosters: builder.query<Booster[], void>({
+      query: () => '/boosters',
     }),
     createUser: builder.mutation<void, Partial<UserInfo>>({
         query: (userData) => ({
@@ -74,6 +84,13 @@ export const oldUserApi = createApi({
         body: data,
       }),
     }),
+    updateUserBoosters: builder.mutation<Booster, [id: string, Partial<Booster>]>({
+      query: ( [id, data] ) => ({
+        url: `/boosters/${id}`,
+        method: 'PATCH',
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -82,8 +99,10 @@ export const {
   useGetUserStatsQuery,
   useGetUserAchievementsQuery,
   useGetUserSubjectsQuery,
+  useGetUserBoostersQuery,
   useCreateUserMutation,
   useUpdateUserInfoMutation,
   useUpdateUserStatsMutation,
   useUpdateUserAchievementsMutation,
+  useUpdateUserBoostersMutation
 } = oldUserApi;
