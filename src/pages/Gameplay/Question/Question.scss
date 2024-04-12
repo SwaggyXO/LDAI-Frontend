@@ -17,8 +17,8 @@
 
         .question--boosters_container {
             display: flex;
-            width: 85%;
-            justify-content: space-between;
+            width: 95%;
+            justify-content: center;
             padding: 1vh;
 
             .question--booster_item {
@@ -27,7 +27,9 @@
                 justify-content: center;
                 align-items: center;
                 gap: 1vh;
-                width: 17%;
+                width: 19%;
+
+                cursor: pointer;
 
                 .booster-quantity {
                     display: flex;
@@ -160,3 +162,15 @@
         }
     }
 }
+
+.booster-backdrop {
+    position: fixed;
+    top: 15vh;
+    left: 0;
+    display: flex;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 1);
+    z-index: 10;
+    opacity: 0;
+}
+

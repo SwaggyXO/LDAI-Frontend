@@ -45,9 +45,15 @@ const Grade = () => {
         ciamId: user?.sub,
         grade: grade?.toString(),
       });
-      console.log('User updated successfully:', response);
-      dispatch(setUser(response.data.data));
-      navigate("/subject");
+
+      if ('error' in response) {
+        console.log("An error occured");
+      } else {
+        console.log('User updated successfully:', response);
+        dispatch(setUser(response.data.data.data));
+        navigate("/subject");
+      }
+      
     } catch (error) {
       console.error('Error updating user:', error);
     }

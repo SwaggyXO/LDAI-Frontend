@@ -6,7 +6,7 @@ import { RootState } from "../../../app/store";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useCreateUserResponseMutation } from "../../../api/userApiSlice";
 import { updateTimeLeft } from "../../../features/quiz/quizSlice";
-import { Booster, useFetchAllBoostersQuery } from "../../../api/gameApiSlice";
+import { Booster, InventoryItem, useFetchAllBoostersQuery, useFetchUserBoostersQuery } from "../../../api/gameApiSlice";
 import renderContent from "../../../features/content/renderContent";
 import Questionbooster from "../../../components/QuestionBooster/Questionbooster";
 
@@ -109,14 +109,29 @@ const Question = () => {
     }
   } 
 
-  const { data: boosterData, error: boosterError } = useFetchAllBoostersQuery();
+  const tutorialBoosters = [
+    {booster: {id: '1', name: 'Double XP', description: 'Doubles the amount of XP Gained from a quiz set.', price: 5000, tier: 'Common'}, quantity: 0},
+    {booster: {id: '2', name: 'Double Marbles', description: 'Doubles the amount of Marbles Gained from a quiz set.', price: 5000, tier: 'Common'}, quantity: 0},
+    {booster: {id: '3', name: 'Time Freeze', description: 'Freezes the timer for the current question for a while.', price: 8000, tier: 'Rare'}, quantity: 1},
+    {booster: {id: '4', name: 'Fact Hint', description: 'Reveals some facts required for the answer, reduces the time by a little.', price: 15000, tier: 'Epic'}, quantity: 1},
+    {booster: {id: '5', name: 'Dot', description: 'Automatically answers 2 questions in the set', price: 30000, tier: 'Legendary'}, quantity: 0}
+  ]
 
-  const [boosters, setBoosters] = useState<Booster[]>([]);
+  // const { data: boosterData, error: boosterError } = useFetchAllBoostersQuery();
+
+  const { data: boosterData, error: boosterError, isLoading: isFetchUserBoosterLoading } = useFetchUserBoostersQuery(currUserId!);
+
+  const [boosters, setBoosters] = useState<InventoryItem[]>([]);
 
   useEffect(() => {
       if (boosterData) {
-        console.log(boosterData.data);
-        setBoosters(boosterData.data);
+        if (quiz.quizId !== 'da0028a0-5216-4f13-885d-f97136cdebab') {
+          console.log("Non tutorial Quiz", boosterData.data);
+          setBoosters(boosterData.data.inventory);
+        } else {
+          console.log("Tutorial Quiz")
+          setBoosters(tutorialBoosters);
+        }
       }
     }, [boosterData]);
 
@@ -132,6 +147,8 @@ const Question = () => {
         <div className="loading-bar-inner" style={{ width: progressWidth }}></div>
         <div className="time-left">{minutes}:{seconds < 10 ? '0' + seconds : seconds}</div>
       </div> 
+      <div className="booster-backdrop"></div>
+      <div className="booster-description"></div>
       <div className="quiz-body--question">
         <section className="question--boosters">
           <div className="question--boosters_heading">

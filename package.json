@@ -25,6 +25,7 @@
     "dotenv": "^16.4.1",
     "eventsource": "^2.0.2",
     "framer-motion": "^11.0.3",
+    "gsap": "^3.12.5",
     "js-cookie": "^3.0.5",
     "json-server": "^1.0.0-alpha.23",
     "lottie-react": "^2.4.0",

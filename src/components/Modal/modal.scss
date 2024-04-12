@@ -8,8 +8,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    z-index: 10;
-                    
+    z-index: 10;           
 }
 
 .booster-modal {
@@ -129,14 +128,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 30%;
             height: 4vh;
+            padding: 2vh;
+            min-width: 15vh;
 
             cursor: pointer;
         }
 
         .content-buy:disabled {
             background-color: rgba(185, 91, 91, 0.5);
+            cursor: not-allowed;
         }
     }
 }

@@ -44,7 +44,7 @@ const Profile = () => {
 
     useEffect(() => {
         if (data) {
-          dispatch(setUser(data.data));
+        //   dispatch(setUser(data.data));
           console.log("User fetched successfully", data);
         }
       }, [data]);

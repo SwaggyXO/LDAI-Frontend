@@ -22,6 +22,8 @@ import { updateQuizState } from "../../features/quiz/quizSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import Loader from '../Loader/Loader';
+import { Currency, usePurchaseBoosterMutation } from '../../api/gameApiSlice';
+import { getUserCookie } from '../../features/user/userCookieHandler';
 
 const Home = () => {
 
@@ -41,6 +43,8 @@ const Home = () => {
   const open = () => {
     setModalOpen(true);
   }
+
+  const [purchaseBooster] = usePurchaseBoosterMutation();
 
   const [createUser, { isLoading: isCreateUserLoading, error: isCreateUserError }] = useCreateUserMutation();
 

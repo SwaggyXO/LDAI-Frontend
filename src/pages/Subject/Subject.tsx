@@ -78,10 +78,15 @@ const Subject = () => {
             const response = await updateUserMutation({
                 ciamId: user?.sub,
                 subjectId: subject,
-              });
-              console.log('User updated successfully:', response);
-              dispatch(setUser(response.data.data));
-            navigate("/home");
+            });
+            if ('error' in response) {
+                console.error("An error occured", response);
+            } else {
+                console.log('User updated successfully:', response);
+                dispatch(setUser(response.data.data.data));
+                navigate("/home");
+            }
+              
           } catch (error) {
             console.error('Error adding user:', error);
           }

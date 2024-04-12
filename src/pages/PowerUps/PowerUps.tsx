@@ -13,8 +13,11 @@ import renderContent from '../../features/content/renderContent';
 import CapsuleContainer from '../../containers/Reward/CapsuleContainer';
 import Capsule from '../../components/Capsule/Capsule';
 import useUserData from '../../hooks/useUserData';
-import { Booster, InventoryItem, useFetchAllBoostersQuery, useFetchUserBoostersQuery } from '../../api/gameApiSlice';
+import { Booster, Currency, InventoryItem, useAddUserCurrencyMutation, useFetchAllBoostersQuery, useFetchUserBoostersQuery, usePurchaseBoosterMutation, useSubtractUserCurrencyMutation } from '../../api/gameApiSlice';
 import { getUserCookie } from '../../features/user/userCookieHandler';
+import Loader from '../Loader/Loader';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../features/user/userSlice';
 
 // type Booster = {
 //   name: string;
@@ -34,6 +37,10 @@ const PowerUps = () => {
 
   const {isAuthenticated, error, isLoading} = useAuth0();
 
+  const user = getUserCookie();
+
+  const dispatch = useDispatch();
+
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedBooster, setSelectedBooster] = useState<InventoryItem | null>(null);
   const [quantity, setQuantity] = useState(0);
@@ -49,7 +56,11 @@ const PowerUps = () => {
   // const { data: boosterData, error: boosterError, loading: boosterLoading } = useUserData("boosters");
 
   // const { data: boosterData, error: boosterError } = useFetchUserBoostersQuery(getUserCookie()?.userId!);
-  const { data: boosterData, error: boosterError } = useFetchUserBoostersQuery('bd1513c4-d5b2-40fc-b99f-756a9fa5232a');
+  const { data: boosterData, error: boosterError, isLoading: isFetchUserBoosterLoading } = useFetchUserBoostersQuery(user?.userId!);
+
+  const [addUserCurrency] = useAddUserCurrencyMutation();
+  const [subtractUserCurrency] = useSubtractUserCurrencyMutation();
+  const [purchaseBooster] = usePurchaseBoosterMutation();
 
   useEffect(() => {
       if (boosterData) {
@@ -58,6 +69,54 @@ const PowerUps = () => {
       }
     }, [boosterData]
   );
+
+  const testingAddition = async () => {
+    try {
+      const response = await addUserCurrency({userId: user?.userId!, currency: [{name: 'marbles', amount: 100}]});
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Currency added successfully:', response);
+        dispatch(setUser(response.data.data));
+        if (response) console.log(response);
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred");
+    }
+  }
+
+  const handleCurrencySubtraction = async (amount: number) => {
+    try {
+      const response = await subtractUserCurrency({userId: user?.userId!, currency: [{name: 'marbles', amount: amount}]});
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Currency subtracted successfully:', response);
+        dispatch(setUser(response.data.data));
+        if (response) console.log(response);
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred");
+    }
+  }
+
+  const handlePurchaseBooster = async (booster: Currency) => {
+    try {
+      const response = await purchaseBooster({userId: user?.userId!, booster: [booster]});
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Booster purchased successfully:', response);
+        if (response) console.log(response);
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred");
+    }
+  }
+
+  // useEffect(() => {
+  //   testingAddition();
+  // }, []);
 
   // useEffect(() => {
   //   if (selectedBooster) {
@@ -86,7 +145,6 @@ const PowerUps = () => {
   };
 
   const handleOnQuantityIncrease = () => {
-    console.log(selectedBooster?.quantity, quantity);
     if (selectedBooster) {
       if (selectedBooster.quantity + quantity < 2 && selectedBooster.booster.name !== "Dot") {
         setQuantity(quantity + 1);
@@ -99,28 +157,30 @@ const PowerUps = () => {
   };
 
   const handleBuy = () => {
-
     if (selectedBooster) {
       if (selectedBooster.quantity < 2 && selectedBooster.booster.name !== "Dot") {
-        setBoosters(boosters.map(booster =>
-          booster.booster.name === selectedBooster.booster.name
-            ? { ...booster, quantity: booster.quantity + quantity }
-            : booster
-        ));
+        if (totalPrice > user?.marbles!) {
+          return;
+        } else {
+          handlePurchaseBooster({name: selectedBooster.booster.name, amount: quantity});
+          handleCurrencySubtraction(totalPrice);
+        }
       } else if (selectedBooster.booster.name === "Dot") {
         if (selectedBooster.quantity < 1) {
-          setBoosters(boosters.map(booster =>
-            booster.booster.name === selectedBooster.booster.name
-              ? { ...booster, quantity: booster.quantity + quantity }
-              : booster
-          ));
+          if (totalPrice > user?.marbles!) {
+            return;
+          } else {
+            handlePurchaseBooster({name: selectedBooster.booster.name, amount: quantity});
+            handleCurrencySubtraction(totalPrice);
+          }
         }
       }
     }
+
+    close();
   };
 
   const close = () => {
-    handleBuy();
     setModalOpen(false);
     setSelectedBooster(null);
     setQuantity(0);
@@ -138,10 +198,18 @@ const PowerUps = () => {
   const handleButtonText = () => {
     if (selectedBooster) {
       if (selectedBooster.quantity < 2 && selectedBooster.booster.name !== "Dot") {
-        return 'Buy';
+        if (totalPrice > user?.marbles!) {
+          return 'Insufficient Funds';
+        } else {
+          return 'Buy';
+        }
       } else if (selectedBooster.booster.name === "Dot") {
         if (selectedBooster.quantity < 1) {
-          return 'Buy';
+          if (totalPrice > user?.marbles!) {
+            return 'Insufficient Funds';
+          } else { 
+            return 'Buy';
+          }
         }
       }
     }
@@ -151,12 +219,20 @@ const PowerUps = () => {
   const handleBuyButtonDisabled = () => {
     if (selectedBooster) {
       if (selectedBooster.quantity < 2 && selectedBooster.booster.name !== "Dot") {
-        return false;
-      } else if (selectedBooster.booster.name === "Dot") {
-        if (selectedBooster.quantity < 1) {
+        if (totalPrice > user?.marbles! || quantity === 0) {
+          return true;
+        } else {
           return false;
         }
-      }
+      } else if (selectedBooster.booster.name === "Dot") {
+        if (selectedBooster.quantity < 1) {
+          if (totalPrice > user?.marbles! || quantity === 0) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      } 
     }
     return true;
   }
@@ -190,7 +266,7 @@ const PowerUps = () => {
       </div>
       <div className="content">
         <p>{selectedBooster?.booster.description}</p>
-        <Button buttonText={handleButtonText()} className='content-buy' onClick={close} check={handleBuyButtonDisabled()}/>
+        <Button buttonText={handleButtonText()} className='content-buy' onClick={handleBuy} check={handleBuyButtonDisabled()}/>
       </div>
     </>
   );
@@ -217,8 +293,8 @@ const PowerUps = () => {
     isAuthenticated && (
       <>
         {error && <p style={{height: "100vh"}}>Authentication Error</p>}
-        {!error && isLoading && <p style={{height: "100vh"}}>Loading...</p>}
-        {!error && !isLoading && content}
+        {!error && isLoading || isFetchUserBoosterLoading && <Loader />}
+        {!error && !isLoading && !isFetchUserBoosterLoading && content}
       </>
     )
   )

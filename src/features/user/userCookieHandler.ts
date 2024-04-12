@@ -2,10 +2,12 @@ import Cookies from 'js-cookie';
 import { UserState } from './userSlice';
 
 export const setUserCookie = (user: Partial<UserState>) => {
-  Cookies.set('user', JSON.stringify(user), { expires: 7 }); // Cookie will expire after 7 days
+  const existingUser = getUserCookie();
+  const updatedUser = { ...existingUser, ...user };
+  Cookies.set('user', JSON.stringify(updatedUser), { expires: 7 }); // Cookie will expire after 7 days
 };
 
-export const getUserCookie = (): Partial<UserState> | null => {
+export const getUserCookie = (): UserState | null => {
   const userCookie = Cookies.get('user');
 
   if (!userCookie) {
