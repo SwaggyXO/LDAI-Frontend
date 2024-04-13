@@ -9,6 +9,7 @@ import { updateTimeLeft } from "../../../features/quiz/quizSlice";
 import { Booster, InventoryItem, useFetchAllBoostersQuery, useFetchUserBoostersQuery } from "../../../api/gameApiSlice";
 import renderContent from "../../../features/content/renderContent";
 import Questionbooster from "../../../components/QuestionBooster/Questionbooster";
+import { handleDot, handleDoubleMarbles, handleDoubleXP, handleFactHint } from "../../../features/quiz/boosterHandler";
 
 const Question = () => {
   const { quizId, questionIndex } = useParams();
@@ -54,23 +55,73 @@ const Question = () => {
   const quizTimeLimit = useSelector((state: RootState) => state.quiz.timelimit);
   const quizTimeLeft = useSelector((state: RootState) => state.quiz.timeLeft);
 
+  const activatedBoosters = useSelector((state: RootState) => state.quiz.activatedBoosters);
+
   const [timeLeft, setTimeLeft] = useState<number>(quizTimeLimit * 60);
+
+  const [isFrozen, setIsFrozen] = useState<boolean>(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft(prevTimeLeft => {
-        if (prevTimeLeft > 0) {
+        if (!isFrozen && prevTimeLeft > 0) {
           return prevTimeLeft - 1;
-        } else {
+        } else if (prevTimeLeft <= 0){
           clearInterval(interval);
           navigate(`/result`);
           return 0;
         }
+        return prevTimeLeft;
       });
     }, 1000);
     dispatch(updateTimeLeft(timeLeft));
     return () => clearInterval(interval);
-  }, [quizTimeLeft, navigate]);
+  }, [quizTimeLeft, navigate, isFrozen]);
+
+  const [timeFreezeLeft, setTimeFreezeLeft] = useState<number>(0);
+
+  const handleTimeFreeze = () => {
+    console.log("Time Freeze activated");
+    setIsFrozen(true);
+    setTimeFreezeLeft(60);
+    const interval = setInterval(() => {
+      setTimeFreezeLeft(prevTimeFreezeLeft => {
+        if (prevTimeFreezeLeft > 0) {
+          return prevTimeFreezeLeft - 1;
+        } else {
+          clearInterval(interval);
+          setIsFrozen(false);
+          return 0;
+        }
+      });
+    }, 1000);
+  };
+
+  useEffect(() => {
+    if (activatedBoosters.length <= 2) {
+      const booster = activatedBoosters[activatedBoosters.length - 1];
+      switch (booster) {
+        case 'Double XP':
+          handleDoubleXP();
+          break;
+        case 'Double Marbles':
+          handleDoubleMarbles();
+          break;
+        case 'Time Freeze':
+          handleTimeFreeze();
+          break;
+        case 'Fact Hint':
+          handleFactHint();
+          break;
+        case 'Dot':
+          handleDot();
+          break;
+        default:
+          break;
+      }
+    }
+  }, [activatedBoosters]);
+
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
@@ -150,6 +201,7 @@ const Question = () => {
       <div className="booster-backdrop"></div>
       <div className="booster-description"></div>
       <div className="quiz-body--question">
+        {timeFreezeLeft !== 0 ? <p style={{width: "100%", textAlign: "center"}}>Time Freeze remaining: {timeFreezeLeft}</p> : null}
         <section className="question--boosters">
           <div className="question--boosters_heading">
             <p>Active Boosters</p>

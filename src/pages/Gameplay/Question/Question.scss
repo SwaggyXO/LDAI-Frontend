@@ -6,11 +6,12 @@
     border-radius: 2vh 2vh 0 0;
     background-color: #B0EEFA;
     font-family: var(--ofont-family);
+    padding: 5vh 0 0 0;
 
     .question--boosters {
         display: flex;
         flex-direction: column;
-        margin-top: 8vh;
+        margin-top: 2vh;
         justify-content: center;
         align-items: center;
         gap: 2vh;
@@ -104,7 +105,7 @@
 
     .question-count p{
         color: #00000078;
-        padding: 5% 5% 0 5%;
+        padding: 2.5% 5% 0 5%;
     }
     
     .question-count p span{

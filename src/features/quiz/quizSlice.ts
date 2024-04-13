@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import Cookies from 'js-cookie';
 import { removeQuizCookie, setQuizCookie } from './quizCookieHandler';
+import { update } from 'three/examples/jsm/libs/tween.module.js';
 
 interface Question {
     id: string;
@@ -38,6 +39,7 @@ export interface QuizState {
     timelimit: number;
     timeLeft: number; 
     result: Result | null;
+    activatedBoosters: string[];
 }
 
 const initialState: QuizState = {
@@ -45,7 +47,8 @@ const initialState: QuizState = {
     questions: [],
     timelimit: 0,
     timeLeft: 0,
-    result: null
+    result: null,
+    activatedBoosters: []
 };
 
 
@@ -67,9 +70,15 @@ const quizSlice = createSlice({
         removeQuizCookie();
         state.questions = [];
         state.timeLeft = 0;
+        state.activatedBoosters = [];
     },
+    updateActivatedBoosters(state, action: PayloadAction<string>) {
+        if (state.activatedBoosters.length < 2) {
+            state.activatedBoosters.push(action.payload);
+        }
+    }
   },
 });
 
-export const { updateQuizState, updateTimeLeft, resetQuizState } = quizSlice.actions;
+export const { updateQuizState, updateTimeLeft, resetQuizState, updateActivatedBoosters } = quizSlice.actions;
 export default quizSlice.reducer;
