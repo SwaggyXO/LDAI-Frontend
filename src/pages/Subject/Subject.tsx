@@ -83,7 +83,7 @@ const Subject = () => {
                 console.error("An error occured", response);
             } else {
                 console.log('User updated successfully:', response);
-                dispatch(setUser(response.data.data.data));
+                dispatch(setUser(response.data.data));
                 navigate("/home");
             }
               

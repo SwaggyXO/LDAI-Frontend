@@ -50,7 +50,7 @@ const Grade = () => {
         console.log("An error occured");
       } else {
         console.log('User updated successfully:', response);
-        dispatch(setUser(response.data.data.data));
+        dispatch(setUser(response.data.data));
         navigate("/subject");
       }
       

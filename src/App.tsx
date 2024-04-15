@@ -24,6 +24,9 @@ import Challenges from "./pages/Challenges/Challenges";
 import DRS from "./pages/DRS/DRS";
 import PowerUps from "./pages/PowerUps/PowerUps";
 import Three from "./pages/Three/Three";
+import ModeLayout from "./layouts/ModeLayout/ModeLayout";
+import Unrated from "./pages/Modes/Unrated/Unrated";
+import Rated from "./pages/Modes/Rated/Rated";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -40,6 +43,11 @@ export const routes = createBrowserRouter(
         <Route path="/powerups" element={<PowerUps />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/result" element={<Completion />} />
+      </Route>
+
+      <Route path="" element={<ModeLayout />}>
+        <Route index path="/unrated" element={<Unrated />} />
+        <Route path="/rated" element={<Rated />} />
       </Route>
 
       <Route path="/grade" element={<GradeLayout />}>

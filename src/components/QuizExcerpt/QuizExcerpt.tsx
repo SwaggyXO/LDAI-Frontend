@@ -16,7 +16,7 @@ const QuizExcerpt = (props: QuizProps) => {
     const subject = quiz.subject;
 
     const playButton = (
-        <Button buttonText={<FontAwesomeIcon icon={faPlay} color='white' />} className="quiz-play_button" to="/grade" />
+        <Button buttonText={<FontAwesomeIcon icon={faPlay} color='white' />} className="quiz-play_button" />
     )
 
     const content = (
