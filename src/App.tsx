@@ -27,6 +27,7 @@ import Three from "./pages/Three/Three";
 import ModeLayout from "./layouts/ModeLayout/ModeLayout";
 import Unrated from "./pages/Modes/Unrated/Unrated";
 import Rated from "./pages/Modes/Rated/Rated";
+import ModePage from "./pages/Modes/ModePage/ModePage";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -48,6 +49,7 @@ export const routes = createBrowserRouter(
       <Route path="" element={<ModeLayout />}>
         <Route index path="/unrated" element={<Unrated />} />
         <Route path="/rated" element={<Rated />} />
+        <Route path="/unrated/:modeName" element={<ModePage />} />
       </Route>
 
       <Route path="/grade" element={<GradeLayout />}>

@@ -1,0 +1,114 @@
+.mode-main {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--ofont-family);
+
+    .mode-intro {
+        margin-top: 2.5vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .mode-intro_top {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 2vh;
+
+            img {
+                padding: 2vh;
+                height: 20vh;
+            }
+
+            h1 {
+                font-weight: 600;
+            }
+
+            p {
+                font-weight: 400;
+                font-style: italic;
+                margin: 0.5vh;
+            }
+        }
+
+        .mode-intro_bottom {
+            display: flex;
+            width: 100%;
+            padding-bottom: 2vh;
+            
+            p {
+                width: 50%;
+                text-align: center;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .mode-quizzes {
+        display: flex;
+        flex-direction: column;
+        padding: 2vh;
+
+        .mode-quizzes_header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            padding-bottom: 2vh;
+        }
+
+        .mode-quizzes_week {
+            display: flex;
+            padding: 2vh 0;
+            flex-direction: column;
+
+            .week-header {
+                padding-left: 0.5vh;
+                font-size: 1.1rem;
+                font-weight: 600;
+                padding-bottom: 2vh;
+            }
+
+            .week-excerpts {
+                .quiz-excerpt {
+                    display: flex;
+                    flex-direction: row;
+                    border-radius: 2vh;
+                    padding: 3vh 1vh;
+                    gap: 2vh;
+                    background-color: #fff;
+
+                    cursor: pointer;
+
+                    p {
+                        width: 25%;
+                    }
+                }
+            }
+        }
+
+        .mode-quizzes_month {
+            display: flex;
+            padding: 2vh 0;
+            flex-direction: column;
+
+            p {
+                padding-left: 0.5vh;
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+        }
+
+        .mode-quizzes_earlier {
+            display: flex;
+            padding: 2vh 0;
+            flex-direction: column;
+
+            p {
+                padding-left: 0.5vh;
+                font-size: 1.1rem;
+                font-weight: 600;
+            }
+        }
+    }
+}

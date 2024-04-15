@@ -60,12 +60,12 @@ const ModeLayout = () => {
             <Topnav xp={xpBadge} subject={subject} streak={streak} marbles={marbles} />
             <div className="button-container">
                 <Link to="/unrated">
-                    <button className={`unrated ${ location.pathname === '/unrated' ? 'active' : '' }`}>
+                    <button className={`unrated ${ location.pathname.includes('/unrated') ? 'active' : '' }`}>
                     Unrated
                     </button>
                 </Link>
                 <Link to="/rated">
-                    <button className={`rated ${ location.pathname === '/rated' ? 'active' : '' }`}>
+                    <button className={`rated ${ location.pathname.includes('/rated') ? 'active' : '' }`}>
                     Rated 🔒
                     </button>
                 </Link>

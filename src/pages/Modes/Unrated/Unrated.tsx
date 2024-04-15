@@ -8,6 +8,8 @@ import renderContent from '../../../features/content/renderContent';
 import Button from '../../../components/buttons/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { modes } from '../modes';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Modes = () => {
 
@@ -15,23 +17,14 @@ const Modes = () => {
 
     const quizzes = SampleQuizzes;
 
-    const allModes = [
-        {
-            imgText: 'ONETAP',
-            title: 'One Tap',
-            description: ['Answer with a single tap.', <br />, 'No going back!']
-        },
-        {
-            imgText: 'STANDARD',
-            title: 'Standard',
-            description: ['The classic and short way.', <br />, 'Answer and move on.']
-        },
-        {
-            imgText: 'ENDURANCE',
-            title: 'Endurance',
-            description: ['Long Answers. Long Quiz.', <br />, 'Long Fun.']
-        }
-    ]
+    const allModes = modes;
+
+    const navigate = useNavigate();
+
+    const handleOnModeClick = (url: string) => {
+        navigate(url);
+        window.scrollTo(0, 0);
+    }
 
     const textContainerElements = (
         <>
@@ -65,7 +58,7 @@ const Modes = () => {
                 </div>
                 <div className="modes-container_excerpts">
                     {allModes.map((mode, index) => (
-                        <div key={index} className='parent'>
+                        <div key={index} className='parent' onClick={() => handleOnModeClick(`/unrated/${mode.imgText.toLowerCase()}`)}>
                             <div className="mode-image">
                                 {renderContent('app', 'Modes', `${mode.imgText}`)}
                             </div>
@@ -80,13 +73,14 @@ const Modes = () => {
             </div>
         </div>
     )
+
     return (
         <>
           {isLoading && <Loader />}
           {error && <p style={{height: "100vh"}}>An Error Occured</p>}
           {!isLoading && isAuthenticated && !error && content}
         </>
-      )
+    )
 }
 
 export default Modes

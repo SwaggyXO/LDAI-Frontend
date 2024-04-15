@@ -147,6 +147,7 @@ const Home = () => {
           ))}
         </div>
       </div>
+      <div className="subject-half"></div>
     </>
   )
 
