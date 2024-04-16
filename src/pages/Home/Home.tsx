@@ -16,7 +16,7 @@ import { RootState } from "../../app/store";
 import renderContent from "../../features/content/renderContent";
 import { useCreateUserMutation } from "../../api/userApiSlice";
 import { setUser } from "../../features/user/userSlice";
-import { useFetchQuizByIdQuery } from "../../api/quizApiSlice";
+import { useFetchLatestQuizzesQuery, useFetchQuizByIdQuery } from "../../api/quizApiSlice";
 import { updateQuizState } from "../../features/quiz/quizSlice";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -35,6 +35,8 @@ const Home = () => {
 
   const [ timedGreeting, setTimedGreeting ] = useState<string>('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [isUserCreated, setIsUserCreated] = useState(false);
+
   
   const close = () => {
     setModalOpen(false);
@@ -43,6 +45,8 @@ const Home = () => {
   const open = () => {
     setModalOpen(true);
   }
+
+  const { data: quizzesData, isLoading: isFetchLatestLoading, error: fetchLatestError} = useFetchLatestQuizzesQuery({subject: `${currUser!.subject}`, limit: 10}, { skip: !currUser.subject });
 
   const [purchaseBooster] = usePurchaseBoosterMutation();
 
@@ -75,6 +79,7 @@ const Home = () => {
         } else {
           console.log('User added successfully:', response);
           dispatch(setUser(response.data.data.user));
+          setIsUserCreated(true);
 
           if (response.data.data.user.isNew && response.data.data.user.grade === null) {
             console.log("Navigating to grade:", currUser)
@@ -93,7 +98,7 @@ const Home = () => {
 
   const quizId = "0c8357c9-0454-4c58-addd-5f713eb432e2";
   const smallQuizId = "4ef4ae1f-98a8-4329-b28c-e29d037f5203"
-  const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(smallQuizId);
+  const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(smallQuizId, { skip: !isUserCreated || !currUser.isNew });
 
   useEffect(() => {
     if (quizData) {
@@ -142,8 +147,8 @@ const Home = () => {
           <p>New Quizzes</p>
         </div>
         <div className="new-half_quizzes">
-          {quizzes.map((quiz) => (
-            <QuizExcerpt key={quiz.name} quiz={quiz} />
+          {quizzesData?.data.map((quiz, idx) => (
+            <QuizExcerpt key={idx} quiz={quiz} />
           ))}
         </div>
       </div>
