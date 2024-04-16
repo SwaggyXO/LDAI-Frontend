@@ -10,21 +10,40 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { modes } from '../modes';
 import { Link, useNavigate } from 'react-router-dom';
+import ModeExcerpt from '../../../components/ModeExcerpt/ModeExcerpt';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
+import { getUserCookie } from '../../../features/user/userCookieHandler';
+import { useEffect } from 'react';
+import { useFetchLatestQuizzesQuery } from '../../../api/quizApiSlice';
 
 const Modes = () => {
 
     const { user, isAuthenticated, error, isLoading } = useAuth0();
+
+    const currUser = getUserCookie();
+
+    useEffect(() => {
+        if (currUser?.isNew && currUser.grade) {
+            navigate('/home');
+        } else if (currUser?.isNew && !currUser.grade) {
+            navigate('/grade');
+        }
+    }, []);
+
+    const { data: quizData, isLoading: isFetchLatestLoading, error: fetchLatestError} = useFetchLatestQuizzesQuery({subject: `${currUser!.subject}`, limit: 10});
+
+    useEffect(() => {
+        if (quizData) {
+            console.log(quizData);
+        }
+    }, [quizData]);
 
     const quizzes = SampleQuizzes;
 
     const allModes = modes;
 
     const navigate = useNavigate();
-
-    const handleOnModeClick = (url: string) => {
-        navigate(url);
-        window.scrollTo(0, 0);
-    }
 
     const textContainerElements = (
         <>
@@ -33,17 +52,13 @@ const Modes = () => {
         </>
     )
 
-    const playButton = (
-        <Button buttonText={<FontAwesomeIcon icon={faPlay} color='white' />} className="quiz-play_button" />
-    )
-
     const content = (
         <div className="modes">
             <TextContainer elements={textContainerElements} className='modes' />
             <div className="weekset">
                 <p className='weekset-header'>Set of the Week</p>
                 <div className="weekset-quiz">
-                    <QuizExcerpt quiz={quizzes[0]} />
+                    {quizData && <QuizExcerpt quiz={quizData.data[0]} />}
                 </div>
             </div>
             <div className="modes-container">
@@ -57,17 +72,8 @@ const Modes = () => {
                     </div>
                 </div>
                 <div className="modes-container_excerpts">
-                    {allModes.map((mode, index) => (
-                        <div key={index} className='parent' onClick={() => handleOnModeClick(`/unrated/${mode.imgText.toLowerCase()}`)}>
-                            <div className="mode-image">
-                                {renderContent('app', 'Modes', `${mode.imgText}`)}
-                            </div>
-                            <div className="mode-info">
-                                <p>{mode.title}</p>
-                                <p>{mode.description}</p>
-                            </div>
-                            <div className="play-button">{playButton}</div>
-                        </div>
+                    {allModes.map((mode, idx) => (
+                        <ModeExcerpt key={idx} mode={mode} />
                     ))}
                 </div>
             </div>
@@ -76,9 +82,9 @@ const Modes = () => {
 
     return (
         <>
-          {isLoading && <Loader />}
-          {error && <p style={{height: "100vh"}}>An Error Occured</p>}
-          {!isLoading && isAuthenticated && !error && content}
+            {isLoading || isFetchLatestLoading && <Loader />}
+            {error && fetchLatestError && <p style={{height: "100vh"}}>An Error Occured</p>}
+            {!isLoading && isAuthenticated && !error && !isFetchLatestLoading && content}
         </>
     )
 }

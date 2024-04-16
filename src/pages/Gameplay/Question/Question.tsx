@@ -6,10 +6,9 @@ import { RootState } from "../../../app/store";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useCreateUserResponseMutation } from "../../../api/userApiSlice";
 import { updateTimeLeft } from "../../../features/quiz/quizSlice";
-import { Booster, InventoryItem, useFetchAllBoostersQuery, useFetchUserBoostersQuery } from "../../../api/gameApiSlice";
+import { Booster, InventoryItem, useBoosterUsedMutation, useFetchAllBoostersQuery, useFetchUserBoostersQuery } from "../../../api/gameApiSlice";
 import renderContent from "../../../features/content/renderContent";
 import Questionbooster from "../../../components/QuestionBooster/Questionbooster";
-import { handleDot, handleDoubleMarbles, handleDoubleXP, handleFactHint } from "../../../features/quiz/boosterHandler";
 
 const Question = () => {
   const { quizId, questionIndex } = useParams();
@@ -61,6 +60,8 @@ const Question = () => {
 
   const [isFrozen, setIsFrozen] = useState<boolean>(false);
 
+  const [keywords, setKeywords] = useState<string[]>([]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft(prevTimeLeft => {
@@ -75,13 +76,27 @@ const Question = () => {
       });
     }, 1000);
     dispatch(updateTimeLeft(timeLeft));
+    console.log("Time Left:", timeLeft, quizTimeLeft);
     return () => clearInterval(interval);
   }, [quizTimeLeft, navigate, isFrozen]);
 
   const [timeFreezeLeft, setTimeFreezeLeft] = useState<number>(0);
 
-  const handleTimeFreeze = () => {
-    console.log("Time Freeze activated");
+  const [useBoosterUsed] = useBoosterUsedMutation();
+
+  const handleTimeFreeze = async () => {
+    try {
+      const response = await useBoosterUsed({ userId: currUserId!, quizId: currQuizId!, questionId: question.id, boosterName: 'Time Freeze'});
+
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Time Freeze activated successfully:', response);
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred");
+    }
+    
     setIsFrozen(true);
     setTimeFreezeLeft(60);
     const interval = setInterval(() => {
@@ -96,6 +111,52 @@ const Question = () => {
       });
     }, 1000);
   };
+
+  const handleDoubleXP = async () => {
+    try {
+      const response = await useBoosterUsed({ userId: currUserId!, quizId: currQuizId!, questionId: question.id, boosterName: 'Double XP'});
+
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Double XP activated successfully:', response.data.data);
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred");
+    }
+  }
+
+  const handleDoubleMarbles = async () => {
+    try {
+      const response = await useBoosterUsed({ userId: currUserId!, quizId: currQuizId!, questionId: question.id, boosterName: 'Double Marbles'});
+
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Double Marbles activated successfully:', response.data.data);
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred");
+    }
+  }
+
+  const handleFactHint = async () => {
+    try {
+      const response = await useBoosterUsed({ userId: currUserId!, quizId: currQuizId!, questionId: question.id, boosterName: 'Fact Hint'});
+
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Fact Hint activated successfully:', response.data.data);
+        setKeywords(response.data.data.boosterInfo as string[]);
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred");
+    }
+  }
+
+  const handleDot = async () => {
+  }
 
   useEffect(() => {
     if (activatedBoosters.length <= 2) {
@@ -129,6 +190,9 @@ const Question = () => {
   const progressWidth = (timeLeft / (quizTimeLimit * 60)) * 100 + '%';
 
   const handleUserResponse = async () => {
+
+    setIsFrozen(false);
+    setKeywords([]);
     
     if (numQuestionIndex !== questions.length - 1) navigate(`/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`);
 
@@ -176,7 +240,7 @@ const Question = () => {
 
   useEffect(() => {
       if (boosterData) {
-        if (quiz.quizId !== 'da0028a0-5216-4f13-885d-f97136cdebab') {
+        if (quiz.quizId !== '4ef4ae1f-98a8-4329-b28c-e29d037f5203') {
           console.log("Non tutorial Quiz", boosterData.data);
           setBoosters(boosterData.data.inventory);
         } else {
@@ -202,16 +266,25 @@ const Question = () => {
       <div className="booster-description"></div>
       <div className="quiz-body--question">
         {timeFreezeLeft !== 0 ? <p style={{width: "100%", textAlign: "center"}}>Time Freeze remaining: {timeFreezeLeft}</p> : null}
-        <section className="question--boosters">
-          <div className="question--boosters_heading">
-            <p>Active Boosters</p>
-          </div>
-          <div className="question--boosters_container">
-            {boosterItem}
-          </div>
-          
-        </section>
-
+        <div className="question--boosters_heading">
+          {activatedBoosters.length < 2 ? <p>Available Boosters</p> : <p>Exhausted Booster Usage</p>}
+        </div>
+        {activatedBoosters.length < 2 ? (
+          <section className="question--boosters">
+            <div className="question--boosters_container">
+              {boosterItem}
+            </div>
+          </section>
+        ) : null}
+        {keywords.length ? <p className="keyword-header">Facts</p> : null}
+        <div className="question--keywords_container">
+          {keywords.length ? keywords.map((keyword, idx) => (
+            <div className="question--keyword" key={idx}>
+              {keyword}
+            </div>
+          )) : null
+          }
+        </div>
         <section className="question--start">
           <div className="question-count">
             <p>

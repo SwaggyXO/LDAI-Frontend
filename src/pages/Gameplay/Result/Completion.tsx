@@ -117,8 +117,8 @@ const Completion = () => {
     }
   }, [])
 
-  console.log(result);
-  console.log(result?.resultId);
+  // console.log(result);
+  // console.log(result?.resultId);
 
   // try {
   //   const { data: resultData, error: fetchUserResultError, isLoading: isFetchUserResultLoading, isSuccess } = useFetchUserResultQuery([userId, quizId]);
@@ -224,12 +224,11 @@ const Completion = () => {
 
           <div className="boosters-used">
             <div className="boosters-info">
-              <div className="booster">
-                {renderContent('boosters', 'Double XP', 'Double XP')}
-              </div>
-              <div className="booster">
-              {renderContent('boosters', 'Double Marbles', 'Double Marbles')}
-              </div>
+              {currQuiz.activatedBoosters.map((booster, index) => (
+                <div className="booster" key={index}>
+                  {renderContent('boosters', booster, booster)}
+                </div>
+              ))}
             </div>
             <h4>Boosters Used</h4>
           </div>

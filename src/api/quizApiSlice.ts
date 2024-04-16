@@ -2,14 +2,14 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/quiz' });
 
-interface Question {
+export interface Question {
     id: string;
     text: string;
     imageUrl: string | null;
     options: string[];
 }
 
-interface Quiz {
+export interface Quiz {
   quizId: string;
   questions: Question[];
   title: string;
@@ -27,7 +27,7 @@ interface Response {
     error: Object | null;
 }
 
-interface ArrayResponse {
+export interface ArrayResponse {
     code: number;
     status: string;
     data: Array<Quiz>;
@@ -43,9 +43,14 @@ export const quizApi = createApi({
       query: (quizId) => `/${quizId}`,
       providesTags: ['Quiz'],
     }),
-    fetchLatestQuizzes: builder.query<ArrayResponse, number>({
-        query: (limit) => `/fetch/latest?limit=${limit}`,
-        providesTags: ['Quiz'],
+    fetchLatestQuizzes: builder.query<ArrayResponse, { limit?: number, subject: string, quizType?: string }>({
+      query: ({ limit, subject, quizType }) => {
+        let url = `/fetch/latest?subject=${subject}`;
+        if (limit) url += `&limit=${limit}`;
+        if (quizType) url += `&quizType=${quizType}`;
+        return url;
+      },
+      providesTags: ['Quiz'],
     }),
   }),
 });

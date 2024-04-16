@@ -21,10 +21,12 @@ interface Response {
 export const subjectApi = createApi({
   reducerPath: 'subjectApi',
   baseQuery, 
+  tagTypes: ['Subject'],
   endpoints: (builder) => ({
     fetchSubjectsByGrade: builder.query<Response, string>({
       query: (grade) => `/fetch?grade=${grade}`,
-    })
+      providesTags: ['Subject'],
+    }),
   }),
 });
 

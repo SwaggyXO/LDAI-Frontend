@@ -1,17 +1,22 @@
 .quiz-body--question {
     display: flex;
     flex-direction: column;
-    height: 90vh;
+    min-height: 90vh;
     margin-top: -5vh;
     border-radius: 2vh 2vh 0 0;
     background-color: #B0EEFA;
     font-family: var(--ofont-family);
     padding: 5vh 0 0 0;
 
+    .question--boosters_heading {
+        text-align: center;
+        margin-top: 2vh;
+        margin-bottom: 1vh;
+    }
+
     .question--boosters {
         display: flex;
         flex-direction: column;
-        margin-top: 2vh;
         justify-content: center;
         align-items: center;
         gap: 2vh;
@@ -56,6 +61,38 @@
                     }
                 }
             }
+        }
+    }
+
+    .keyword-header {
+        text-align: center;
+        font-family: var(--mfont-family);
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.5vh;
+    }
+
+    .question--keywords_container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2vh;
+        margin: 0 1vh 1vh 1vh;
+
+        .question--keyword {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: calc(50% - 10px);
+            box-sizing: border-box;
+
+            background-color: #E1B03A;
+            color: var(--color-bg);
+
+            font-family: var(--ofont-family);
+            font-weight: 600;
+            padding: 1vh;
+            border-radius: 2vh;
         }
     }
 }
@@ -146,6 +183,7 @@
             border: none;
             border-radius: 10px;
             margin-top: 10%;
+            margin-bottom: 20%;
     
             font-family: var(--ofont-family);
             font-size: 1.25rem;

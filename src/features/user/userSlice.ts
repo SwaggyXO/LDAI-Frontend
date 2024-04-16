@@ -10,6 +10,7 @@ export interface UserState {
   streak: number;
   isNew: boolean;
   timeZone: string | null;
+  subject: string | null;
 }
 
 const initialState: UserState = {
@@ -21,6 +22,7 @@ const initialState: UserState = {
   streak: 0,
   isNew: true,
   timeZone: null,
+  subject: null
 };
 
 const userSlice = createSlice({

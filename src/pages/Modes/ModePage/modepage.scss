@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     font-family: var(--ofont-family);
+    min-height: 82.5vh;
 
     .mode-intro {
         margin-top: 2.5vh;
@@ -70,12 +71,15 @@
             }
 
             .week-excerpts {
+                display: flex;
+                flex-direction: column;
+                gap: 1vh;
+
                 .quiz-excerpt {
                     display: flex;
                     flex-direction: row;
                     border-radius: 2vh;
                     padding: 3vh 1vh;
-                    gap: 2vh;
                     background-color: #fff;
 
                     cursor: pointer;
@@ -92,10 +96,31 @@
             padding: 2vh 0;
             flex-direction: column;
 
-            p {
+            .month-header {
                 padding-left: 0.5vh;
                 font-size: 1.1rem;
                 font-weight: 600;
+                padding-bottom: 2vh;
+            }
+
+            .month-excerpts {
+                display: flex;
+                flex-direction: column;
+                gap: 1vh;
+
+                .quiz-excerpt {
+                    display: flex;
+                    flex-direction: row;
+                    border-radius: 2vh;
+                    padding: 3vh 1vh;
+                    background-color: #fff;
+
+                    cursor: pointer;
+
+                    p {
+                        width: 25%;
+                    }
+                }
             }
         }
 
@@ -104,10 +129,31 @@
             padding: 2vh 0;
             flex-direction: column;
 
-            p {
+            .earlier-header {
                 padding-left: 0.5vh;
                 font-size: 1.1rem;
                 font-weight: 600;
+                padding-bottom: 2vh;
+            }
+
+            .earlier-excerpts {
+                display: flex;
+                flex-direction: column;
+                gap: 1vh;
+
+                .quiz-excerpt {
+                    display: flex;
+                    flex-direction: row;
+                    border-radius: 2vh;
+                    padding: 3vh 1vh;
+                    background-color: #fff;
+
+                    cursor: pointer;
+
+                    p {
+                        width: 25%;
+                    }
+                }
             }
         }
     }

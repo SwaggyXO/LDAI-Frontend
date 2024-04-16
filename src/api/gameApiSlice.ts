@@ -78,6 +78,19 @@ export interface PurchaseBoosterResponse {
     error: Object
 }
 
+export interface BoosterUsedRequest {
+    userId: string,
+    quizId: string,
+    questionId: string,
+    boosterName: string
+}
+
+export interface BoosterUsedResponse {
+    data: {
+        boosterInfo: string | string[]
+    }
+}
+
 export const boosterApi = createApi({
   reducerPath: 'boosterApi',
   baseQuery: boosterBaseQuery, 
@@ -101,7 +114,7 @@ export const inventoryApi = createApi({
         }),
         addUserCurrency: builder.mutation<UserCurrencyResponse, UserCurrencyRequest>({
             query: requestData => ({
-                url: `/add/currency`,
+                url: `/currency/add`,
                 method: 'POST',
                 body: requestData
             }),
@@ -109,7 +122,7 @@ export const inventoryApi = createApi({
         }),
         subtractUserCurrency: builder.mutation<UserCurrencyResponse, UserCurrencyRequest>({
             query: requestData => ({
-                url: `/subtract/currency`,
+                url: `/currency/subtract`,
                 method: 'POST',
                 body: requestData
             }),
@@ -117,11 +130,18 @@ export const inventoryApi = createApi({
         }),
         purchaseBooster: builder.mutation<PurchaseBoosterResponse, PurchaseBoosterRequest>({
             query: requestData => ({
-                url: `/add/booster`,
+                url: `/booster/add`,
                 method: 'POST',
                 body: requestData
             }),
             invalidatesTags: ['Inventory'],
+        }),
+        boosterUsed: builder.mutation<BoosterUsedResponse, BoosterUsedRequest>({
+            query: requestData => ({
+                url: `/booster/used`,
+                method: 'POST',
+                body: requestData
+            }),
         }),
     }),
 });
@@ -134,5 +154,6 @@ export const {
     useFetchUserBoostersQuery,
     useAddUserCurrencyMutation,
     useSubtractUserCurrencyMutation,
-    usePurchaseBoosterMutation
+    usePurchaseBoosterMutation,
+    useBoosterUsedMutation,
 } = inventoryApi;

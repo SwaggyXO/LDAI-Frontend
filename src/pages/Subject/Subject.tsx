@@ -12,6 +12,7 @@ import { RootState } from '../../app/store';
 import renderContent from '../../features/content/renderContent';
 import { useUpdateUserMutation } from '../../api/userApiSlice';
 import { setUser } from '../../features/user/userSlice';
+import Loader from '../Loader/Loader';
 
 type SubjectsProps = {
     subjects: { id: number, name: string; svg: string }[];
@@ -60,6 +61,8 @@ const Subject = () => {
 
     const { data: subjectsData, error: fetchSubjectsError, isLoading: isFetchSubjectsLoading } = useFetchSubjectsByGradeQuery(currUser.grade!);
 
+    if (fetchSubjectsError) navigate('/home');
+
     const subjects = subjectsData?.data;
 
     useEffect(() => {
@@ -84,7 +87,7 @@ const Subject = () => {
             } else {
                 console.log('User updated successfully:', response);
                 dispatch(setUser(response.data.data));
-                navigate("/home");
+                currUser.isNew ? navigate("/home") : navigate("/unrated");
             }
               
           } catch (error) {
@@ -109,15 +112,14 @@ const Subject = () => {
                 <Button buttonText="Next" onClick={handleNext} className="button-next" check={selected}/>
             </div>
         </div>
-        
     )
 
     return (
         isAuthenticated && (
             <>
-                {error && <p style={{height: "100vh"}}>Authentication Error</p>}
-                {!error && isLoading && <p style={{height: "100vh"}}>Loading...</p>}
-                {!error && !isLoading && content}
+                {!error && isLoading && isFetchSubjectsLoading && <Loader />}
+                {error && fetchSubjectsError && <p style={{height: "100vh"}}>Authentication Error</p>}
+                {!error && !isLoading && !isFetchSubjectsLoading && !fetchSubjectsError && content}
             </>
         )
     )

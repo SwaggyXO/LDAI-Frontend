@@ -92,7 +92,7 @@ const Home = () => {
   }, [user])
 
   const quizId = "0c8357c9-0454-4c58-addd-5f713eb432e2";
-  const smallQuizId = "da0028a0-5216-4f13-885d-f97136cdebab"
+  const smallQuizId = "4ef4ae1f-98a8-4329-b28c-e29d037f5203"
   const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(smallQuizId);
 
   useEffect(() => {

@@ -44,10 +44,10 @@ const Intro = (props: Quiz) => {
       values: ["Max", "500", "1000"],
       colors: ["#00B4D8", "#65BE0D", "#E1B03A"],
     },
-    {
-      values: ["Avg.", "400", "750"],
-      colors: ["#00B4D8", "#65BE0D", "#E1B03A"],
-    },
+    // {
+    //   values: ["Avg.", "400", "750"],
+    //   colors: ["#00B4D8", "#65BE0D", "#E1B03A"],
+    // },
   ];
 
   const generateRewardCapsules = (data: RewardData[]): React.ReactNode[] => {

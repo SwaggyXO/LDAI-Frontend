@@ -6,15 +6,28 @@ import Loader from '../../Loader/Loader';
 import renderContent from '../../../features/content/renderContent';
 import QuizExcerpt from '../../../components/QuizExcerpt/QuizExcerpt';
 import { SampleQuizzes } from '../../Home/SampleQuizzes';
+import { useFetchLatestQuizzesQuery } from '../../../api/quizApiSlice';
+import { getUserCookie } from '../../../features/user/userCookieHandler';
+import { useEffect } from 'react';
 
 const ModePage = () => {
 
     const { user, isAuthenticated, error, isLoading } = useAuth0();
 
+    const currUser = getUserCookie();
+
     const allModes = modes;
 
     const { modeName } = useParams();
     const mode = allModes.find(mode => mode.imgText.toLowerCase() === modeName);
+
+    const { data: quizData, isLoading: isFetchLatestLoading, error: fetchLatestError} = useFetchLatestQuizzesQuery({subject: `${currUser!.subject}`, limit: 10, quizType: `${mode?.imgText}`});
+
+    useEffect(() => {
+        if (quizData) {
+            console.log(quizData);
+        }
+    }, [quizData]);
 
     const content =  (
         <div className='mode-main'>
@@ -22,7 +35,7 @@ const ModePage = () => {
                 <div className="mode-intro_top">
                     {renderContent('app', 'Modes', `${mode?.imgText}`)}
                     <h1>{mode?.title}</h1>
-                    <p>{mode?.description[0]}</p>
+                    <p>{mode?.description}</p>
                 </div>
                 <div className="mode-intro_bottom">
                     <p>{mode?.questions} Questions</p>
@@ -34,19 +47,19 @@ const ModePage = () => {
                 <div className="mode-quizzes_week">
                     <p className='week-header'>This Week</p>
                     <div className="week-excerpts">
-                        <QuizExcerpt quiz={SampleQuizzes[0]} />
+                        {quizData && quizData.data.map((quiz, idx) => <QuizExcerpt key={idx} quiz={quiz} />)}
                     </div>
                 </div>
                 <div className="mode-quizzes_month">
-                    <p>This Month</p>
+                    <p className='month-header'>This Month</p>
                     <div className="month-excerpts">
-                        <QuizExcerpt quiz={SampleQuizzes[1]} />
+                        {quizData && quizData.data.map((quiz, idx) => <QuizExcerpt key={idx} quiz={quiz} />)}
                     </div>
                 </div>
                 <div className="mode-quizzes_earlier">
-                    <p>Earlier</p>
+                    <p className='earlier-header'>Earlier</p>
                     <div className="earlier-excerpts">
-                        <QuizExcerpt quiz={SampleQuizzes[2]} />
+                        {quizData && quizData.data.map((quiz, idx) => <QuizExcerpt key={idx} quiz={quiz} />)}
                     </div>
                 </div>
             </div>
@@ -55,9 +68,9 @@ const ModePage = () => {
 
     return (
         <>
-          {isLoading && <Loader />}
-          {error && <p style={{height: "100vh"}}>An Error Occured</p>}
-          {!isLoading && isAuthenticated && !error && content}
+          {isLoading || isFetchLatestLoading && <Loader />}
+          {error || fetchLatestError && <p style={{height: "100vh"}}>An Error Occured</p>}
+          {!isLoading && isAuthenticated && !isFetchLatestLoading && !error && content}
         </>
     )
 }

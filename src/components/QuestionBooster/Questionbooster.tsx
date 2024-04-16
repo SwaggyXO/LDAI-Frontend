@@ -65,14 +65,14 @@ const Questionbooster = (props: PropsType) => {
                         height: 0,
                         width: 0,
                         fontSize: "0rem",
-                        padding: "none"
+                        paddingTop: 0
                 });
 
                 // gsap.to(".booster-description", { opacity: 0, duration: 0.3 });
                 gsap.to(boosterRef.current, { 
                     x: 0,
                     y: 0,
-                    scale: 1.2,
+                    scale: 1.1,
                     duration: 0.5,
                     ease: "power2.inOut",
                     zIndex: 1
@@ -97,7 +97,7 @@ const Questionbooster = (props: PropsType) => {
             >
                 <div className="booster-quantity">{props.booster.quantity}</div>
                 <div className="booster-ellipse">{renderContent('boosters', `${booster.name}`, `${booster.name}`)}</div>
-                <div className={`booster-description ${isActive ? 'active' : ''}`} style={{opacity: 0, height: 0, fontSize: "0rem", width: 0, padding: "none"}}>{props.booster.booster.description}</div>
+                <div className={`booster-description ${isActive ? 'active' : ''}`} style={{opacity: 0, height: 0, fontSize: "0rem", width: 0, paddingTop: "none"}}>{props.booster.booster.description}</div>
             </div>
         </>
         
