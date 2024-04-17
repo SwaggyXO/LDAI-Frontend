@@ -1,6 +1,6 @@
 import "./softend.scss"
 import { Bouncingdot } from '../../components'
-import hat from '../../assets/js_files/hat.json'
+import hat from '../../../public/assets/js_files/Hat.json';
 import Lottie from "lottie-react"
 // A soft ending of the page
 

@@ -1,5 +1,5 @@
 import { MutatingDots } from "react-loader-spinner"
-import Evaluating from "../../assets/js_files/Evaluating.json";
+import Evaluating from "../../../public/assets/js_files/Evaluating.json";
 import Lottie from "lottie-react";
 import { TypeAnimation } from "react-type-animation";
 

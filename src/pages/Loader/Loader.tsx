@@ -1,5 +1,5 @@
 import { MutatingDots } from "react-loader-spinner"
-import loader from "../../assets/js_files/Loader.json";
+import loader from "../../../public/assets/js_files/Loader.json";
 import Lottie from "lottie-react";
 
 const Loader = () => {

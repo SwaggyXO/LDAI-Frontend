@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import cube from "../../assets/js_files/Cube_animation_purple.json";
+import cube from "../../../public/assets/js_files/Cube_animation_purple.json";
 import Lottie from "lottie-react";
 import "./dotcomma.scss";
 

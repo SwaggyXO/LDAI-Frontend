@@ -1,8 +1,8 @@
 import { Feature } from "../../components";
 import { camera, learningvector, groupchat, chattingvector } from "./imports";
-import gameon from "../../assets/js_files/gameon.json";
-import ai from "../../assets/js_files/ai.json";
-import profile from "../../assets/js_files/profile.json";
+import gameon from "../../../public/assets/js_files/gameon.json";
+import ai from "../../../public/assets/js_files/ai.json";
+import profile from "../../../public/assets/js_files/profile.json";
 import Lottie from "lottie-react";
 
 // All the remarkable features of the application
