@@ -78,6 +78,21 @@ export interface PurchaseBoosterResponse {
     error: Object
 }
 
+export interface SubtractBoosterResponse {
+    code: number,
+    data: {
+        userId: string,
+        updates: [
+            {
+                booster: string,
+                newQuantity: number,
+            }
+        ]
+    },
+    status: string,
+    error: Object
+}
+
 export interface BoosterUsedRequest {
     userId: string,
     quizId: string,
@@ -136,6 +151,14 @@ export const inventoryApi = createApi({
             }),
             invalidatesTags: ['Inventory'],
         }),
+        subtractBooster: builder.mutation<PurchaseBoosterResponse, PurchaseBoosterRequest>({
+            query: requestData => ({
+                url: `/booster/subtract`,
+                method: 'POST',
+                body: requestData
+            }),
+            invalidatesTags: ['Inventory'],
+        }),
         boosterUsed: builder.mutation<BoosterUsedResponse, BoosterUsedRequest>({
             query: requestData => ({
                 url: `/booster/used`,
@@ -155,5 +178,6 @@ export const {
     useAddUserCurrencyMutation,
     useSubtractUserCurrencyMutation,
     usePurchaseBoosterMutation,
+    useSubtractBoosterMutation,
     useBoosterUsedMutation,
 } = inventoryApi;

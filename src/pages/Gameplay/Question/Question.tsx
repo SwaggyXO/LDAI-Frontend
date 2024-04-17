@@ -4,7 +4,7 @@ import "./Question.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { ChangeEvent, useEffect, useState } from "react";
-import { useCreateUserResponseMutation } from "../../../api/userApiSlice";
+import { CreateUserResponseRequest, useCreateUserResponseMutation } from "../../../api/userApiSlice";
 import { updateTimeLeft } from "../../../features/quiz/quizSlice";
 import { Booster, InventoryItem, useBoosterUsedMutation, useFetchAllBoostersQuery, useFetchUserBoostersQuery } from "../../../api/gameApiSlice";
 import renderContent from "../../../features/content/renderContent";
@@ -62,6 +62,17 @@ const Question = () => {
 
   const [keywords, setKeywords] = useState<string[]>([]);
 
+  const [isSubmitClicked, setIsSubmitClicked] = useState<boolean>(false);
+
+  const [dotNavsLeft, setDotNavsLeft] = useState<number>(0);
+
+  useEffect(() => {
+    if (dotNavsLeft > 0) {
+      setDotNavsLeft(dotNavsLeft - 1);
+      handleDotResponse();
+    }
+  }, [dotNavsLeft]);
+
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeLeft(prevTimeLeft => {
@@ -75,7 +86,7 @@ const Question = () => {
         return prevTimeLeft;
       });
     }, 1000);
-    dispatch(updateTimeLeft(timeLeft));
+    if (isSubmitClicked || quizTimeLeft < 50) dispatch(updateTimeLeft(timeLeft));
     console.log("Time Left:", timeLeft, quizTimeLeft);
     return () => clearInterval(interval);
   }, [quizTimeLeft, navigate, isFrozen]);
@@ -148,7 +159,7 @@ const Question = () => {
         console.error("An error occured", response);
       } else {
         console.log('Fact Hint activated successfully:', response.data.data);
-        setKeywords(response.data.data.boosterInfo as string[]);
+        setKeywords((response.data.data.boosterInfo as string[]).slice(0, 3));
       }
     } catch (err) {
       console.error("An unexpected error occurred");
@@ -156,6 +167,56 @@ const Question = () => {
   }
 
   const handleDot = async () => {
+    try {
+      const response = await useBoosterUsed({ userId: currUserId!, quizId: currQuizId!, questionId: question.id, boosterName: 'Dot'});
+
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Dot activated successfully:', response.data.data);
+        setDotNavsLeft(2);
+        console.log('Skipped 2 questions');
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred");
+    }
+  }
+
+  const handleDotResponse = async () => {
+    setIsFrozen(false);
+    setKeywords([]);
+    setTimeFreezeLeft(0);
+    setIsSubmitClicked(true);
+    
+    if (numQuestionIndex !== questions.length - 1) navigate(`/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`);
+
+    const timeTaken = (quizTimeLeft - timeLeft);
+
+    dispatch(updateTimeLeft(timeLeft));
+
+    const requestBody: CreateUserResponseRequest = {
+      userId: currUserId!,
+      quizId: currQuizId!,
+      questionId: question.id,
+      response: [answer],
+      timeTaken: timeTaken,
+      score: 1,
+    };
+
+    try {
+      const response = await createUserResponse(requestBody);
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Response sent successfully:', response);
+        setAnswer('');
+        if (numQuestionIndex === questions.length - 1) {
+          navigate('/result');
+        }
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred");
+    }
   }
 
   useEffect(() => {
@@ -193,6 +254,8 @@ const Question = () => {
 
     setIsFrozen(false);
     setKeywords([]);
+    setTimeFreezeLeft(0);
+    setIsSubmitClicked(true);
     
     if (numQuestionIndex !== questions.length - 1) navigate(`/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`);
 
@@ -200,13 +263,13 @@ const Question = () => {
 
     dispatch(updateTimeLeft(timeLeft));
 
-    const requestBody = {
+    const requestBody: CreateUserResponseRequest = {
       userId: currUserId!,
       quizId: currQuizId!,
       questionId: question.id,
       response: [answer],
       timeTaken: timeTaken,
-    }
+    };
 
     try {
       const response = await createUserResponse(requestBody);

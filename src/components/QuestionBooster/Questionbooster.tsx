@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react"
-import { Booster, InventoryItem } from "../../api/gameApiSlice"
+import { Booster, Currency, InventoryItem, useSubtractBoosterMutation } from "../../api/gameApiSlice"
 import renderContent from "../../features/content/renderContent"
 import gsap from "gsap"
 import { useDispatch } from "react-redux"
 import { updateActivatedBoosters } from "../../features/quiz/quizSlice"
+import { getUserCookie } from "../../features/user/userCookieHandler"
 
 type PropsType = {
     booster: InventoryItem
@@ -16,6 +17,10 @@ const Questionbooster = (props: PropsType) => {
     const booster = props.booster.booster;
 
     const dispatch = useDispatch();
+
+    const [subtractBooster] = useSubtractBoosterMutation();
+
+    const user = getUserCookie();
 
     useEffect(() => {
         if (isActive && boosterRef.current) {
@@ -81,8 +86,23 @@ const Questionbooster = (props: PropsType) => {
         }
     }, [isActive]);
 
-    const activateBooster = () => {
+    const handleSubtractBooster = async (booster: Currency) => {
+        try {
+          const response = await subtractBooster({userId: user?.userId!, booster: [booster]});
+          if ('error' in response) {
+            console.error("An error occured", response);
+          } else {
+            console.log('Booster subtracted successfully:', response);
+            if (response) console.log(response);
+          }
+        } catch (error) {
+          console.error("An unexpected error occurred");
+        }
+    }
+
+    const activateBooster = async () => {
         if (props.booster.quantity > 0) {
+            handleSubtractBooster({name: booster.name, amount: 1});
             setIsActive(true);
             dispatch(updateActivatedBoosters(booster.name));
         }

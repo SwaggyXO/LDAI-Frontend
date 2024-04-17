@@ -15,6 +15,7 @@ import { resetQuizState, updateQuizState } from "../../../features/quiz/quizSlic
 import renderContent from "../../../features/content/renderContent";
 import Loader from "../../Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import CompletionLoader from "../../Loader/CompletionLoader";
 
 type ResultDataF = {
   values: string[];
@@ -232,6 +233,7 @@ const Completion = () => {
             </div>
             <h4>Boosters Used</h4>
           </div>
+          
         </div>
 
         <div className="user--stats">
@@ -262,18 +264,10 @@ const Completion = () => {
     </div>
   )
 
-  const loader = (
-    <>
-      <div style={{display: "flex", width: "100%", justifyContent: "center"}}>
-        <p style={{fontFamily: "var(--ofont-family)", textAlign: "center"}}>Dot is compiling your result...</p>
-      </div>
-      <Loader />
-    </> 
-  )
 
   return (
     <>
-      {isLoading || !result && loader}
+      {isLoading || !result && <CompletionLoader />}
       {error && resError && <p style={{height: "100vh"}}>Unexpected Error Occured</p>}
       {!isLoading && isAuthenticated && result && content}
     </>

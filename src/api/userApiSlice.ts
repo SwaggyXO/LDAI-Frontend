@@ -50,12 +50,13 @@ interface CreateUserResponseResponse {
   response: string[];
 }
 
-interface CreateUserResponseRequest {
+export interface CreateUserResponseRequest {
   userId: string;
   quizId: string;
   questionId: string;
   response: string[];
   timeTaken: number;
+  score?: number;
 }
 
 interface Winning {
