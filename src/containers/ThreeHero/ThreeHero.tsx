@@ -27,6 +27,7 @@ const ThreeHero = () => {
             {/* <BirdModel /> */}
             {/* <MagicModel isRotating={isRotating} /> */}
             <AnimalCellModel 
+              // @ts-ignore
               isRotating={isRotating}
               setIsRotating={setIsRotating}
               position={[0, 0, -5]}

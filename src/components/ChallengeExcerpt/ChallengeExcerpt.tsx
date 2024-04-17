@@ -17,6 +17,7 @@ const ChallengeExcerpt = (props: ChallengeProps) => {
 
     const  LinearProgressWithLabel = (props: LinearProgressProps & { value: number, actualval: number }) => {
         return (
+          // @ts-ignore
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Box sx={{ width: '100%', mr: 1 }}>
               <LinearProgress variant="determinate" {...props} />

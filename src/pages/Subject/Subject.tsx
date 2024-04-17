@@ -86,6 +86,7 @@ const Subject = () => {
                 console.error("An error occured", response);
             } else {
                 console.log('User updated successfully:', response);
+                // @ts-ignore
                 dispatch(setUser(response.data.data));
                 currUser.isNew ? navigate("/home") : navigate("/unrated");
             }

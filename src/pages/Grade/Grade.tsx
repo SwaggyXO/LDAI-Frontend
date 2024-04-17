@@ -50,6 +50,7 @@ const Grade = () => {
         console.log("An error occured");
       } else {
         console.log('User updated successfully:', response);
+        // @ts-ignore
         dispatch(setUser(response.data.data));
         navigate("/subject");
       }
