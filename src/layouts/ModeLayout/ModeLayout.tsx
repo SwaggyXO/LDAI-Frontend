@@ -3,7 +3,7 @@ import Topnav from "../../containers/Topnav/Topnav";
 import Bottomnav from "../../containers/Bottomnav/Bottomnav";
 
 import { Challenges, DRS, Home, PowerUps, Profile } from "../../containers/Bottomnav/imports";
-import './modeLayout.scss';
+import './modelayout.scss';
 
 import renderContent from "../../features/content/renderContent";
 import useAuth from "../../hooks/useAuth";
