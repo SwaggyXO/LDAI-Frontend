@@ -58,9 +58,9 @@ const PowerUps = () => {
   // const { data: boosterData, error: boosterError } = useFetchUserBoostersQuery(getUserCookie()?.userId!);
   const { data: boosterData, error: boosterError, isLoading: isFetchUserBoosterLoading } = useFetchUserBoostersQuery(user?.userId!);
 
-  const [addUserCurrency] = useAddUserCurrencyMutation();
-  const [subtractUserCurrency] = useSubtractUserCurrencyMutation();
-  const [purchaseBooster] = usePurchaseBoosterMutation();
+  const [addUserCurrency, {isLoading: isAddUserCurrencyLoading}] = useAddUserCurrencyMutation();
+  const [subtractUserCurrency, {isLoading: isSubtractUserCurrencyLoading}] = useSubtractUserCurrencyMutation();
+  const [purchaseBooster, {isLoading: isPurchaseLoading}] = usePurchaseBoosterMutation();
 
   useEffect(() => {
       if (boosterData) {
@@ -290,13 +290,12 @@ const PowerUps = () => {
   );
 
   return (
-    isAuthenticated && (
-      <>
-        {error && <p style={{height: "100vh"}}>Authentication Error</p>}
-        {!error && isLoading || isFetchUserBoosterLoading && <Loader />}
-        {!error && !isLoading && !isFetchUserBoosterLoading && content}
-      </>
-    )
+    <>
+      {isLoading || isFetchUserBoosterLoading && <Loader />}
+      {isAddUserCurrencyLoading || isSubtractUserCurrencyLoading || isPurchaseLoading && <Loader />}
+      {error && <p style={{height: "100vh"}}>An Error Occured</p>}
+      {!isLoading && isAuthenticated && !error && !isFetchUserBoosterLoading && content}
+    </>
   )
 }
 

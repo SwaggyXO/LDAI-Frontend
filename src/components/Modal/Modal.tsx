@@ -11,7 +11,7 @@ type ModalProps = {
 
 const Modal = (props: ModalProps) => {
     return (
-        <AnimatePresence>
+        <AnimatePresence mode='wait'>
             {props.isOpen && (
                 <motion.div
                 initial={{ opacity: 0 }}
@@ -21,7 +21,17 @@ const Modal = (props: ModalProps) => {
                 className='backdrop'
                 onClick={props.onClose}
                 >
-                    <motion.div
+                    {props.classname === 'reward-modal' ?
+                    (<motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.8, delay: 0.1 }}
+                        className={props.classname}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        {props.children}
+                    </motion.div>) : (<motion.div
                         initial={{ y: '-100%' }}
                         animate={{ y: 0 }}
                         exit={{ y: '100%' }}
@@ -30,7 +40,8 @@ const Modal = (props: ModalProps) => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         {props.children}
-                    </motion.div>
+                    </motion.div>)}
+                    
                 </motion.div>
             )}
         </AnimatePresence>

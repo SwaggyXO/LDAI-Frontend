@@ -1,7 +1,7 @@
 import './home.scss'
 
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAuth0 } from "@auth0/auth0-react"
 
@@ -22,8 +22,13 @@ import { updateQuizState } from "../../features/quiz/quizSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import Loader from '../Loader/Loader';
-import { Currency, usePurchaseBoosterMutation } from '../../api/gameApiSlice';
+import { Currency, useAddUserCurrencyMutation, useFetchUserBoostersQuery, usePurchaseBoosterMutation } from '../../api/gameApiSlice';
 import { getUserCookie } from '../../features/user/userCookieHandler';
+
+import Reward from '../../../public/assets/js_files/Reward.json';
+import Lottie from 'lottie-react';
+import { gsap } from 'gsap';
+import { getChestCookie, setChestCookie } from '../../features/content/chestCookieHandler';
 
 const Home = () => {
 
@@ -33,11 +38,52 @@ const Home = () => {
   const navigate = useNavigate();
   const currUser = useSelector((state: RootState) => state.user);
 
+  const cookieUser = getUserCookie();
+
   const [ timedGreeting, setTimedGreeting ] = useState<string>('');
+  const [ reward, setReward ] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [isUserCreated, setIsUserCreated] = useState(false);
+  const [rewardModalOpen, setRewardModalOpen] = useState(false);
+  const [isChestClicked, setIsChestClicked] = useState(false);
 
+  const chestReward = getChestCookie();
+  const chestRef = useRef(null);
+
+  useLayoutEffect(() => {
+    console.log('chestReward:', chestReward);
+    let ctx: gsap.Context;
+    if (chestRef.current) {
+      if (chestReward) {
+        ctx = gsap.context(() => {
+          gsap.to(chestRef.current, { y: "-10px", yoyo: true, repeat: -1, ease: "power1.inOut", duration: 0.5 });
+        });
+      } else {
+        console.log('Shake');
+        ctx = gsap.context(() => {
+          gsap.to(chestRef.current, { rotation: 10, yoyo: true, repeat: -1, ease: "power1.inOut", duration: 0.2 });
+        });
+      }
+    }
+    return () => ctx.revert();
+    
+  }, [chestReward]);
+
+  if (!chestReward && !isChestClicked) {
+    
+    const ctx = gsap.context(() => {
+      gsap.to(chestRef.current, { rotation: 10, yoyo: true, repeat: -1, ease: "power1.inOut", duration: 0.2 });
+    });
+  }
   
+  const rewardClose = () => {
+    setRewardModalOpen(false);
+  }
+
+  const rewardOpen = () => {
+    setRewardModalOpen(true);
+  }
+
   const close = () => {
     setModalOpen(false);
   }
@@ -46,9 +92,12 @@ const Home = () => {
     setModalOpen(true);
   }
 
-  const { data: quizzesData, isLoading: isFetchLatestLoading, error: fetchLatestError} = useFetchLatestQuizzesQuery({subject: `${currUser!.subject}`, limit: 10}, { skip: !currUser.subject });
+  const { data: boosterData, error: boosterError, isLoading: isFetchUserBoosterLoading } = useFetchUserBoostersQuery(currUser && currUser.userId! || cookieUser! && cookieUser.userId!);
 
-  const [purchaseBooster] = usePurchaseBoosterMutation();
+  const [addUserCurrency, {isLoading: isAddUserCurrencyLoading}] = useAddUserCurrencyMutation();
+  const [purchaseBooster, {isLoading: isPurchaseLoading}] = usePurchaseBoosterMutation();
+
+  const { data: quizzesData, isLoading: isFetchLatestLoading, error: fetchLatestError} = useFetchLatestQuizzesQuery({subject: `${currUser!.subject}`, limit: 10}, { skip: !currUser.subject });
 
   const [createUser, { isLoading: isCreateUserLoading, error: isCreateUserError }] = useCreateUserMutation();
 
@@ -107,9 +156,102 @@ const Home = () => {
     }
   }, [quizData]);
 
+  const randomizePrize = () => {
+    const commonPrizes = ['Double Marbles', 'Double XP', '2K Marbles'];
+    const rarePrizes = ['Time Freeze'];
+    const epicPrizes = ['Fact Hint'];
+  
+    const randomNumber = Math.random();
+  
+    let prizeType;
+    if (randomNumber < 0.1) {
+      prizeType = 'epic';
+    } else if (randomNumber < 0.3) {
+      prizeType = 'rare';
+    } else {
+      prizeType = 'common';
+    }
+  
+    let prizePool: string[];
+    switch (prizeType) {
+      case 'common':
+        prizePool = commonPrizes;
+        break;
+      case 'rare':
+        prizePool = rarePrizes;
+        break;
+      case 'epic':
+        prizePool = epicPrizes;
+        break;
+    }
+  
+    const prize = prizePool![Math.floor(Math.random() * prizePool!.length)];
+  
+    return prize;
+  };
+
+  const handleChestClick = async () => {
+    
+    setIsChestClicked(true);
+    const prize = randomizePrize();
+    console.log(prize);
+    gsap.killTweensOf(chestRef.current);
+    gsap.to(chestRef.current, { rotation: 20, repeat: 3, yoyo: true, ease: "power1.inOut", duration: 0.2, onComplete: rewardOpen });
+    setChestCookie(prize);
+    setReward(prize as any);
+
+    if (prize === '2K Marbles') {
+      try {
+        const response = await addUserCurrency({userId: currUser.userId!, currency: [{name: 'marbles', amount: 2000}]});
+        if ('error' in response) {
+          console.error("An error occured", response);
+        } else {
+          console.log('Currency added successfully:', response);
+          dispatch(setUser(response.data.data));
+          if (response) console.log(response);
+        }
+      } catch (error) {
+        console.error("An unexpected error occurred");
+      }
+    } else {
+      try {
+        const booster = boosterData?.data.inventory.filter((booster) => booster.booster.name === prize);
+        const quantity = booster && booster[0]?.quantity;
+        if (quantity && quantity < 2) {
+          const response = await purchaseBooster({userId: currUser.userId!, booster: [{name: prize, amount: 1}]});
+          if ('error' in response) {
+            console.error("An error occured", response);
+          } else {
+            console.log('Booster purchased successfully:', response);
+            if (response) console.log(response);
+          }
+        } else {
+          console.log("Maxed out inventory");
+        }
+      } catch (error) {
+        console.error("An unexpected error occurred");
+      }
+    }
+  };
+
   const quizzes = SampleQuizzes;
 
   const quizIntroModalContent = quizData && <Intro quiz={quizData.data} />
+
+  const rewardModalContent = (
+    <div className="reward">
+      <div className="reward-header">
+        <p>Congratulations on your reward!</p>
+      </div>
+      <div className="reward-content">
+        <p>{reward}</p>
+        {reward !== '2K Marbles' 
+        ? renderContent('boosters', `${reward}`, `${reward}`) 
+        : renderContent('app', 'Marble', 'Marble')}
+        <p className='warning'>Above items won't be added in case of <span>MAX</span> inventory</p>
+      </div>
+    </div>
+  )
 
   const buttonElements = (
     <p>Play &nbsp;{<FontAwesomeIcon icon={faPlay} color="black"/>}</p>
@@ -130,14 +272,21 @@ const Home = () => {
           {quizIntroModalContent!}
         </Modal>
       )}
+      {rewardModalOpen && (
+        <Modal isOpen={rewardModalOpen} onClose={rewardClose} classname='reward-modal'>
+          {rewardModalContent}
+        </Modal>
+      )}
       <div className="intro-half">
         <div className="intro-half_header">
           <div className="intro-half_header--text">
             <p>{timedGreeting}!</p>
             <p>{user?.name}</p>
           </div>
-          <div className="intro-half_header--chest">
-            {renderContent('app', 'Chest', 'closed')}
+          <div className="intro-half_header--chest" ref={chestRef} onClick={chestReward ? undefined : handleChestClick}>
+            {chestReward ? 
+            renderContent('app', 'Chest', 'blank') :
+            renderContent('app', 'Chest', 'closed')}
           </div>
         </div>
         <TextContainer elements={textContainerElements} className="home" />
