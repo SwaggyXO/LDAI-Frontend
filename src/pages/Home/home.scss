@@ -103,7 +103,7 @@
     flex-direction: column;
     width: 100%;
     background-color: #fff;
-    border-radius: 5vh;
+    border-radius: 5vh 5vh 0 0;
     min-height: 50vh;
 
     .new-half_header {
@@ -125,8 +125,4 @@
         flex-direction: column;
         gap: 2vh;
     }
-}
-
-.subject-half {
-    height: 2vh;
 }

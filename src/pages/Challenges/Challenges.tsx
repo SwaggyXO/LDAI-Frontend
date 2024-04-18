@@ -17,7 +17,7 @@ const Challenges = () => {
 
   const rewardButtonContent = (
     <>
-      <p>Good Job!</p>
+      <p>Collect</p>
       <div className="rewards">
         {renderContent('app', 'Marble', 'Marble')}
         <p>5000</p>

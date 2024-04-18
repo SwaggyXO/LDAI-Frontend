@@ -51,7 +51,6 @@ const Home = () => {
   const chestRef = useRef(null);
 
   useLayoutEffect(() => {
-    console.log('chestReward:', chestReward);
     let ctx: gsap.Context;
     if (chestRef.current) {
       if (chestReward) {
@@ -59,7 +58,6 @@ const Home = () => {
           gsap.to(chestRef.current, { y: "-10px", yoyo: true, repeat: -1, ease: "power1.inOut", duration: 0.5 });
         });
       } else {
-        console.log('Shake');
         ctx = gsap.context(() => {
           gsap.to(chestRef.current, { rotation: 10, yoyo: true, repeat: -1, ease: "power1.inOut", duration: 0.2 });
         });
@@ -194,7 +192,6 @@ const Home = () => {
     
     setIsChestClicked(true);
     const prize = randomizePrize();
-    console.log(prize);
     gsap.killTweensOf(chestRef.current);
     gsap.to(chestRef.current, { rotation: 20, repeat: 3, yoyo: true, ease: "power1.inOut", duration: 0.2, onComplete: rewardOpen });
     setChestCookie(prize);
