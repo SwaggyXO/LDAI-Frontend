@@ -89,6 +89,37 @@ interface FetchUserResultResponse {
   error: Object | null;
 }
 
+interface StartQuizResponse {
+  code: number;
+  status: string;
+  data: string;
+  error: Object | null;
+}
+
+interface Quizzes {
+  userId: string,
+  grade: string,
+  streak: 0,
+  quizzes: [
+    {
+      quizId: string,
+      subject: string,
+      title: string,
+      description: string,
+      quizType: string,
+      attemptedAt: string,
+      imageUrl: string
+    }
+  ]
+}
+
+interface FetchUserQuizzesResponse {
+  code: number;
+  status: string;
+  data: Quizzes;
+  error: Object | null;
+}
+
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
@@ -133,7 +164,22 @@ export const usersApi = createApi({
         url: `/result/stream`,
         method: 'GET',
       }),
-    })
+    }),
+    startQuiz: builder.mutation<StartQuizResponse, { userId: string, quizId: string }>({
+      query: requestData => ({
+        url: '/quiz/start',
+        method: 'POST',
+        body: requestData,
+      }),
+    }),
+    fetchUserQuizzes: builder.query<FetchUserQuizzesResponse, { userId: string, limit?: number }>({
+      query: ({ userId, limit }) => {
+        let url = `/quizzes/${userId}`;
+        if (limit) url += `?limit=${limit}`;
+        return url;
+      },
+      providesTags: ['User'],
+    }),
   }),
 });
 
@@ -143,5 +189,7 @@ export const {
     useUpdateUserMutation,
     useCreateUserResponseMutation,
     useFetchUserResultQuery,
-    useFetchUserResultStreamQuery
+    useFetchUserResultStreamQuery,
+    useStartQuizMutation,
+    useFetchUserQuizzesQuery,
 } = usersApi;

@@ -8,6 +8,7 @@ interface Question {
     text: string;
     imageUrl: string | null;
     options: string[];
+    paraphrased: string
 }
 
 interface Winning {
@@ -67,7 +68,6 @@ const quizSlice = createSlice({
         state.timeLeft = action.payload;
     },
     resetQuizState(state) {
-        removeQuizCookie();
         state.questions = [];
         state.timeLeft = 0;
         state.activatedBoosters = [];

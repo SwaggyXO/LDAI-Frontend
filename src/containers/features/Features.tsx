@@ -4,7 +4,7 @@ import gameon from "../../../public/assets/js_files/gameon.json";
 import ai from "../../../public/assets/js_files/ai.json";
 import profile from "../../../public/assets/js_files/profile.json";
 import Lottie from "lottie-react";
-
+import './features.scss';
 // All the remarkable features of the application
 
 const Features = () => {

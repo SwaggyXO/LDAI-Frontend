@@ -54,7 +54,7 @@ const Completion = () => {
 
   const { user, isAuthenticated, error, isLoading } = useAuth0();
 
-  const { data: userData, error: fetchUserError } = useFetchUserByIdQuery(user!.sub!.replace(/\|/g, '%7C'));
+  // const { data: userData, error: fetchUserError } = useFetchUserByIdQuery(user!.sub!.replace(/\|/g, '%7C'));
 
   const dispatch = useDispatch();
 
@@ -81,40 +81,40 @@ const Completion = () => {
   // }
 
   useEffect(() => {
-    if (!result) {
-      const sse = new EventSource(`${import.meta.env.VITE_CORE_MS_BASE_URL}/user/result/stream`);
+    const sse = new EventSource(`${import.meta.env.VITE_CORE_MS_BASE_URL}/user/result/stream`);
 
-      sse.onerror = (err: any) => {
-        console.log(err);
-        setResError(err);
-      }
-  
-      sse.addEventListener("HBT", (e: any) => {
-        console.log(e.data);
-      });
-  
-      sse.addEventListener("RESRCD", (e: any) => {
-        const {type, data} = e;
-  
-        console.log(`Type: ${type}, Parsed data: ${JSON.parse(data)}`);
-        const parsedData: ResultData = JSON.parse(data);
-  
-        console.log("Result Data Recieved", parsedData);
-  
-        dispatch(updateQuizState({
-          result: parsedData
-        }));
-  
-        setResult(parsedData);
-      });
-  
-      sse.addEventListener("CNN", (e: any) => {
-        console.log(e.data);
-      })
-  
-      return () => {
-        sse.close();
-      }
+    sse.onerror = (err: any) => {
+      console.log(err);
+      setResError(err);
+    }
+
+    sse.addEventListener("HBT", (e: any) => {
+      console.log(e.data);
+    });
+
+    sse.addEventListener("RESRCD", (e: any) => {
+      const {type, data} = e;
+
+      console.log(`Type: ${type}, Parsed data: ${JSON.parse(data)}`);
+      const parsedData: ResultData = JSON.parse(data);
+
+      console.log("Result Data Recieved", parsedData);
+
+      dispatch(updateQuizState({
+        result: parsedData
+      }));
+
+      setResult(parsedData);
+      
+      sse.close();
+    });
+
+    sse.addEventListener("CNN", (e: any) => {
+      console.log(e.data);
+    })
+
+    if (result) {
+      sse.close();
     }
   }, [])
 
@@ -223,16 +223,24 @@ const Completion = () => {
               </div>
           </div>
 
-          <div className="boosters-used">
-            <div className="boosters-info">
-              {currQuiz.activatedBoosters.map((booster, index) => (
-                <div className="booster" key={index}>
-                  {renderContent('boosters', booster, booster)}
-                </div>
-              ))}
+          {currQuiz.activatedBoosters.length > 0 ? (
+            <div className="boosters-used">
+              <div className="boosters-info">
+                {currQuiz.activatedBoosters.map((booster, index) => (
+                  <div className="booster" key={index}>
+                    {renderContent('boosters', booster, booster)}
+                  </div>
+                ))}
+              </div>
+              <h4>Boosters Used</h4>
             </div>
-            <h4>Boosters Used</h4>
-          </div>
+          ) : 
+          (
+            <div className="boosters-used" style={{ padding: "3.5vh" }}>
+              <h4>No Boosters Used</h4>
+            </div>
+          )}
+          
           
         </div>
 

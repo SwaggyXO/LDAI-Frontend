@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateTimeLeft } from "../../../features/quiz/quizSlice";
 import renderContent from "../../../features/content/renderContent";
+import { useStartQuizMutation } from "../../../api/userApiSlice";
+import { getUserCookie } from "../../../features/user/userCookieHandler";
 
 type RewardData = {
   values: string[];
@@ -39,6 +41,10 @@ const Intro = (props: Quiz) => {
 
   const quiz = props.quiz;
 
+  const user = getUserCookie();
+
+  const [startQuiz, { isLoading: isStartQuizLoading}] = useStartQuizMutation();
+
   const rewardData = [
     {
       values: ["Max", "500", "1000"],
@@ -68,9 +74,21 @@ const Intro = (props: Quiz) => {
       .flat();
   };
 
-  const handleQuizStart = () => {
-    navigate(`/quiz/${quiz.quizId}/question/0`);
-    dispatch(updateTimeLeft(quiz.timelimit));
+  const handleQuizStart = async () => {
+    try {
+      const response = await startQuiz({userId: user?.userId!, quizId: quiz.quizId});
+      console.log("Start", user?.userId!, quiz.quizId);
+      if ('error' in response) {
+        console.error("An error occured", response);
+      } else {
+        console.log('Quiz started successfully:', response);
+        if (response) console.log(response);
+        navigate(`/quiz/${quiz.quizId}/question/0`);
+        dispatch(updateTimeLeft(quiz.timelimit));
+      }
+    } catch (error) {
+      console.error("An unexpected error occurred");
+    } 
   }
 
   // Todo: add animations?

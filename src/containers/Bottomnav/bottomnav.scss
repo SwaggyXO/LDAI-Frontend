@@ -21,6 +21,7 @@
         width: 100%;
         align-items: center;
         justify-content: center;
+        border: none;
         border-radius: 50%;
 
         cursor: pointer;
@@ -28,6 +29,18 @@
         img {
             height: 50%;
         }
+    }
+
+    .bnavbar-item:active,
+    .bnavbar-item:focus {
+        background-color: #90E0EF;
+        transform: translateZ(0.5vh) translateY(-0.3vh) scale(1.1);
+    }
+
+    .active {
+        background-color: #90E0EF;
+        transform: translateZ(0.5vh) translateY(-0.3vh) scale(1.1);
+    
     }
 }
 

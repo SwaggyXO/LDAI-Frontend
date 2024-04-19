@@ -101,3 +101,8 @@
 .quiz-intro--start-button button:hover{
     cursor: pointer;
 }
+
+.quiz-intro--start-button button:active{
+    background-color: rgb(46, 47, 96);
+    transform: translateY(2px);
+}

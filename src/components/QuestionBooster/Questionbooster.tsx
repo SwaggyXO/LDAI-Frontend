@@ -89,6 +89,7 @@ const Questionbooster = (props: PropsType) => {
     const handleSubtractBooster = async (booster: Currency) => {
         try {
           const response = await subtractBooster({userId: user?.userId!, booster: [booster]});
+          console.log(user?.userId!, booster);
           if ('error' in response) {
             console.error("An error occured", response);
           } else {

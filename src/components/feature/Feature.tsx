@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import "./feature.scss"
 
 type FeatureProps = {
@@ -8,8 +9,24 @@ type FeatureProps = {
 }
 
 const Feature = ({title, text, vector, vectoralttext }: FeatureProps) => {
+  const variants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        duration: 1
+      }
+    }
+  };
+
   return (
-    <div className='learn__features-container__feature'>
+    <motion.div 
+      className='learn__features-container__feature'
+      variants={variants}
+      initial='hidden'
+      whileInView='show'
+      viewport={{once: true}}
+    >
       <div className='learn__features-container__line'>
         <section />
       </div>
@@ -22,7 +39,7 @@ const Feature = ({title, text, vector, vectoralttext }: FeatureProps) => {
       <div className='learn__features-container__feature-vector'>
         <img src={vector} alt={vectoralttext} />
       </div>
-    </div>
+    </motion.div>
   )
 }
 

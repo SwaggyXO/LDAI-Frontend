@@ -1,3 +1,4 @@
+import { useLocation } from 'react-router-dom';
 import NavButton from '../../components/buttons/NavButton';
 import './bottomnav.scss';
 
@@ -13,10 +14,13 @@ const Bottomnav = (props: PropsType) => {
   
   const navItems = Object.keys(props);
 
+  const location = useLocation();
+
+
   const content = (
     <div className={`bottom-navbar sticky`}>
       {Object.values(props).map((navItem, index) => (
-        <NavButton key={index} className={`bnavbar-item bnavbar-item--${navItems[index]}`} vector={navItem} to={`/${navItems[index]}`}/>
+        <NavButton key={index} className={`bnavbar-item bnavbar-item--${navItems[index]} ${ location.pathname.includes(navItem.toLowerCase()) ? 'active' : '' }`} vector={navItem} to={`/${navItems[index]}`}/>
       ))}
     </div>
   )

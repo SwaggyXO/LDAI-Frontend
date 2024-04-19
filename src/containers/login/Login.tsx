@@ -18,9 +18,9 @@ const Login = () => {
 
   return (
     <div className='learn__login section__padding'>
-      <Button title="START LEARNING" color="var(--color-footer)" onClick={handleLogin}/>
+      <Button title="START LEARNING" onClick={handleLogin} className="start"/>
       <br /><br />
-      <Button title="LEARN AS A GUEST" color="#92B600"/>
+      {/* <Button title="LEARN AS A GUEST" className="guest"/> */}
     </div>
   )
 }

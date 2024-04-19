@@ -7,6 +7,7 @@ export interface Question {
     text: string;
     imageUrl: string | null;
     options: string[];
+    paraphrased: string;
 }
 
 export interface Quiz {
@@ -24,6 +25,13 @@ interface Response {
     code: number;
     status: string;
     data: Quiz;
+    error: Object | null;
+}
+
+interface QuitResponse {
+    code: number;
+    status: string;
+    data: string;
     error: Object | null;
 }
 
@@ -52,10 +60,15 @@ export const quizApi = createApi({
       },
       providesTags: ['Quiz'],
     }),
+    quitQuiz: builder.query<QuitResponse, string>({
+      query: (userId) => `/quit/${userId}`,
+      providesTags: ['Quiz'],
+    }),
   }),
 });
 
 export const { 
     useFetchQuizByIdQuery,
-    useFetchLatestQuizzesQuery
+    useFetchLatestQuizzesQuery,
+    useQuitQuizQuery,
 } = quizApi;

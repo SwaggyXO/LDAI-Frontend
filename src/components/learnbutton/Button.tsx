@@ -3,16 +3,16 @@ import "./button.scss"
 
 type ButtonProps = {
   title: string,
-  color: string,
   borderRadius?: string,
   route?: string,
   onClick?: () => Promise<void>
+  className?: string
 }
 
-const Button = ({ title, color, borderRadius, route, onClick }: ButtonProps) => {
+const Button = ({ title, borderRadius, route, onClick, className }: ButtonProps) => {
   return (
     <div className='learn__button'>
-        <Link to={route as string}><button type='button' style={{ background: color, borderRadius: borderRadius }} onClick={onClick}>{title}</button></Link>
+        <Link to={route as string}><button type='button' style={{ borderRadius: borderRadius }} onClick={onClick} className={`${className} button btn`}>{title}</button></Link>
     </div>
   )
 }

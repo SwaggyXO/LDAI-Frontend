@@ -10,6 +10,7 @@ type NavButtonProps = {
     to: string
     vector?: string
     className: string
+    onClick?: (() => Promise<void>) | (() => void)
 };
 
 const NavButton = (props: NavButtonProps) => {
@@ -17,6 +18,7 @@ const NavButton = (props: NavButtonProps) => {
     const to = props.to;
     const vector = props.vector;
     const className = props.className;
+    const onClick = props.onClick;
     const dispatch = useDispatch();
     
     const navigate = useNavigate();
@@ -31,7 +33,7 @@ const NavButton = (props: NavButtonProps) => {
     }
 
     return (
-        <button className={className} onClick={handleNav}>
+        <button className={className} onClick={onClick ? onClick : handleNav}>
             {className === 'back-button' ? 
                 <FontAwesomeIcon icon={faArrowLeft} size='2x' color='#fff'/> :
                 className === 'cross-button' ?

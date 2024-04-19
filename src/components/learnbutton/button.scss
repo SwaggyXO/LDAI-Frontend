@@ -1,16 +1,29 @@
-.learn__button button {
-    width: 20rem;
-    min-height: 3rem;
-    color: #FFF;
-    text-align: center;
-    font-family: var(--mfont-family);
-    font-size: 1.5rem;
-    font-weight: 700;
-    cursor: pointer;
-    outline: none;
+.learn__button {
+    .start {
+        background-color: var(--color-footer);
+    }
 
-    border-radius: 0.625rem;
-    border-right: 1px solid #FFF;
-    border-bottom: 3px solid #FFF;
-    border-left: 1px solid #FFF;
+    .guest {
+        background-color: #92B600;
+    }
+
+    .button {
+        width: 20rem;
+        min-height: 4rem;
+        color: #FFF;
+        text-align: center;
+        font-family: var(--mfont-family);
+        font-size: 1.5rem;
+        font-weight: 700;
+        cursor: pointer;
+    
+        border-radius: 0.625rem;
+        border: 1px solid #FFF; /* Simplified border declaration */
+    }
+
+    .button:active {
+        background-color: rgba(0, 76, 117, 0.837);
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+    }
 }

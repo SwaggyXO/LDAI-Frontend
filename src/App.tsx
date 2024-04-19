@@ -21,13 +21,15 @@ import Subject from "./pages/Subject/Subject";
 import Question from "./pages/Gameplay/Question/Question";
 import Completion from "./pages/Gameplay/Result/Completion";
 import Challenges from "./pages/Challenges/Challenges";
-import DRS from "./pages/DRS/DRS";
+import DRS from "./pages/DRS/History/History";
 import PowerUps from "./pages/PowerUps/PowerUps";
 import Three from "./pages/Three/Three";
 import ModeLayout from "./layouts/ModeLayout/ModeLayout";
 import Unrated from "./pages/Modes/Unrated/Unrated";
 import Rated from "./pages/Modes/Rated/Rated";
 import ModePage from "./pages/Modes/ModePage/ModePage";
+import History from "./pages/DRS/History/History";
+import Review from "./pages/DRS/Review/Review";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -40,7 +42,10 @@ export const routes = createBrowserRouter(
       <Route path="" element={<HomeLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/challenges" element={<Challenges />} />
-        <Route path="/drs" element={<DRS />} />
+        <Route path="/drs">
+          <Route index element={<History />} />
+          <Route path="/drs/review" element={<Review />} /> 
+        </Route>
         <Route path="/powerups" element={<PowerUps />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/result" element={<Completion />} />

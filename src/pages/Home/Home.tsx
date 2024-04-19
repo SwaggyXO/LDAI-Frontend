@@ -17,7 +17,7 @@ import renderContent from "../../features/content/renderContent";
 import { useCreateUserMutation } from "../../api/userApiSlice";
 import { setUser } from "../../features/user/userSlice";
 import { useFetchLatestQuizzesQuery, useFetchQuizByIdQuery } from "../../api/quizApiSlice";
-import { updateQuizState } from "../../features/quiz/quizSlice";
+import { resetQuizState, updateQuizState } from "../../features/quiz/quizSlice";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
@@ -90,7 +90,7 @@ const Home = () => {
     setModalOpen(true);
   }
 
-  const { data: boosterData, error: boosterError, isLoading: isFetchUserBoosterLoading } = useFetchUserBoostersQuery(currUser && currUser.userId! || cookieUser! && cookieUser.userId!);
+  const { data: boosterData, error: boosterError, isLoading: isFetchUserBoosterLoading } = useFetchUserBoostersQuery(currUser && currUser.userId! || cookieUser! && cookieUser.userId!, { skip: !currUser.userId && !cookieUser });
 
   const [addUserCurrency, {isLoading: isAddUserCurrencyLoading}] = useAddUserCurrencyMutation();
   const [purchaseBooster, {isLoading: isPurchaseLoading}] = usePurchaseBoosterMutation();
@@ -143,12 +143,13 @@ const Home = () => {
     createNewUser();
   }, [user])
 
-  const quizId = "0c8357c9-0454-4c58-addd-5f713eb432e2";
-  const smallQuizId = "4ef4ae1f-98a8-4329-b28c-e29d037f5203"
+  const quizId = "	9735d635-cf6e-47b4-884c-8a3254524360";
+  const smallQuizId = "4402ae3a-7e22-409e-83c8-f0b868c034ca"
   const { data: quizData, error: fetchQuizError, isLoading: isFetchQuizLoading } = useFetchQuizByIdQuery(smallQuizId, { skip: !isUserCreated || !currUser.isNew });
 
   useEffect(() => {
     if (quizData) {
+      dispatch(resetQuizState());
       dispatch(updateQuizState(quizData.data));
       console.log("Quiz fetched successfully", quizData);
     }

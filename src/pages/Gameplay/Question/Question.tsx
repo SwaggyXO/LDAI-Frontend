@@ -23,13 +23,13 @@ const Question = () => {
   const numQuestionIndex = parseInt(questionIndex!);
   const question = questions[numQuestionIndex];
 
-  let index: number = question.text.indexOf('?');
+  let index: number = question.paraphrased.indexOf('?');
   let slicedQuestion: string;
 
   if (index !== -1) {
-    slicedQuestion = question.text.substring(0, index + 1);
+    slicedQuestion = question.paraphrased.substring(0, index + 1);
   } else {
-    slicedQuestion = question.text;
+    slicedQuestion = question.paraphrased;
   }
 
   const [answer, setAnswer] = useState<string>('');
@@ -86,8 +86,11 @@ const Question = () => {
         return prevTimeLeft;
       });
     }, 1000);
-    if (isSubmitClicked || quizTimeLeft < 50) dispatch(updateTimeLeft(timeLeft));
-    console.log("Time Left:", timeLeft, quizTimeLeft);
+    if (isSubmitClicked || quizTimeLeft < 50) {
+      console.log("Time Left Before:", timeLeft, quizTimeLeft);
+      dispatch(updateTimeLeft(timeLeft));
+    } 
+    console.log("Time Left After:", timeLeft, quizTimeLeft);
     return () => clearInterval(interval);
   }, [quizTimeLeft, navigate, isFrozen]);
 
@@ -98,6 +101,7 @@ const Question = () => {
   const handleTimeFreeze = async () => {
     try {
       const response = await useBoosterUsed({ userId: currUserId!, quizId: currQuizId!, questionId: question.id, boosterName: 'Time Freeze'});
+      console.log(currUserId, currQuizId, question.id, 'Time Freeze');
 
       if ('error' in response) {
         console.error("An error occured", response);
@@ -154,6 +158,7 @@ const Question = () => {
   const handleFactHint = async () => {
     try {
       const response = await useBoosterUsed({ userId: currUserId!, quizId: currQuizId!, questionId: question.id, boosterName: 'Fact Hint'});
+      console.log(currUserId, currQuizId, question.id, 'Fact Hint');
 
       if ('error' in response) {
         console.error("An error occured", response);
@@ -261,6 +266,7 @@ const Question = () => {
 
     const timeTaken = (quizTimeLeft - timeLeft);
 
+    console.log("Time left user res: ", timeLeft, quizTimeLeft);
     dispatch(updateTimeLeft(timeLeft));
 
     const requestBody: CreateUserResponseRequest = {
@@ -269,10 +275,12 @@ const Question = () => {
       questionId: question.id,
       response: [answer],
       timeTaken: timeTaken,
+      score: 0,
     };
 
     try {
       const response = await createUserResponse(requestBody);
+      console.log(requestBody, quizTimeLeft, timeLeft);
       if ('error' in response) {
         console.error("An error occured", response);
       } else {
@@ -285,6 +293,8 @@ const Question = () => {
     } catch (err) {
       console.error("An unexpected error occurred");
     }
+
+    setIsSubmitClicked(false);
   } 
 
   const tutorialBoosters = [
@@ -303,11 +313,11 @@ const Question = () => {
 
   useEffect(() => {
       if (boosterData) {
-        if (quiz.quizId !== '4ef4ae1f-98a8-4329-b28c-e29d037f5203') {
+        if (quiz.quizId !== '4402ae3a-7e22-409e-83c8-f0b868c034ca') {
           console.log("Non tutorial Quiz", boosterData.data);
           setBoosters(boosterData.data.inventory);
         } else {
-          console.log("Tutorial Quiz")
+          console.log("Tutorial Quiz");
           setBoosters(tutorialBoosters);
         }
       }
@@ -357,7 +367,7 @@ const Question = () => {
 
           <div className="question-text">
             <p>
-              {slicedQuestion.length ? slicedQuestion : question.text}
+              {slicedQuestion.length ? slicedQuestion : question.paraphrased}
             </p>
           </div>
 
