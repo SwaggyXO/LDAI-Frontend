@@ -22,7 +22,8 @@ type HistoryQuizProps = {
         description: string,
         quizType: string,
         attemptedAt: string,
-        imageUrl: string
+        imageUrl: string,
+        score: number
     }
 }
 
@@ -83,11 +84,7 @@ export const HistoryQuizExcerpt = (props: HistoryQuizProps) => {
     const name = quiz.title;
     const mode = quiz.quizType.charAt(0) + quiz.quizType.slice(1).toLowerCase();
     const subject = quiz.subject.charAt(0).toUpperCase() + quiz.subject.slice(1);
-    // const accuracy = quiz.
-
-    const playButton = (
-        <Button buttonText={<FontAwesomeIcon icon={faPlay} color='white' />} className="quiz-play_button" />
-    )
+    const accuracy = quiz.score;
 
     const content = (
         <>
@@ -95,7 +92,7 @@ export const HistoryQuizExcerpt = (props: HistoryQuizProps) => {
                 <p>{name}</p>
                 <p>{mode}</p>
                 <p>{subject}</p>
-                {playButton}
+                <p style={{ fontWeight: "bolder" }}>{accuracy * 100}%</p>
             </div>
         </>
     )

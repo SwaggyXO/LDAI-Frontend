@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../app/store';
 import { useFetchUserQuizzesQuery } from '../../../api/userApiSlice';
 import QuizExcerpt, { HistoryQuizExcerpt } from '../../../components/QuizExcerpt/QuizExcerpt';
+import { getUserCookie } from '../../../features/user/userCookieHandler';
 
 const History = () => {
 
@@ -17,10 +18,11 @@ const History = () => {
 
   const quiz = getQuizCookie();
   const user = useSelector((state: RootState) => state.user);
+  const cookieUser = getUserCookie();
 
-  const quizzesData = useFetchUserQuizzesQuery({ userId: user.userId! });
+  const quizzesData = useFetchUserQuizzesQuery({ userId: user && user.userId! || cookieUser?.userId!, limit: 3 });
 
-  console.log(quizzesData.data?.data.quizzes[0]);
+  console.log(quizzesData.data?.data.quizzes);
 
   const accuracy = quiz!.result?.score! * 100;
 

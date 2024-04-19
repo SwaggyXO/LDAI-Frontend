@@ -108,7 +108,8 @@ interface Quizzes {
       description: string,
       quizType: string,
       attemptedAt: string,
-      imageUrl: string
+      imageUrl: string,
+      score: number
     }
   ]
 }
