@@ -10,6 +10,9 @@ import { useFetchLatestQuizzesQuery } from '../../../api/quizApiSlice';
 import { getUserCookie } from '../../../features/user/userCookieHandler';
 import { useEffect } from 'react';
 
+import { isThisWeek, isThisMonth } from 'date-fns';
+
+
 const ModePage = () => {
 
     const { user, isAuthenticated, error, isLoading } = useAuth0();
@@ -29,6 +32,13 @@ const ModePage = () => {
         }
     }, [quizData]);
 
+
+    const now = new Date();
+
+    const thisWeekQuizzes = quizData?.data.filter((quiz) => isThisWeek(new Date(quiz.createdAt)));
+    const thisMonthQuizzes = quizData?.data.filter((quiz) => isThisMonth(new Date(quiz.createdAt)) && !isThisWeek(new Date(quiz.createdAt)));
+    const earlierQuizzes = quizData?.data.filter((quiz) => now > new Date(quiz.createdAt) && !isThisMonth(new Date(quiz.createdAt)));
+
     const content =  (
         <div className='mode-main'>
             <div className="mode-intro">
@@ -47,19 +57,19 @@ const ModePage = () => {
                 <div className="mode-quizzes_week">
                     <p className='week-header'>This Week</p>
                     <div className="week-excerpts">
-                        {quizData && quizData.data.map((quiz, idx) => <QuizExcerpt key={idx} quiz={quiz} />)}
+                        {thisWeekQuizzes?.map((quiz, idx) => <QuizExcerpt key={idx} quiz={quiz} />)}
                     </div>
                 </div>
                 <div className="mode-quizzes_month">
                     <p className='month-header'>This Month</p>
                     <div className="month-excerpts">
-                        {quizData && quizData.data.map((quiz, idx) => <QuizExcerpt key={idx} quiz={quiz} />)}
+                        {thisMonthQuizzes?.map((quiz, idx) => <QuizExcerpt key={idx} quiz={quiz} />)}
                     </div>
                 </div>
                 <div className="mode-quizzes_earlier">
                     <p className='earlier-header'>Earlier</p>
                     <div className="earlier-excerpts">
-                        {quizData && quizData.data.map((quiz, idx) => <QuizExcerpt key={idx} quiz={quiz} />)}
+                        {earlierQuizzes?.map((quiz, idx) => <QuizExcerpt key={idx} quiz={quiz} />)}
                     </div>
                 </div>
             </div>

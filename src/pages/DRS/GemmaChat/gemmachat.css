@@ -1,0 +1,126 @@
+.chat-interface {
+    width: 100%;
+    padding: 10px;
+}
+  
+.chat-output {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    overflow-y: auto;
+    max-height: 610px;
+    min-height: 610px;
+}
+  
+.chat-input {
+    display: flex;
+    align-items: center;
+    margin-top: auto;
+    padding: 5px;
+}
+
+.input-field {
+    flex: 1;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    margin-right: 10px;
+}
+  
+.send-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+  
+.send-button:hover {
+    background-color: #0056b3;
+}
+  
+.box {
+    /* margin-bottom: 50px; */
+    height: 80vh;
+    /* padding-bottom: 10px; */
+}
+  
+.gemma-chat {
+    padding: 10px 10px 10px 10px;
+    position: relative;
+}
+  
+.message {
+    margin-bottom: 10px;
+}
+  
+.conversation {
+    margin-bottom: 20px;
+    background-color: #c8c8c8;
+    border-radius: 5px;
+    padding: 10px 10px 10px 10px;
+}
+  
+.gemma-question {
+    margin-bottom: 10px;
+}
+  
+.user-marker {
+    font-weight: bold;
+    color: #007bff;
+}
+  
+.ai-marker {
+    font-weight: bold;
+    color: #28a745;
+}
+  
+.message-text {
+    margin-left: 10px; /* Add some spacing between question/answer and message text */
+}
+  
+.drs-back-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    margin-bottom: 1px;
+}
+  
+.back-button:hover {
+    color: #007bff;
+}
+  
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+  
+.back-button {
+    margin-right: auto; /* Align to the left */
+}
+  
+.dot-ai-heading {
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: center;
+    flex: 1; /* Take remaining space */
+    display: flex;
+    justify-content: center; /* Center text horizontally */
+}
+  
+.filler {
+    margin-left: 5vh; /* Fills remaining space */
+}
+  
+  /* Media query for mobile view */
+@media screen and (max-width: 480px) {
+    .chat-interface {
+      max-width: 100%;
+    }
+}

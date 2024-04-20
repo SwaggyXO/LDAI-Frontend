@@ -30,6 +30,7 @@ import Rated from "./pages/Modes/Rated/Rated";
 import ModePage from "./pages/Modes/ModePage/ModePage";
 import History from "./pages/DRS/History/History";
 import Review from "./pages/DRS/Review/Review";
+import GemmaChat from "./pages/DRS/GemmaChat/GemmaChat";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -45,6 +46,7 @@ export const routes = createBrowserRouter(
         <Route path="/drs">
           <Route index element={<History />} />
           <Route path="/drs/review" element={<Review />} /> 
+          <Route path='/drs/chat' element={<GemmaChat />}/>
         </Route>
         <Route path="/powerups" element={<PowerUps />} />
         <Route path="/profile" element={<Profile />} />

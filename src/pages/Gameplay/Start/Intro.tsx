@@ -16,7 +16,7 @@ type RewardData = {
 
 interface Question {
   id: string;
-  text: string;
+  question: string;
   imageUrl: string | null;
   options: string[];
 }

@@ -58,12 +58,13 @@ svg text {
   user-select: none;
 }
 
+// NEED TO FIX THIS
 .annotation-wrapper {
-    opacity: 0;
-    animation: fade-in 5s ease 2s forwards;
+    opacity: 1;
+    // animation: fade-in 5s ease 2s forwards;
 }
 
-.question {
+.annotation-question {
   pointer-events: none;
   font-size: 10px;
   position: absolute;

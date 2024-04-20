@@ -11,6 +11,8 @@ import { RootState } from '../../../app/store';
 import { useFetchUserQuizzesQuery } from '../../../api/userApiSlice';
 import QuizExcerpt, { HistoryQuizExcerpt } from '../../../components/QuizExcerpt/QuizExcerpt';
 import { getUserCookie } from '../../../features/user/userCookieHandler';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
 const History = () => {
 
@@ -45,13 +47,16 @@ const History = () => {
     <p>Review Now!</p>
   )
 
+  const gemmaButtonElements = (
+    <p>Jump straight to the Doubt Clearing Session! &nbsp;{<FontAwesomeIcon icon={faPlay} color="black"/>}</p>
+  )
+
   const textContainerElements = (
     <>
       {Number.isNaN(accuracy) ? null : <p>Your accuracy was {accuracy}%.</p>}
       <p>{handleDRSText(accuracy)}</p>
       <Button buttonText={buttonElements} className="drs-go_button" to="/drs/review" />
     </>
-    
   );
 
   const renderMascotMood = (score: number): string => {
@@ -71,18 +76,14 @@ const History = () => {
         {renderContent('app', 'Mascot', renderMascotMood(accuracy))}   
       </div>
       <TextContainer elements={textContainerElements} className='drs' />
-      {/* <div className="drs-accuracy">
-        <div className="vec-container">
-          <img src={AccuracyVec} alt="accuracy vector" />
-        </div>
-        <p>{accuracy}%</p>
-        <p>Accuracy</p>
-      </div> */}
-      <div className="new-half">
-        <div className="new-half_header">
+      <div className="gemma-button">
+        <Button buttonText={gemmaButtonElements} className="gemma-play_button" to="/drs/chat" />
+      </div>
+      <div className="quiz-half">
+        <div className="quiz-half_header">
           <p>Your History</p>
         </div>
-        <div className="new-half_quizzes">  
+        <div className="quiz-half_quizzes">  
           {quizzesData.data === undefined ? <p>You haven't played any quizzes previously. Play a quiz to unlock this content.</p> : quizzesData.data.data.quizzes.map((quiz, idx) => (
             <HistoryQuizExcerpt key={idx} quiz={quiz} />
           ))}

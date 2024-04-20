@@ -208,3 +208,36 @@
     opacity: 0;
 }
 
+.div-full {
+    .threed-answer-submit {
+        display: flex;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        margin-bottom: 7.5vh;
+        z-index: 2;
+        justify-content: center;
+    
+        .threedanswer-submit--button {
+            width: 20vh;
+            height: 6vh;
+            background-color: var(--color-bg);
+            border: none;
+            border-radius: 10px;
+            margin-top: 10%;
+    
+            font-family: var(--ofont-family);
+            font-size: 1.25rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    
+            cursor: pointer;
+        }
+    
+        .threedanswer-submit--button:disabled {
+            background-color: rgba(3, 4, 94, 0.8);
+        }
+    }
+}

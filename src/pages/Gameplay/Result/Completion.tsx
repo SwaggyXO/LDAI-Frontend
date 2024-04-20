@@ -33,6 +33,7 @@ interface Response {
   options: string[];
   response: string[];
   score: number;
+  timeTaken: string;
 }
 
 interface ResultData {

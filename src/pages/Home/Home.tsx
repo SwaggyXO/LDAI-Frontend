@@ -215,7 +215,7 @@ const Home = () => {
       try {
         const booster = boosterData?.data.inventory.filter((booster) => booster.booster.name === prize);
         const quantity = booster && booster[0]?.quantity;
-        if (quantity && quantity < 2) {
+        if (quantity === 0 || quantity && quantity < 2) {
           const response = await purchaseBooster({userId: currUser.userId!, booster: [{name: prize, amount: 1}]});
           if ('error' in response) {
             console.error("An error occured", response);
@@ -224,6 +224,7 @@ const Home = () => {
             if (response) console.log(response);
           }
         } else {
+          console.log(quantity);
           console.log("Maxed out inventory");
         }
       } catch (error) {

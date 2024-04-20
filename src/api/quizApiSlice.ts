@@ -2,12 +2,23 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/quiz' });
 
+export interface Coords {
+    x: number;
+    y: number;
+    z: number;
+}
 export interface Question {
     id: string;
-    text: string;
+    question: string;
     imageUrl: string | null;
     options: string[];
     paraphrased: string;
+    model?: string;
+    scale?: number;
+    annotations?: {
+      lookAt: Coords;
+      cameraPos: Coords;
+    }[];
 }
 
 export interface Quiz {
@@ -19,6 +30,7 @@ export interface Quiz {
   quizType: string;
   timelimit: number;
   imageUrl: string;
+  createdAt: string;
 }
 
 interface Response {

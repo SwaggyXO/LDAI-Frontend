@@ -3,12 +3,25 @@ import Cookies from 'js-cookie';
 import { removeQuizCookie, setQuizCookie } from './quizCookieHandler';
 import { update } from 'three/examples/jsm/libs/tween.module.js';
 
+
+interface Coords {
+    x: number;
+    y: number;
+    z: number;
+}
+
 interface Question {
     id: string;
-    text: string;
+    question: string;
     imageUrl: string | null;
     options: string[];
-    paraphrased: string
+    paraphrased: string;
+    model?: string;
+    scale?: number;
+    annotations?: {
+        lookAt: Coords;
+        cameraPos: Coords;
+    }[];
 }
 
 interface Winning {
@@ -22,6 +35,7 @@ interface Winning {
     options: string[];
     response: string[];
     score: number;
+    timeTaken: string;
 }
 
 interface Result {
