@@ -108,10 +108,11 @@ const Profile = () => {
   };
 
   const handleAchievementDescription = (name: string) => {
+    
     let achievement = allAchievements.find(
       (achievement) => achievement.name === name
     );
-    return achievement?.description;
+    return achievement ? achievement.description : "Complete warmup challenges to unlock ";
   };
 
   useEffect(() => {
@@ -216,8 +217,8 @@ const Profile = () => {
                 <p>{handleAchievementTier(achievement.currentTier.tier)}</p>
               </div>
               <div className="info">
-                <p>{achievement.name}</p>
-                <p>{handleAchievementDescription(achievement.name)}</p>
+                <p>{achievement.currentTier.tier === "" ? "Newbie" : achievement.currentTier.tier}</p>
+                <p>{handleAchievementDescription(achievement.rewardName)}</p>
               </div>
             </div>
           ))}

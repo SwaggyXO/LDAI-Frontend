@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const baseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/reward' });
 
 export interface Achievement {
-    name: string;
+    rewardName: string;
     nextTier: {
         name: string;
         threshold: number;
