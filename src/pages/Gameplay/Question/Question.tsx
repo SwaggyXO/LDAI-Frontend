@@ -21,6 +21,9 @@ import Questionbooster from "../../../components/QuestionBooster/Questionbooster
 import ThreeQuestion from "../../../containers/ThreeQuestion/ThreeQuestion";
 import ThreeDComponent from "../../../components/ThreeDComponent/ThreeDComponent";
 import React from "react";
+import Timer from "./Timer";
+
+interface QuestionProps {}
 
 const Question = () => {
   const { quizId, questionIndex } = useParams();
@@ -37,11 +40,6 @@ const Question = () => {
   const question = questions[numQuestionIndex];
 
   const model = question.model;
-
-  useEffect(() => {
-    console.log(question);
-    console.log(model);
-  }, [model, question]);
 
   let index: number = question.paraphrased.indexOf("?");
   let slicedQuestion: string;
@@ -101,26 +99,11 @@ const Question = () => {
     }
   }, [dotNavsLeft]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft((prevTimeLeft) => {
-        if (!isFrozen && prevTimeLeft > 0) {
-          return prevTimeLeft - 1;
-        } else if (prevTimeLeft <= 0) {
-          clearInterval(interval);
-          navigate(`/result`);
-          return 0;
-        }
-        return prevTimeLeft;
-      });
-    }, 1000);
-    if (isSubmitClicked || quizTimeLeft < 50) {
-      console.log("Time Left Before:", timeLeft, quizTimeLeft);
-      dispatch(updateTimeLeft(timeLeft));
-    }
-    console.log("Time Left After:", timeLeft, quizTimeLeft);
-    return () => clearInterval(interval);
-  }, [quizTimeLeft, navigate, isFrozen]);
+  // Timer
+
+  const handleTimeLeftChange = (newTimeLeft: number) => {
+    setTimeLeft(newTimeLeft);
+  };
 
   const [timeFreezeLeft, setTimeFreezeLeft] = useState<number>(0);
 
@@ -308,10 +291,10 @@ const Question = () => {
     }
   }, [activatedBoosters]);
 
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = timeLeft % 60;
+  // const minutes = Math.floor(timeLeft / 60);
+  // const seconds = timeLeft % 60;
 
-  const progressWidth = (timeLeft / (quizTimeLimit * 60)) * 100 + "%";
+  // const progressWidth = (timeLeft / (quizTimeLimit * 60)) * 100 + "%";
 
   const handleUserResponse = async () => {
     setIsFrozen(false);
@@ -324,10 +307,10 @@ const Question = () => {
         `/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`
       );
 
+    console.log("Time Left:", timeLeft, quizTimeLeft);
     const timeTaken = quizTimeLeft - timeLeft;
 
-    console.log("Time left user res: ", timeLeft, quizTimeLeft);
-    dispatch(updateTimeLeft(timeLeft));
+    // dispatch(updateTimeLeft(timeLeft));
 
     const requestBody: CreateUserResponseRequest = {
       userId: currUserId!,
@@ -340,7 +323,6 @@ const Question = () => {
 
     try {
       const response = await createUserResponse(requestBody);
-      console.log(requestBody, quizTimeLeft, timeLeft);
       if ("error" in response) {
         console.error("An error occured", response);
       } else {
@@ -353,8 +335,6 @@ const Question = () => {
     } catch (err) {
       console.error("An unexpected error occurred");
     }
-
-    setIsSubmitClicked(false);
   };
 
   const tutorialBoosters = [
@@ -441,7 +421,7 @@ const Question = () => {
 
   const content = (
     <>
-      <div className="loading-bar">
+      {/* <div className="loading-bar">
         <div
           className="loading-bar-inner"
           style={{ width: progressWidth }}
@@ -449,7 +429,7 @@ const Question = () => {
         <div className="time-left">
           {minutes}:{seconds < 10 ? "0" + seconds : seconds}
         </div>
-      </div>
+      </div> */}
       <div className="booster-backdrop"></div>
       <div className="booster-description"></div>
       <div className="quiz-body--question">
@@ -522,15 +502,6 @@ const Question = () => {
 
   const threeDContent = (
     <div className="div-full">
-      <div className="loading-bar">
-        <div
-          className="loading-bar-inner"
-          style={{ width: progressWidth }}
-        ></div>
-        <div className="time-left">
-          {minutes}:{seconds < 10 ? "0" + seconds : seconds}
-        </div>
-      </div>
       <ThreeQuestion />
       {question.annotations && (
         <ThreeDComponent
@@ -565,7 +536,21 @@ const Question = () => {
     </div>
   );
 
-  return model ? threeDContent : content;
+  return (
+    <>
+      <Timer
+        isFrozen={isFrozen}
+        navigate={navigate}
+        quizTimeLeft={quizTimeLeft}
+        updateTimeLeft={updateTimeLeft}
+        quizTimeLimit={quizTimeLimit}
+        isSubmitClicked={isSubmitClicked}
+        timeLeft={timeLeft}
+        onTimeLeftChange={handleTimeLeftChange}
+      />
+      {model ? threeDContent : content}
+    </>
+  );
 };
 
 export default Question;
