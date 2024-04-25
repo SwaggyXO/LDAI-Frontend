@@ -66,11 +66,13 @@ const History = () => {
         <p>Your accuracy was {accuracy.toFixed(2)}%.</p>
       )}
       <p>{handleDRSText(accuracy)}</p>
-      <Button
-        buttonText={buttonElements}
-        className="drs-go_button"
-        to="/drs/review"
-      />
+      {Number.isNaN(accuracy) ? null : (
+        <Button
+          buttonText={buttonElements}
+          className="drs-go_button"
+          to="/drs/review"
+        />
+      )}
     </>
   );
 
