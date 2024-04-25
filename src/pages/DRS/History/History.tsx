@@ -62,7 +62,9 @@ const History = () => {
 
   const textContainerElements = (
     <>
-      {Number.isNaN(accuracy) ? null : <p>Your accuracy was {accuracy}%.</p>}
+      {Number.isNaN(accuracy) ? null : (
+        <p>Your accuracy was {accuracy.toFixed(2)}%.</p>
+      )}
       <p>{handleDRSText(accuracy)}</p>
       <Button
         buttonText={buttonElements}
