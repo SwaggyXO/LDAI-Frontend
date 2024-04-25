@@ -41,6 +41,8 @@ const Question = () => {
 
   const model = question.model;
 
+  const [height, setHeight] = useState<string>("auto"); // Initial height is auto
+
   let index: number = question.paraphrased.indexOf("?");
   let slicedQuestion: string;
 
@@ -54,6 +56,13 @@ const Question = () => {
 
   const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setAnswer(event.target.value);
+  };
+
+  const handleThreeDTextAreaChange = (
+    event: ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setAnswer(event.target.value);
+    setHeight(`${event.target.scrollHeight}px`);
   };
 
   const isAnswerEmpty: boolean = answer.trim() === "";
@@ -101,8 +110,32 @@ const Question = () => {
 
   // Timer
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeLeft((prevTimeLeft) => {
+        if (!isFrozen && prevTimeLeft > 0) {
+          return prevTimeLeft - 1;
+        } else if (prevTimeLeft <= 0) {
+          clearInterval(interval);
+          navigate(`/result`);
+          return 0;
+        }
+        return prevTimeLeft;
+      });
+    }, 1000);
+    if (isSubmitClicked || quizTimeLeft < 50) {
+      console.log("Time Left Before:", timeLeft, quizTimeLeft);
+      dispatch(updateTimeLeft(timeLeft));
+    }
+    console.log("Time Left After:", timeLeft, quizTimeLeft);
+    return () => clearInterval(interval);
+  }, [quizTimeLeft, navigate, isFrozen]);
+
   const handleTimeLeftChange = (newTimeLeft: number) => {
+    console.log(newTimeLeft);
     setTimeLeft(newTimeLeft);
+    console.log(timeLeft);
+    setIsSubmitClicked(false);
   };
 
   const [timeFreezeLeft, setTimeFreezeLeft] = useState<number>(0);
@@ -291,10 +324,10 @@ const Question = () => {
     }
   }, [activatedBoosters]);
 
-  // const minutes = Math.floor(timeLeft / 60);
-  // const seconds = timeLeft % 60;
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
 
-  // const progressWidth = (timeLeft / (quizTimeLimit * 60)) * 100 + "%";
+  const progressWidth = (timeLeft / (quizTimeLimit * 60)) * 100 + "%";
 
   const handleUserResponse = async () => {
     setIsFrozen(false);
@@ -307,10 +340,9 @@ const Question = () => {
         `/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`
       );
 
-    console.log("Time Left:", timeLeft, quizTimeLeft);
     const timeTaken = quizTimeLeft - timeLeft;
 
-    // dispatch(updateTimeLeft(timeLeft));
+    dispatch(updateTimeLeft(timeLeft));
 
     const requestBody: CreateUserResponseRequest = {
       userId: currUserId!,
@@ -335,6 +367,8 @@ const Question = () => {
     } catch (err) {
       console.error("An unexpected error occurred");
     }
+
+    setIsSubmitClicked(false);
   };
 
   const tutorialBoosters = [
@@ -419,9 +453,34 @@ const Question = () => {
 
   const MemoizedThreeDComponent = React.memo(ThreeDComponent);
 
+  const wordLimit: number = 50; // Change the word limit as needed
+  const wordCount: number = answer.trim().length;
+
+  const questionContent = (
+    <div className="question-header">
+      <div className="info-box">
+        <div className="info-box--inside">
+          <p className="info-box--q">Answer according to the annotations.</p>
+          <p className="info-box--wl">
+            Word Count: {wordCount}/{wordLimit}
+          </p>
+
+          <div className="info-box--text">
+            <textarea
+              value={answer}
+              onChange={handleThreeDTextAreaChange}
+              style={{ height: height }}
+              maxLength={wordLimit}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
   const content = (
     <>
-      {/* <div className="loading-bar">
+      <div className="loading-bar">
         <div
           className="loading-bar-inner"
           style={{ width: progressWidth }}
@@ -429,7 +488,7 @@ const Question = () => {
         <div className="time-left">
           {minutes}:{seconds < 10 ? "0" + seconds : seconds}
         </div>
-      </div> */}
+      </div>
       <div className="booster-backdrop"></div>
       <div className="booster-description"></div>
       <div className="quiz-body--question">
@@ -502,7 +561,16 @@ const Question = () => {
 
   const threeDContent = (
     <div className="div-full">
-      <ThreeQuestion />
+      <div className="loading-bar">
+        <div
+          className="loading-bar-inner"
+          style={{ width: progressWidth }}
+        ></div>
+        <div className="time-left">
+          {minutes}:{seconds < 10 ? "0" + seconds : seconds}
+        </div>
+      </div>
+      {questionContent}
       {question.annotations && (
         <ThreeDComponent
           annotations={[
@@ -538,7 +606,7 @@ const Question = () => {
 
   return (
     <>
-      <Timer
+      {/* <Timer
         isFrozen={isFrozen}
         navigate={navigate}
         quizTimeLeft={quizTimeLeft}
@@ -547,7 +615,7 @@ const Question = () => {
         isSubmitClicked={isSubmitClicked}
         timeLeft={timeLeft}
         onTimeLeftChange={handleTimeLeftChange}
-      />
+      /> */}
       {model ? threeDContent : content}
     </>
   );

@@ -46,6 +46,7 @@ const Timer = (props: TimerProps) => {
         return newTimeLeft;
       });
     }, 1000);
+    console.log("Is Submitted", isSubmitClicked);
     if (isSubmitClicked || quizTimeLeft < 50) {
       console.log("Time Left Before:", newTimeLeft, quizTimeLeft);
       dispatch(updateTimeLeft(newTimeLeft));
@@ -53,7 +54,14 @@ const Timer = (props: TimerProps) => {
     }
     console.log("Time Left After:", newTimeLeft, quizTimeLeft);
     return () => clearInterval(interval);
-  }, [quizTimeLeft, navigate, isFrozen, onTimeLeftChange, isSubmitClicked]);
+  }, [
+    quizTimeLeft,
+    timeLeft,
+    navigate,
+    isFrozen,
+    onTimeLeftChange,
+    isSubmitClicked,
+  ]);
 
   const minutes = Math.floor(newTimeLeft / 60);
   const seconds = newTimeLeft % 60;
