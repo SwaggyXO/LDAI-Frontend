@@ -1,12 +1,7 @@
 import { useState } from "react";
 import "./threequestion.scss";
 
-interface QuestionProps {
-  value: string;
-}
-
-const ThreeQuestion = (props: QuestionProps) => {
-  const { value } = props;
+const ThreeQuestion = () => {
   const [text, setText] = useState<string>("");
   const [height, setHeight] = useState<string>("auto"); // Initial height is auto
   const wordLimit: number = 50; // Change the word limit as needed
@@ -30,7 +25,7 @@ const ThreeQuestion = (props: QuestionProps) => {
 
       <div className="info-box--text">
         <textarea
-          value={value}
+          value={text}
           onChange={handleChange}
           style={{ height: height }}
           maxLength={wordLimit}
