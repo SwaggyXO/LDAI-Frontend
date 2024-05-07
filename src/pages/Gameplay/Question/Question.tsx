@@ -3,7 +3,7 @@ import Button from "../../../components/buttons/Button";
 import "./Question.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import {
   CreateUserResponseRequest,
   useCreateUserResponseMutation,
@@ -447,39 +447,50 @@ const Question = () => {
     }
   }, [boosterData]);
 
+  const [showExhaustedMessage, setShowExhaustedMessage] = useState(false);
+
+  useEffect(() => {
+    if (activatedBoosters.length >= 2) {
+      setTimeout(() => {
+        setShowExhaustedMessage(true);
+      }, 4000);
+    }
+  }, [activatedBoosters]);
+
   const boosterItem = boosters.map((booster, idx) => (
     <Questionbooster booster={booster} key={idx} />
   ));
 
-  const MemoizedThreeDComponent = React.memo(ThreeDComponent);
-
   const wordLimit: number = 50; // Change the word limit as needed
   const wordCount: number = answer.trim().length;
 
-  const questionContent = (
-    <div className="question-header">
-      <div className="info-box">
-        <div className="info-box--inside">
-          <p className="info-box--q">Answer according to the annotations.</p>
-          <p className="info-box--wl">
-            Word Count: {wordCount}/{wordLimit}
-          </p>
+  const questionContent = useMemo(
+    () => (
+      <div className="question-header">
+        <div className="info-box">
+          <div className="info-box--inside">
+            <p className="info-box--q">Answer according to the annotations.</p>
+            <p className="info-box--wl">
+              Word Count: {wordCount}/{wordLimit}
+            </p>
 
-          <div className="info-box--text">
-            <textarea
-              value={answer}
-              onChange={handleThreeDTextAreaChange}
-              style={{ height: height }}
-              maxLength={wordLimit}
-            />
+            <div className="info-box--text">
+              <textarea
+                value={answer}
+                onChange={handleThreeDTextAreaChange}
+                style={{ height: height }}
+                maxLength={wordLimit}
+              />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    ),
+    [answer, handleThreeDTextAreaChange, height, wordCount]
   );
 
-  const content = (
-    <>
+  const loadingBar = useMemo(
+    () => (
       <div className="loading-bar">
         <div
           className="loading-bar-inner"
@@ -489,6 +500,13 @@ const Question = () => {
           {minutes}:{seconds < 10 ? "0" + seconds : seconds}
         </div>
       </div>
+    ),
+    [progressWidth, minutes, seconds]
+  );
+
+  const content = (
+    <>
+      {loadingBar}
       <div className="booster-backdrop"></div>
       <div className="booster-description"></div>
       <div className="quiz-body--question">
@@ -504,7 +522,7 @@ const Question = () => {
             <p>Exhausted Booster Usage</p>
           )}
         </div>
-        {activatedBoosters.length < 2 ? (
+        {activatedBoosters.length < 2 || !showExhaustedMessage ? (
           <section className="question--boosters">
             <div className="question--boosters_container">{boosterItem}</div>
           </section>
@@ -561,15 +579,7 @@ const Question = () => {
 
   const threeDContent = (
     <div className="div-full">
-      <div className="loading-bar">
-        <div
-          className="loading-bar-inner"
-          style={{ width: progressWidth }}
-        ></div>
-        <div className="time-left">
-          {minutes}:{seconds < 10 ? "0" + seconds : seconds}
-        </div>
-      </div>
+      {loadingBar}
       {questionContent}
       {question.annotations && (
         <ThreeDComponent

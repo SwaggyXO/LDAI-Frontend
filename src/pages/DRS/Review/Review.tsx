@@ -201,7 +201,7 @@ const Review = () => {
     ) {
       return `Not bad! You were doing well with answering questions correctly. Let's try to improve further.`;
     } else {
-      return `The accuracy was great. Keep up the good work!`;
+      return `You kept it balanced. Were you on a mission? 🫥`;
     }
   };
 
