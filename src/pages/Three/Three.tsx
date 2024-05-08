@@ -1,9 +1,13 @@
-import AnimalCellModel from '../../Models/AnimalCellModel';
-import ThreeDComponent from '../../components/ThreeDComponent/ThreeDComponent';
-import Button from '../../components/buttons/Button';
-import ThreeHero from '../../containers/ThreeHero/ThreeHero';
-import ThreeQuestion from '../../containers/ThreeQuestion/ThreeQuestion';
-import './three.scss';
+import AnimalCellModel from "../../Models/AnimalCellModel";
+import ThreeDComponent, {
+  MemoizedThreeDComponent,
+} from "../../components/ThreeDComponent/ThreeDComponent";
+import Button from "../../components/buttons/Button";
+import ThreeHero from "../../containers/ThreeHero/ThreeHero";
+import ThreeQuestion, {
+  MemoizedThreeDQuestion,
+} from "../../containers/ThreeQuestion/ThreeQuestion";
+import "./three.scss";
 
 const annotations = [
   // {
@@ -14,7 +18,7 @@ const annotations = [
   //       z: 8
   //   },
   //   lookAt: {
-  //       x: 1, 
+  //       x: 1,
   //       y: 0.09,
   //       z: 1
   //   },
@@ -22,32 +26,33 @@ const annotations = [
   {
     question: "What does Ascending Aorta do?",
     cameraPos: {
-        x: -6,
-        y: 1.100902499991096,
-        z: 8
+      x: -6,
+      y: 1.100902499991096,
+      z: 8,
     },
     lookAt: {
-        x: -0.6385672631219208, 
-        y: 1.100902499991096,
-        z: 1.8547378740795566
+      x: -0.6385672631219208,
+      y: 1.100902499991096,
+      z: 1.8547378740795566,
     },
   },
 ];
 
 const Three = () => {
   return (
-    <div className='div-full'>
-        <ThreeQuestion />
-        <ThreeDComponent annotations={annotations} name={"Heart"} scale={0.1}/>
-        {/* <AnimalCellModel /> */}
-        <div className="answer-submit">
-            <Button
-                buttonText="Submit"
-                className="answer-submit--button"
-            /> 
-        </div>
+    <div className="div-full">
+      <MemoizedThreeDQuestion />
+      <MemoizedThreeDComponent
+        annotations={annotations}
+        name={"Heart"}
+        scale={0.1}
+      />
+      {/* <AnimalCellModel /> */}
+      <div className="answer-submit">
+        <Button buttonText="Submit" className="answer-submit--button" />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Three
+export default Three;

@@ -17,6 +17,7 @@ import { CubeTextureLoader } from "three";
 import { Suspense, useEffect, useRef, useState } from "react";
 import * as TWEEN from "@tweenjs/tween.js";
 import { Coords } from "../../api/quizApiSlice";
+import React from "react";
 
 const annotations = [
   {
@@ -99,6 +100,7 @@ type ThreeDComponentProps = {
 };
 
 const ThreeDComponent = (props: ThreeDComponentProps) => {
+  console.log("ThreeDComponent");
   const name = props.name;
   const scale = props.scale;
   const annotations = props.annotations;
@@ -293,5 +295,7 @@ const ThreeDComponent = (props: ThreeDComponentProps) => {
 
   return content;
 };
+
+export const MemoizedThreeDComponent = React.memo(ThreeDComponent);
 
 export default ThreeDComponent;

@@ -3,7 +3,7 @@ import Button from "../../../components/buttons/Button";
 import "./Question.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   CreateUserResponseRequest,
   useCreateUserResponseMutation,
@@ -19,9 +19,11 @@ import {
 import renderContent from "../../../features/content/renderContent";
 import Questionbooster from "../../../components/QuestionBooster/Questionbooster";
 import ThreeQuestion from "../../../containers/ThreeQuestion/ThreeQuestion";
-import ThreeDComponent from "../../../components/ThreeDComponent/ThreeDComponent";
+import ThreeDComponent, {
+  MemoizedThreeDComponent,
+} from "../../../components/ThreeDComponent/ThreeDComponent";
 import React from "react";
-import Timer from "./Timer";
+import LoadingBar, { MemoizedLoadingBar } from "./LoadingBar";
 
 interface QuestionProps {}
 
@@ -41,8 +43,6 @@ const Question = () => {
 
   const model = question.model;
 
-  const [height, setHeight] = useState<string>("auto"); // Initial height is auto
-
   let index: number = question.paraphrased.indexOf("?");
   let slicedQuestion: string;
 
@@ -52,20 +52,23 @@ const Question = () => {
     slicedQuestion = question.paraphrased;
   }
 
+  const answerRef = useRef<HTMLTextAreaElement>(null);
   const [answer, setAnswer] = useState<string>("");
+  const [isTextAreaEmpty, setIsTextAreaEmpty] = useState(true);
 
   const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setAnswer(event.target.value);
+    const text = answerRef.current?.value.trim();
+    setIsTextAreaEmpty(!text);
   };
 
   const handleThreeDTextAreaChange = (
     event: ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setAnswer(event.target.value);
-    setHeight(`${event.target.scrollHeight}px`);
+    const text = answerRef.current?.value.trim();
+    setIsTextAreaEmpty(!text);
   };
 
-  const isAnswerEmpty: boolean = answer.trim() === "";
+  const isAnswerEmpty: boolean = isTextAreaEmpty;
 
   // if (numQuestionIndex === 8) {
   //   const {data: streamData, isLoading, error} = useFetchUserResultStreamQuery([]);
@@ -93,6 +96,8 @@ const Question = () => {
 
   const [timeLeft, setTimeLeft] = useState<number>(quizTimeLimit * 60);
 
+  const [timeTaken, setTimeTaken] = useState<number>(0);
+
   const [isFrozen, setIsFrozen] = useState<boolean>(false);
 
   const [keywords, setKeywords] = useState<string[]>([]);
@@ -104,39 +109,31 @@ const Question = () => {
   useEffect(() => {
     if (dotNavsLeft > 0) {
       setDotNavsLeft(dotNavsLeft - 1);
-      handleDotResponse();
     }
   }, [dotNavsLeft]);
 
   // Timer
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft((prevTimeLeft) => {
-        if (!isFrozen && prevTimeLeft > 0) {
-          return prevTimeLeft - 1;
-        } else if (prevTimeLeft <= 0) {
-          clearInterval(interval);
-          navigate(`/result`);
-          return 0;
-        }
-        return prevTimeLeft;
-      });
-    }, 1000);
-    if (isSubmitClicked || quizTimeLeft < 50) {
-      console.log("Time Left Before:", timeLeft, quizTimeLeft);
-      dispatch(updateTimeLeft(timeLeft));
-    }
-    console.log("Time Left After:", timeLeft, quizTimeLeft);
-    return () => clearInterval(interval);
-  }, [quizTimeLeft, navigate, isFrozen]);
-
-  const handleTimeLeftChange = (newTimeLeft: number) => {
-    console.log(newTimeLeft);
-    setTimeLeft(newTimeLeft);
-    console.log(timeLeft);
-    setIsSubmitClicked(false);
-  };
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setTimeLeft((prevTimeLeft) => {
+  //       if (!isFrozen && prevTimeLeft > 0) {
+  //         return prevTimeLeft - 1;
+  //       } else if (prevTimeLeft <= 0) {
+  //         clearInterval(interval);
+  //         navigate(`/result`);
+  //         return 0;
+  //       }
+  //       return prevTimeLeft;
+  //     });
+  //   }, 1000);
+  //   if (isSubmitClicked || quizTimeLeft < 50) {
+  //     console.log("Time Left Before:", timeLeft, quizTimeLeft);
+  //     dispatch(updateTimeLeft(timeLeft));
+  //   }
+  //   console.log("Time Left After:", timeLeft, quizTimeLeft);
+  //   return () => clearInterval(interval);
+  // }, [quizTimeLeft, navigate, isFrozen]);
 
   const [timeFreezeLeft, setTimeFreezeLeft] = useState<number>(0);
 
@@ -259,18 +256,17 @@ const Question = () => {
     }
   };
 
-  const handleDotResponse = async () => {
+  const handleDotResponse = async (timeTaken: number) => {
     setIsFrozen(false);
     setKeywords([]);
     setTimeFreezeLeft(0);
-    setIsSubmitClicked(true);
 
     if (numQuestionIndex !== questions.length - 1)
       navigate(
         `/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`
       );
 
-    const timeTaken = quizTimeLeft - timeLeft;
+    // const timeTaken = quizTimeLeft - timeLeft;
 
     dispatch(updateTimeLeft(timeLeft));
 
@@ -324,23 +320,44 @@ const Question = () => {
     }
   }, [activatedBoosters]);
 
+  const handleTimeLeftChange = async (newTimeLeft: number) => {
+    setTimeTaken(timeLeft - newTimeLeft);
+    setTimeLeft(newTimeLeft);
+
+    console.log("Time Left Change:", newTimeLeft, quizTimeLeft);
+    if (isSubmitClicked) await handleUserResponse(timeLeft - newTimeLeft);
+    if (dotNavsLeft > 0) await handleDotResponse(timeLeft - newTimeLeft);
+    setIsFrozen(false);
+  };
+
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
   const progressWidth = (timeLeft / (quizTimeLimit * 60)) * 100 + "%";
 
-  const handleUserResponse = async () => {
-    setIsFrozen(false);
+  const onSubmitClick = async () => {
+    const text = answerRef.current?.value.trim();
+    if (text) {
+      setAnswer(text);
+      if (answerRef.current) {
+        answerRef.current.value = "";
+      }
+      setIsTextAreaEmpty(true);
+    }
+    setIsSubmitClicked(true);
+  };
+
+  const handleUserResponse = async (timeTaken: number) => {
     setKeywords([]);
     setTimeFreezeLeft(0);
-    setIsSubmitClicked(true);
+    setIsSubmitClicked(false);
 
     if (numQuestionIndex !== questions.length - 1)
       navigate(
         `/quiz/${currQuizId}/question/${(numQuestionIndex + 1).toString()}`
       );
 
-    const timeTaken = quizTimeLeft - timeLeft;
+    // const timeTaken = quizTimeLeft - timeLeft;
 
     dispatch(updateTimeLeft(timeLeft));
 
@@ -367,8 +384,6 @@ const Question = () => {
     } catch (err) {
       console.error("An unexpected error occurred");
     }
-
-    setIsSubmitClicked(false);
   };
 
   const tutorialBoosters = [
@@ -453,7 +468,7 @@ const Question = () => {
     if (activatedBoosters.length >= 2) {
       setTimeout(() => {
         setShowExhaustedMessage(true);
-      }, 4000);
+      }, 2500);
     }
   }, [activatedBoosters]);
 
@@ -461,32 +476,31 @@ const Question = () => {
     <Questionbooster booster={booster} key={idx} />
   ));
 
-  const wordLimit: number = 50; // Change the word limit as needed
-  const wordCount: number = answer.trim().length;
-
   const questionContent = useMemo(
     () => (
       <div className="question-header">
         <div className="info-box">
           <div className="info-box--inside">
             <p className="info-box--q">Answer according to the annotations.</p>
-            <p className="info-box--wl">
-              Word Count: {wordCount}/{wordLimit}
-            </p>
-
             <div className="info-box--text">
               <textarea
+                ref={answerRef}
+                onChange={handleThreeDTextAreaChange}
+                // style={{ height: height }}
+                placeholder="Type your answer..."
+              />
+              {/* <textarea
                 value={answer}
                 onChange={handleThreeDTextAreaChange}
                 style={{ height: height }}
                 maxLength={wordLimit}
-              />
+              /> */}
             </div>
           </div>
         </div>
       </div>
     ),
-    [answer, handleThreeDTextAreaChange, height, wordCount]
+    [answer, handleThreeDTextAreaChange]
   );
 
   const loadingBar = useMemo(
@@ -506,7 +520,7 @@ const Question = () => {
 
   const content = (
     <>
-      {loadingBar}
+      {/* {loadingBar} */}
       <div className="booster-backdrop"></div>
       <div className="booster-description"></div>
       <div className="quiz-body--question">
@@ -552,22 +566,29 @@ const Question = () => {
           </div>
 
           <div className="answer-box">
-            <textarea value={answer} onChange={handleTextAreaChange} />
+            <textarea
+              ref={answerRef}
+              onChange={handleTextAreaChange}
+              placeholder="Type your answer..."
+            />
           </div>
+          {/* <div className="answer-box">
+            <textarea value={answer} onChange={handleTextAreaChange} placeholder="Type your answer..."/>
+          </div> */}
 
           <div className="answer-submit">
             {numQuestionIndex + 1 === questions.length ? (
               <Button
                 buttonText="Finish Quiz"
                 className="answer-submit--button"
-                onClick={handleUserResponse}
+                onClick={onSubmitClick}
                 check={isAnswerEmpty}
               />
             ) : (
               <Button
                 buttonText="Submit"
                 className="answer-submit--button"
-                onClick={handleUserResponse}
+                onClick={onSubmitClick}
                 check={isAnswerEmpty}
               />
             )}
@@ -579,10 +600,10 @@ const Question = () => {
 
   const threeDContent = (
     <div className="div-full">
-      {loadingBar}
+      {/* {loadingBar} */}
       {questionContent}
       {question.annotations && (
-        <ThreeDComponent
+        <MemoizedThreeDComponent
           annotations={[
             {
               question: question.paraphrased,
@@ -599,14 +620,14 @@ const Question = () => {
           <Button
             buttonText="Finish Quiz"
             className="threedanswer-submit--button"
-            onClick={handleUserResponse}
+            onClick={onSubmitClick}
             check={isAnswerEmpty}
           />
         ) : (
           <Button
             buttonText="Submit"
             className="threedanswer-submit--button"
-            onClick={handleUserResponse}
+            onClick={onSubmitClick}
             check={isAnswerEmpty}
           />
         )}
@@ -626,6 +647,15 @@ const Question = () => {
         timeLeft={timeLeft}
         onTimeLeftChange={handleTimeLeftChange}
       /> */}
+      <MemoizedLoadingBar
+        progressWidth={progressWidth}
+        minutes={minutes}
+        seconds={seconds}
+        isFrozen={isFrozen}
+        isSubmitClicked={isSubmitClicked}
+        onTimeLeftChange={handleTimeLeftChange}
+        dotNavsLeft={dotNavsLeft}
+      />
       {model ? threeDContent : content}
     </>
   );

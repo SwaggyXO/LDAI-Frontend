@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./threequestion.scss";
+import React from "react";
 
 const ThreeQuestion = () => {
   const [text, setText] = useState<string>("");
@@ -20,7 +21,7 @@ const ThreeQuestion = () => {
     <div className="info-box--inside">
       <p className="info-box--q">Answer according to the annotations.</p>
       <p className="info-box--wl">
-        Word Count: {wordCount}/{wordLimit}
+        Char Count: {wordCount}/{wordLimit}
       </p>
 
       <div className="info-box--text">
@@ -40,5 +41,7 @@ const ThreeQuestion = () => {
     </div>
   );
 };
+
+export const MemoizedThreeDQuestion = React.memo(ThreeQuestion);
 
 export default ThreeQuestion;

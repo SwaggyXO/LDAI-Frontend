@@ -86,6 +86,9 @@ const quizSlice = createSlice({
         state.timeLeft = 0;
         state.activatedBoosters = [];
     },
+    resetBoosterState(state) {
+        state.activatedBoosters = [];
+    },
     updateActivatedBoosters(state, action: PayloadAction<string>) {
         if (state.activatedBoosters.length < 2) {
             state.activatedBoosters.push(action.payload);
@@ -94,5 +97,5 @@ const quizSlice = createSlice({
   },
 });
 
-export const { updateQuizState, updateTimeLeft, resetQuizState, updateActivatedBoosters } = quizSlice.actions;
+export const { updateQuizState, updateTimeLeft, resetQuizState, resetBoosterState, updateActivatedBoosters } = quizSlice.actions;
 export default quizSlice.reducer;
