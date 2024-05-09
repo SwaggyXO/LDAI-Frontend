@@ -94,6 +94,8 @@ const Question = () => {
     (state: RootState) => state.quiz.activatedBoosters
   );
 
+  const [usedBoosters, setUsedBoosters] = useState<string[]>([]);
+
   const [timeLeft, setTimeLeft] = useState<number>(quizTimeLimit * 60);
 
   const [timeTaken, setTimeTaken] = useState<number>(0);
@@ -298,27 +300,30 @@ const Question = () => {
   useEffect(() => {
     if (activatedBoosters.length <= 2) {
       const booster = activatedBoosters[activatedBoosters.length - 1];
-      switch (booster) {
-        case "Double XP":
-          handleDoubleXP();
-          break;
-        case "Double Marbles":
-          handleDoubleMarbles();
-          break;
-        case "Time Freeze":
-          handleTimeFreeze();
-          break;
-        case "Fact Hint":
-          handleFactHint();
-          break;
-        case "Dot":
-          handleDot();
-          break;
-        default:
-          break;
+      if (!usedBoosters.includes(booster)) {
+        switch (booster) {
+          case "Double XP":
+            handleDoubleXP();
+            break;
+          case "Double Marbles":
+            handleDoubleMarbles();
+            break;
+          case "Time Freeze":
+            handleTimeFreeze();
+            break;
+          case "Fact Hint":
+            handleFactHint();
+            break;
+          case "Dot":
+            handleDot();
+            break;
+          default:
+            break;
+        }
+        setUsedBoosters((prevBoosters) => [...prevBoosters, booster])
       }
     }
-  }, [activatedBoosters]);
+  }, [activatedBoosters, usedBoosters]);
 
   const handleTimeLeftChange = async (newTimeLeft: number) => {
     setTimeTaken(timeLeft - newTimeLeft);
@@ -446,6 +451,7 @@ const Question = () => {
     data: boosterData,
     error: boosterError,
     isLoading: isFetchUserBoosterLoading,
+    refetch: refetchUserBoosters,
   } = useFetchUserBoostersQuery(currUserId!);
 
   const [boosters, setBoosters] = useState<InventoryItem[]>([]);
@@ -462,6 +468,14 @@ const Question = () => {
     }
   }, [boosterData]);
 
+  const updateBoosterQuantity = (boosterName: string, newQuantity: number) => {
+    setBoosters((prevBoosters) =>
+      prevBoosters.map((booster) =>
+        booster.booster.name === boosterName ? { ...booster, quantity: newQuantity } : booster
+      )
+    );
+  };
+
   const [showExhaustedMessage, setShowExhaustedMessage] = useState(false);
 
   useEffect(() => {
@@ -473,7 +487,7 @@ const Question = () => {
   }, [activatedBoosters]);
 
   const boosterItem = boosters.map((booster, idx) => (
-    <Questionbooster booster={booster} key={idx} />
+    <Questionbooster booster={booster} key={idx} updateQuantity={updateBoosterQuantity} />
   ));
 
   const questionContent = useMemo(

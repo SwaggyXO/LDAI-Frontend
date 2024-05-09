@@ -14,12 +14,17 @@ import { RootState } from "../../app/store";
 
 type PropsType = {
   booster: InventoryItem;
+  updateQuantity: (boosterName: string, newQuantity: number) => void;
 };
 
 const Questionbooster = (props: PropsType) => {
   const [isActive, setIsActive] = useState(false);
   const boosterRef = useRef<HTMLDivElement>(null);
   const booster = props.booster.booster;
+
+  const activatedBoosters = useSelector(
+    (state: RootState) => state.quiz.activatedBoosters
+  );
 
   const quiz = useSelector((state: RootState) => state.quiz);
 
@@ -107,7 +112,10 @@ const Questionbooster = (props: PropsType) => {
         console.error("An error occured", response);
       } else {
         console.log("Booster subtracted successfully:", response);
-        if (response) console.log(response);
+        if (response) {
+          console.log(response);
+          props.updateQuantity(booster.name, response.data.data.updates[0].newQuantity);
+        }
       }
     } catch (error) {
       console.error("An unexpected error occurred");
@@ -115,7 +123,7 @@ const Questionbooster = (props: PropsType) => {
   };
 
   const activateBooster = async () => {
-    if (props.booster.quantity > 0) {
+    if (props.booster.quantity > 0 && !activatedBoosters.includes(props.booster.booster.name)) {
       handleSubtractBooster({ name: booster.name, amount: 1 });
       setIsActive(true);
       dispatch(updateActivatedBoosters(booster.name));

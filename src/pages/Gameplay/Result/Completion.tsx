@@ -86,6 +86,13 @@ const Completion = () => {
   //   if (!fetchUserResultError && !isFetchUserResultLoading) setResult(resultData!.data);
   // }
 
+  const {
+    data,
+    error: fetchUserError,
+    isLoading: isFetchUserLoading,
+    refetch: refetchUser,
+  } = useFetchUserByIdQuery(currUser!.ciamId!.replace(/\|/g, "%7C"));
+
   useEffect(() => {
     const sse = new EventSource(
       `${import.meta.env.VITE_CORE_MS_BASE_URL}/user/result/stream`
@@ -113,6 +120,14 @@ const Completion = () => {
           result: parsedData,
         })
       );
+
+      refetchUser().then((newData) => {
+        if (newData.data) {
+          dispatch(setUser(newData.data.data));
+        }
+      });
+
+      // dispatch(setUser({ ...currUser, marbles: currUser.marbles + parsedData.winnings[1].amount }));
 
       setResult(parsedData);
 

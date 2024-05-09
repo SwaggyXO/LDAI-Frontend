@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const boosterBaseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/booster'});
+const boosterBaseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/booster' });
 
-const inventoryBaseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/inventory'});
+const inventoryBaseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/inventory' });
 
 export interface Booster {
     id: string,
@@ -66,11 +66,10 @@ export interface PurchaseBoosterResponse {
     code: number,
     data: {
         userId: string,
-        purchases: [
+        updates: [
             {
                 booster: string,
-                quantity: number,
-                receipt: string
+                newQuantity: number
             }
         ]
     },
@@ -107,15 +106,15 @@ export interface BoosterUsedResponse {
 }
 
 export const boosterApi = createApi({
-  reducerPath: 'boosterApi',
-  baseQuery: boosterBaseQuery, 
-  tagTypes: ['Booster'],
-  endpoints: (builder) => ({
-    fetchAllBoosters: builder.query<AllResponse, void>({
-      query: () => `/fetch/all`,
-      providesTags: ['Booster'],
+    reducerPath: 'boosterApi',
+    baseQuery: boosterBaseQuery,
+    tagTypes: ['Booster'],
+    endpoints: (builder) => ({
+        fetchAllBoosters: builder.query<AllResponse, void>({
+            query: () => `/fetch/all`,
+            providesTags: ['Booster'],
+        }),
     }),
-  }),
 });
 
 export const inventoryApi = createApi({
@@ -169,11 +168,11 @@ export const inventoryApi = createApi({
     }),
 });
 
-export const { 
+export const {
     useFetchAllBoostersQuery,
 } = boosterApi;
 
-export const { 
+export const {
     useFetchUserBoostersQuery,
     useAddUserCurrencyMutation,
     useSubtractUserCurrencyMutation,
