@@ -6,6 +6,9 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Button from '../../../components/buttons/Button';
 import { useAuth0 } from '@auth0/auth0-react';
 import Loader from '../../Loader/Loader';
+import SuggestiveTextBox from './SuggestiveTextBox';
+import { useFetchUserQuizzesQuery, useFetchUserResultQuery } from '../../../api/userApiSlice';
+import { getUserCookie } from '../../../features/user/userCookieHandler';
 
 const GemmaChat: React.FC = () => {
 
@@ -13,6 +16,22 @@ const GemmaChat: React.FC = () => {
 
     const [inputText, setInputText] = useState<string>('');
     const [conversation, setConversation] = useState<{ question: string; answer: string }[]>([]);
+
+    const user = getUserCookie();
+
+    const { data: quizzesData, isLoading: isFetchUserQuizzesLoading, error: isFetchUserQuizzesError } = useFetchUserQuizzesQuery({
+        userId: user?.userId!,
+        limit: 3,
+    });
+
+    const { data: quiz, isLoading: isFetchUserResultLoading, error: isFetchUserResultError } = useFetchUserResultQuery([
+        user?.userId!,
+        quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 2].quizId!
+    ], {
+        skip: !quizzesData
+    });
+
+    const responses = quiz && quiz!.data?.responses!;
 
     const buttonElements = (
         <p>{<FontAwesomeIcon icon={faArrowLeft} color='rgba(0, 0, 0, 0.5)'/>}</p>
@@ -50,7 +69,17 @@ const GemmaChat: React.FC = () => {
         }
     };
 
-    console.log(conversation);
+    const handleSuggestiveMessage = async (text: string) => {
+        if (!text.trim()) return;
+
+        try {
+            const response = await sendMessageToAPI(text);
+            const newConversation = [...conversation, { question: text, answer: response }];
+            setConversation(newConversation);
+        } catch (error) {
+            console.error('Error handling message:', error);
+        }
+    };
 
     const content = (
         <div className="box">
@@ -71,6 +100,12 @@ const GemmaChat: React.FC = () => {
             <button className="send-button" onClick={handleSendMessage}>Send</button>
             </div>
 
+            <SuggestiveTextBox 
+                inputText={inputText}
+                handleSendMessage={handleSuggestiveMessage}
+                responses={responses!}
+            />
+
             <div className="chat-output">
             {conversation.map((item, index) => (
                 <div key={index} className="conversation">
@@ -90,9 +125,9 @@ const GemmaChat: React.FC = () => {
 
     return (
         <>
-        {isLoading && <Loader />}
+        {isLoading || (isFetchUserQuizzesLoading || isFetchUserResultLoading) && <Loader />}
         {error && <p style={{height: "100vh"}}>Authentication Error</p>}
-        {!isLoading && isAuthenticated && content}
+        {!isLoading && isAuthenticated && !isFetchUserResultLoading && !isFetchUserQuizzesLoading && content}
         </>
     );
 };

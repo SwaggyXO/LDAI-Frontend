@@ -11,7 +11,6 @@ import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useNavigate } from "react-router-dom";
 
-import useUserData from "../../hooks/useUserData";
 import { useFetchUserByIdQuery } from "../../api/userApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
@@ -63,21 +62,10 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const {
-    data: achievementsData,
-    error: achievementsError,
-    loading: achievementsLoading,
-  } = useUserData("achievements");
-  const {
-    data: statsData,
-    error: statsError,
-    loading: statsLoading,
-  } = useUserData("stats");
-
   const { data: rewardsData, isLoading: isRewardsLoading } =
     useFetchRewardsByIdQuery(currUser?.userId!);
 
-  console.log("User Achievements: ", rewardsData?.data.achievements);
+  // console.log("User Achievements: ", rewardsData?.data.achievements);
 
   const handleExit = async () => {
     const response = await fetch(
@@ -120,27 +108,6 @@ const Profile = () => {
       setAchievements(rewardsData.data.achievements);
     }
   }, [rewardsData]);
-
-  useEffect(() => {
-    if (statsData) {
-      setUserStats(statsData);
-    }
-  }, [statsData]);
-
-  // useEffect(() => {
-  //     if (achievementsError) {
-  //         setError(achievementsError);
-  //     }
-  //     if (statsError) {
-  //         setError(statsError);
-  //     }
-  //   }, [achievementsError, statsError]);
-
-  // useEffect(() => {
-  // if (!achievementsLoading && !statsLoading) {
-  //     setLoading(false);
-  // }
-  // }, [achievementsLoading, statsLoading]);
 
   const navigate = useNavigate();
 
@@ -232,11 +199,9 @@ const Profile = () => {
 
   return (
     <>
-      {isLoading || (isRewardsLoading && <Loader />)}
-      {error && !isAuthenticated && (
-        <p style={{ height: "100vh" }}>Error: {error}</p>
-      )}
-      {!isLoading && !isRewardsLoading && isAuthenticated && !error && content}
+      {isLoading || isRewardsLoading && <Loader />}
+      {error && (<p style={{ height: "100vh" }}>Error: {error}</p>)}
+      {!isLoading && !isRewardsLoading && isAuthenticated && content}
     </>
   );
 };

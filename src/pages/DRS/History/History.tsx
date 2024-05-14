@@ -16,6 +16,7 @@ import QuizExcerpt, {
 import { getUserCookie } from "../../../features/user/userCookieHandler";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import Loader from "../../Loader/Loader.tsx";
 
 const History = () => {
   const { isAuthenticated, isLoading, error } = useAuth0();
@@ -131,9 +132,9 @@ const History = () => {
 
   return (
     <>
-      {isLoading && isFetchUserResultLoading && <p style={{ height: "100vh" }}>Loading...</p>}
+      {isLoading && isFetchUserResultLoading || !quiz && <Loader />}
       {error && <p style={{ height: "100vh" }}>Authentication Error</p>}
-      {!isLoading && isAuthenticated && !isFetchUserResultLoading && content}
+      {!isLoading && isAuthenticated && !isFetchUserResultLoading && quiz && content}
     </>
   );
 };
