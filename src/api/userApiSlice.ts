@@ -3,20 +3,20 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 const baseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/user' });
 
 type CreateUserRequest = {
-    ciamId: string;
-    timeZone: string;
+  ciamId: string;
+  timeZone: string;
 }
 
 type User = {
-    id: string;
-    ciamId: string;
-    grade: string;
-    subjectId: string | null;
-    marbles: number;
-    xp: number;
-    streak: number;
-    isNew: boolean;
-    timeZone: string;
+  id: string;
+  ciamId: string;
+  grade: string;
+  subjectId: string | null;
+  marbles: number;
+  xp: number;
+  streak: number;
+  isNew: boolean;
+  timeZone: string;
 }
 
 interface CreateResponseData {
@@ -70,6 +70,7 @@ interface Response {
   options: string[];
   response: string[];
   score: number;
+  timeTaken: string;
 }
 
 interface ResultData {
@@ -124,7 +125,7 @@ interface FetchUserQuizzesResponse {
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
-  baseQuery, 
+  baseQuery,
   tagTypes: ['User'],
   endpoints: builder => ({
     fetchUserById: builder.query<FetchResponse, string>({
@@ -140,12 +141,12 @@ export const usersApi = createApi({
       invalidatesTags: ['User'],
     }),
     updateUser: builder.mutation<UpdateResponse, Partial<User>>({
-        query: (body) => ({
-          url: `/update`,
-          method: 'PATCH',
-          body,
-        }),
-        invalidatesTags: ['User'],
+      query: (body) => ({
+        url: `/update`,
+        method: 'PATCH',
+        body,
+      }),
+      invalidatesTags: ['User'],
     }),
     createUserResponse: builder.mutation<CreateUserResponseResponse, CreateUserResponseRequest>({
       query: requestData => ({
@@ -184,13 +185,13 @@ export const usersApi = createApi({
   }),
 });
 
-export const { 
-    useFetchUserByIdQuery,
-    useCreateUserMutation,
-    useUpdateUserMutation,
-    useCreateUserResponseMutation,
-    useFetchUserResultQuery,
-    useFetchUserResultStreamQuery,
-    useStartQuizMutation,
-    useFetchUserQuizzesQuery,
+export const {
+  useFetchUserByIdQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useCreateUserResponseMutation,
+  useFetchUserResultQuery,
+  useFetchUserResultStreamQuery,
+  useStartQuizMutation,
+  useFetchUserQuizzesQuery,
 } = usersApi;

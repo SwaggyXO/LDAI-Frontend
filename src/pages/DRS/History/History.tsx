@@ -9,6 +9,7 @@ import { getQuizCookie } from "../../../features/quiz/quizCookieHandler";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { useFetchUserQuizzesQuery } from "../../../api/userApiSlice";
+import { useFetchUserResultQuery } from "../../../api/userApiSlice.ts";
 import QuizExcerpt, {
   HistoryQuizExcerpt,
 } from "../../../components/QuizExcerpt/QuizExcerpt";
@@ -19,22 +20,30 @@ import { faPlay } from "@fortawesome/free-solid-svg-icons";
 const History = () => {
   const { isAuthenticated, isLoading, error } = useAuth0();
 
-  const quiz = getQuizCookie();
-  const user = useSelector((state: RootState) => state.user);
-  const cookieUser = getUserCookie();
+  // const quiz = getQuizCookie();
+  const user = getUserCookie();
 
-  const quizzesData = useFetchUserQuizzesQuery({
-    userId: (user && user.userId!) || cookieUser?.userId!,
+  const { data: quizzesData, isLoading: isFetchUserQuizzesLoading, error: isFetchUserQuizzesError } = useFetchUserQuizzesQuery({
+    userId: user?.userId!,
     limit: 3,
   });
 
-  console.log(
-    quizzesData.data?.data.quizzes,
-    user && user.userId!,
-    cookieUser?.userId!
-  );
+  const { data: quiz, isLoading: isFetchUserResultLoading, error: isFetchUserResultError } = useFetchUserResultQuery([
+    user?.userId!,
+    quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 1].quizId!
+  ], {
+    skip: !quizzesData
+  });
 
-  const accuracy = quiz!.result?.score! * 100;
+  if (!isFetchUserQuizzesLoading) {
+    console.log(quizzesData, user?.userId!);
+  }
+
+  let accuracy = 0;
+
+  if (!isFetchUserResultLoading) {
+    accuracy = quiz?.data.score! * 100;
+  }
 
   const handleDRSText = (accuracy: number) => {
     if (Number.isNaN(accuracy)) {
@@ -105,13 +114,13 @@ const History = () => {
           <p>Your History</p>
         </div>
         <div className="quiz-half_quizzes">
-          {quizzesData.data === undefined ? (
+          {quizzesData?.data === undefined ? (
             <p>
               You haven't played any quizzes previously. Play a quiz to unlock
               this content.
             </p>
           ) : (
-            quizzesData.data.data.quizzes.map((quiz, idx) => (
+            quizzesData.data.quizzes.map((quiz, idx) => (
               <HistoryQuizExcerpt key={idx} quiz={quiz} />
             ))
           )}
@@ -122,9 +131,9 @@ const History = () => {
 
   return (
     <>
-      {isLoading && <p style={{ height: "100vh" }}>Loading...</p>}
+      {isLoading && isFetchUserResultLoading && <p style={{ height: "100vh" }}>Loading...</p>}
       {error && <p style={{ height: "100vh" }}>Authentication Error</p>}
-      {!isLoading && isAuthenticated && content}
+      {!isLoading && isAuthenticated && !isFetchUserResultLoading && content}
     </>
   );
 };
