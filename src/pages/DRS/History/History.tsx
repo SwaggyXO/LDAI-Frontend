@@ -24,7 +24,7 @@ const History = () => {
   // const quiz = getQuizCookie();
   const user = getUserCookie();
 
-  const { data: quizzesData, isLoading: isFetchUserQuizzesLoading, error: isFetchUserQuizzesError } = useFetchUserQuizzesQuery({
+  const { data: quizzesData, isLoading: isFetchUserQuizzesLoading, isError: isFetchUserQuizzesError } = useFetchUserQuizzesQuery({
     userId: user?.userId!,
     limit: 3,
   });
@@ -132,9 +132,9 @@ const History = () => {
 
   return (
     <>
-      {isLoading && isFetchUserResultLoading || !quiz && <Loader />}
+      {isLoading || isFetchUserResultLoading && <Loader />}
       {error && <p style={{ height: "100vh" }}>Authentication Error</p>}
-      {!isLoading && isAuthenticated && !isFetchUserResultLoading && quiz && content}
+      {!isLoading && isAuthenticated && !isFetchUserResultLoading && isFetchUserQuizzesError && content}
     </>
   );
 };

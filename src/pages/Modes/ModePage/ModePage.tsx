@@ -12,7 +12,6 @@ import { useEffect } from 'react';
 
 import { isThisWeek, isThisMonth } from 'date-fns';
 
-
 const ModePage = () => {
 
     const { user, isAuthenticated, error, isLoading } = useAuth0();
@@ -26,11 +25,11 @@ const ModePage = () => {
 
     const { data: quizData, isLoading: isFetchLatestLoading, error: fetchLatestError} = useFetchLatestQuizzesQuery({subject: `${currUser!.subject}`, limit: 10, quizType: `${mode?.imgText}`});
 
-    useEffect(() => {
-        if (quizData) {
-            console.log(quizData);
-        }
-    }, [quizData]);
+    // useEffect(() => {
+    //     if (quizData) {
+    //         console.log(quizData);
+    //     }
+    // }, [quizData]);
 
 
     const now = new Date();

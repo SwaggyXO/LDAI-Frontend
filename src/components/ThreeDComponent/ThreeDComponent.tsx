@@ -150,21 +150,25 @@ const ThreeDComponent = (props: ThreeDComponentProps) => {
     useEffect(() => {
       const handleClick = (event: MouseEvent) => {
         if (event.target && event.target instanceof Element) {
+          const clickedAnnotation = event.target.closest(".annotation-wrapper");
           if (
-            !event.target.closest(".annotation-wrapper") &&
+            !clickedAnnotation &&
             hasClickedAnnotation
           ) {
-            setSelected(-1);
-            setHasClickedAnnotation(false); // Reset the state
-            // Reset camera and target positions
-            new TWEEN.Tween(controls.current.target)
-              .to({ x: 0, y: 0, z: 0 }, 1000)
-              .easing(TWEEN.Easing.Quadratic.Out)
-              .start();
-            new TWEEN.Tween(camera.position)
-              .to({ x: 0, y: 0, z: 15 }, 1000)
-              .easing(TWEEN.Easing.Quadratic.Out)
-              .start();
+            const clickedIndex = Array.from(document.querySelectorAll(".annotation-wrapper")).indexOf(clickedAnnotation!);
+            if (clickedIndex === selected) {
+              setSelected(-1);
+              setHasClickedAnnotation(false); // Reset the state
+              // Reset camera and target positions
+              new TWEEN.Tween(controls.current.target)
+                .to({ x: 0, y: 0, z: 0 }, 1000)
+                .easing(TWEEN.Easing.Quadratic.Out)
+                .start();
+              new TWEEN.Tween(camera.position)
+                .to({ x: 0, y: 0, z: 15 }, 1000)
+                .easing(TWEEN.Easing.Quadratic.Out)
+                .start();
+            }
           }
         }
       };
@@ -196,33 +200,47 @@ const ThreeDComponent = (props: ThreeDComponentProps) => {
                   strokeWidth="2"
                   fill="rgba(0,0,0,.66)"
                   onPointerUp={() => {
-                    setSelected(i);
-                    setHasClickedAnnotation(true);
-                    // change target
-                    new TWEEN.Tween(controls.current.target)
-                      .to(
-                        {
-                          x: a.lookAt.x,
-                          y: a.lookAt.y,
-                          z: a.lookAt.z,
-                        },
-                        1000
-                      )
-                      .easing(TWEEN.Easing.Quadratic.Out)
-                      .start();
+                    if (i === selected) {
+                      setSelected(-1);
+                      setHasClickedAnnotation(false);
+                      // Reset camera and target positions
+                      new TWEEN.Tween(controls.current.target)
+                        .to({ x: 0, y: 0, z: 0 }, 1000)
+                        .easing(TWEEN.Easing.Quadratic.Out)
+                        .start();
+                      new TWEEN.Tween(camera.position)
+                        .to({ x: 0, y: 0, z: 15 }, 1000)
+                        .easing(TWEEN.Easing.Quadratic.Out)
+                        .start();
+                    } else {
+                      setSelected(i);
+                      setHasClickedAnnotation(true);
+                      // change target
+                      new TWEEN.Tween(controls.current.target)
+                        .to(
+                          {
+                            x: a.lookAt.x,
+                            y: a.lookAt.y,
+                            z: a.lookAt.z,
+                          },
+                          1000
+                        )
+                        .easing(TWEEN.Easing.Quadratic.Out)
+                        .start();
 
-                    // change camera position
-                    new TWEEN.Tween(camera.position)
-                      .to(
-                        {
-                          x: a.cameraPos.x,
-                          y: a.cameraPos.y,
-                          z: a.cameraPos.z,
-                        },
-                        1000
-                      )
-                      .easing(TWEEN.Easing.Quadratic.Out)
-                      .start();
+                      // change camera position
+                      new TWEEN.Tween(camera.position)
+                        .to(
+                          {
+                            x: a.cameraPos.x,
+                            y: a.cameraPos.y,
+                            z: a.cameraPos.z,
+                          },
+                          1000
+                        )
+                        .easing(TWEEN.Easing.Quadratic.Out)
+                        .start();
+                    }
                   }}
                 />
                 <text

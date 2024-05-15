@@ -25,7 +25,6 @@ import ThreeDComponent, {
 import React from "react";
 import LoadingBar, { MemoizedLoadingBar } from "./LoadingBar";
 
-interface QuestionProps {}
 
 const Question = () => {
   const { quizId, questionIndex } = useParams();
@@ -517,21 +516,6 @@ const Question = () => {
     [answer, handleThreeDTextAreaChange]
   );
 
-  const loadingBar = useMemo(
-    () => (
-      <div className="loading-bar">
-        <div
-          className="loading-bar-inner"
-          style={{ width: progressWidth }}
-        ></div>
-        <div className="time-left">
-          {minutes}:{seconds < 10 ? "0" + seconds : seconds}
-        </div>
-      </div>
-    ),
-    [progressWidth, minutes, seconds]
-  );
-
   const content = (
     <>
       {/* {loadingBar} */}
@@ -613,40 +597,71 @@ const Question = () => {
   );
 
   const threeDContent = (
-    <div className="div-full">
-      {/* {loadingBar} */}
-      {questionContent}
-      {question.annotations && (
-        <MemoizedThreeDComponent
-          annotations={[
-            {
-              question: question.paraphrased,
-              lookAt: question.annotations[0].lookAt,
-              cameraPos: question.annotations[0].cameraPos,
-            },
-          ]}
-          name={question.model!}
-          scale={question.scale!}
-        />
-      )}
-      <div className="threed-answer-submit">
-        {numQuestionIndex + 1 === questions.length ? (
-          <Button
-            buttonText="Finish Quiz"
-            className="threedanswer-submit--button"
-            onClick={onSubmitClick}
-            check={isAnswerEmpty}
-          />
-        ) : (
-          <Button
-            buttonText="Submit"
-            className="threedanswer-submit--button"
-            onClick={onSubmitClick}
-            check={isAnswerEmpty}
+    <>
+      <div className="booster-backdrop"></div>
+      <div className="booster-description"></div>
+      <div className="div-full">
+        {/* {loadingBar} */}
+        {timeFreezeLeft !== 0 ? (
+          <p style={{ width: "100%", textAlign: "center" }}>
+            Time Freeze remaining: {timeFreezeLeft}
+          </p>
+        ) : null}
+        <div className="question--boosters_heading">
+          {activatedBoosters.length < 2 ? (
+            <p>Available Boosters</p>
+          ) : (
+            <p>Exhausted Booster Usage</p>
+          )}
+        </div>
+        {activatedBoosters.length < 2 || !showExhaustedMessage ? (
+          <section className="question--boosters">
+            <div className="question--boosters_container">{boosterItem}</div>
+          </section>
+        ) : null}
+        {keywords.length ? <p className="keyword-header">Facts</p> : null}
+        <div className="question--keywords_container">
+          {keywords.length
+            ? keywords.map((keyword, idx) => (
+                <div className="question--keyword" key={idx}>
+                  {keyword}
+                </div>
+              ))
+            : null}
+        </div>
+        {questionContent}
+        {question.annotations && (
+          <MemoizedThreeDComponent
+            annotations={[
+              {
+                question: question.paraphrased,
+                lookAt: question.annotations[0].lookAt,
+                cameraPos: question.annotations[0].cameraPos,
+              },
+            ]}
+            name={question.model!}
+            scale={question.scale!}
           />
         )}
+        <div className="threed-answer-submit">
+          {numQuestionIndex + 1 === questions.length ? (
+            <Button
+              buttonText="Finish Quiz"
+              className="threedanswer-submit--button"
+              onClick={onSubmitClick}
+              check={isAnswerEmpty}
+            />
+          ) : (
+            <Button
+              buttonText="Submit"
+              className="threedanswer-submit--button"
+              onClick={onSubmitClick}
+              check={isAnswerEmpty}
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 
   return (

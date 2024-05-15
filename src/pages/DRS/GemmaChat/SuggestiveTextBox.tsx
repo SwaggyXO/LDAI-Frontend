@@ -18,6 +18,10 @@ interface Response {
 
 const SuggestiveTextBox = ({ handleSendMessage, responses }: SuggestiveTextProps) => {
 
+  if (!responses) {
+    return null;
+  }
+  
   const sortedResponses = [...responses].sort((a, b) => a.score - b.score);
 
   const suggestiveTexts = sortedResponses.slice(0, 2).map(response => response.text);

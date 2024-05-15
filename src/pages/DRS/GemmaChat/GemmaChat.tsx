@@ -113,7 +113,7 @@ const GemmaChat: React.FC = () => {
                     <span className="user-marker">You:</span> {item.question}
                 </div>
                 <div className="gemma-answer">
-                    <span className="ai-marker">Dot AI:</span> {item.answer}
+                    <span className="ai-marker">Dot:</span> {item.answer}
                 </div>
                 </div>
             ))}

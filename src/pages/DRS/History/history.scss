@@ -32,10 +32,13 @@
 
 @keyframes hoverAnimation {
     from {
-      transform: translateY(0); /* Initial position */
+        transform: translateY(0);
+        /* Initial position */
     }
+
     to {
-      transform: translateY(-2vh); /* Move up 10 pixels */
+        transform: translateY(-2vh);
+        /* Move up 10 pixels */
     }
 }
 
@@ -57,9 +60,9 @@
         padding: 4%;
         animation: floatingAnimation 3s infinite ease-in-out;
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-    
+
         cursor: pointer;
-    
+
         p {
             padding: 0;
             font-family: var(--mfont-family);
@@ -68,21 +71,24 @@
             color: #000;
         }
     }
-    
+
     .gemma-play_button:not(:hover) {
         box-shadow: 0px 2px 4px rgba(0, 0, 0, 0);
     }
-    
+
     @keyframes floatingAnimation {
         0% {
             transform: rotate(0deg);
         }
+
         25% {
             transform: rotate(3deg);
         }
+
         75% {
             transform: rotate(-3deg);
         }
+
         100% {
             transform: rotate(0deg);
         }
@@ -92,6 +98,7 @@
 
 .drs-text {
     padding-bottom: 6vh;
+
     .drs-text_container {
         display: flex;
         flex-direction: column;
@@ -117,7 +124,7 @@
             background-color: #96BFE5;
             padding: 4%;
             margin: 2.5%;
-
+            text-wrap: nowrap;
             cursor: pointer;
 
             p {

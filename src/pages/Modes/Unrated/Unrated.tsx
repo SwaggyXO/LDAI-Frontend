@@ -33,11 +33,11 @@ const Modes = () => {
 
     const { data: quizData, isLoading: isFetchLatestLoading, error: fetchLatestError} = useFetchLatestQuizzesQuery({subject: `${currUser!.subject}`, limit: 10});
 
-    useEffect(() => {
-        if (quizData) {
-            console.log(quizData);
-        }
-    }, [quizData]);
+    // useEffect(() => {
+    //     if (quizData) {
+    //         console.log(quizData);
+    //     }
+    // }, [quizData]);
 
     const quizzes = SampleQuizzes;
 
