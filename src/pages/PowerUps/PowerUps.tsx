@@ -12,7 +12,6 @@ import Button from '../../components/buttons/Button';
 import renderContent from '../../features/content/renderContent';
 import CapsuleContainer from '../../containers/Reward/CapsuleContainer';
 import Capsule from '../../components/Capsule/Capsule';
-import useUserData from '../../hooks/useUserData';
 import { Booster, Currency, InventoryItem, useAddUserCurrencyMutation, useFetchAllBoostersQuery, useFetchUserBoostersQuery, usePurchaseBoosterMutation, useSubtractUserCurrencyMutation } from '../../api/gameApiSlice';
 import { getUserCookie } from '../../features/user/userCookieHandler';
 import Loader from '../Loader/Loader';
