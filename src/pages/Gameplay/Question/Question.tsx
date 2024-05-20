@@ -24,7 +24,11 @@ import ThreeDComponent, {
 } from "../../../components/ThreeDComponent/ThreeDComponent";
 import React from "react";
 import LoadingBar, { MemoizedLoadingBar } from "./LoadingBar";
-
+import Webcam from "react-webcam";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSync, faCamera, faVideoSlash, faVideo, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import ocr from '../../../../public/assets/Icons/ocr.png';
+import typing from '../../../../public/assets/Icons/typing.png';
 
 const Question = () => {
   const { quizId, questionIndex } = useParams();
@@ -106,6 +110,13 @@ const Question = () => {
   const [isSubmitClicked, setIsSubmitClicked] = useState<boolean>(false);
 
   const [dotNavsLeft, setDotNavsLeft] = useState<number>(0);
+
+  const [mode, setMode] = useState<'normal' | 'ocr'>('normal');
+
+  const webcamRef = useRef<Webcam>(null);
+  const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [isWebcamOpen, setIsWebcamOpen] = useState<boolean>(true);
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
 
   useEffect(() => {
     if (dotNavsLeft > 0) {
@@ -489,6 +500,139 @@ const Question = () => {
     <Questionbooster booster={booster} key={idx} updateQuantity={updateBoosterQuantity} />
   ));
 
+  const capture = () => {
+    if (isWebcamOpen) {
+        const imageSrc = webcamRef.current?.getScreenshot();
+        if (imageSrc) {
+            // sendImageToServer(imageSrc);
+            setCapturedImage(imageSrc);
+            setIsWebcamOpen(!isWebcamOpen);
+        }
+    } else {
+        setIsWebcamOpen(!isWebcamOpen);
+    }
+  };
+
+  const reset = () => {
+      setCapturedImage(null);
+      setIsWebcamOpen(true);
+  };
+
+  const toggleFacingMode = () => {
+      setFacingMode((prevFacingMode) => (prevFacingMode === 'user' ? 'environment' : 'user'));
+  };
+
+  const sendForOCR = async (imageSrc: string) => {
+      // try {
+      //     const response = await fetch('http://your-backend-server/api/upload', {
+      //         method: 'POST',
+      //         headers: {
+      //         'Content-Type': 'application/json',
+      //         },
+      //         body: JSON.stringify({ image: imageSrc }),
+      //     });
+      //     if (response.ok) {
+      //         console.log('Image sent successfully');
+      //     } else {
+      //         console.error('Failed to send image');
+      //     }
+      // } catch (error) {
+      //     console.error('Error:', error);
+      // }
+      setMode('normal');
+  };
+
+  const answerContent = mode === 'normal' ? (
+    <>
+      <div className="answer-box">
+        <textarea
+          ref={answerRef}
+          onChange={handleTextAreaChange}
+          placeholder="Type your answer..."
+        />
+      </div>
+      {/* <div className="answer-box">
+        <textarea value={answer} onChange={handleTextAreaChange} placeholder="Type your answer..."/>
+      </div> */}
+
+      <div className="answer-submit">
+        {numQuestionIndex + 1 === questions.length ? (
+          <Button
+            buttonText="Finish Quiz"
+            className="answer-submit--button"
+            onClick={onSubmitClick}
+            check={isAnswerEmpty}
+          />
+        ) : (
+          <Button
+            buttonText="Submit"
+            className="answer-submit--button"
+            onClick={onSubmitClick}
+            check={isAnswerEmpty}
+          />
+        )}
+        <button onClick={() => setMode('ocr')} className="square-button">
+          <img src={ocr} alt="ocr" />
+        </button>
+      </div>
+    </>
+  ) : (
+    <>
+      <div className="webcam-container">
+        {isWebcamOpen && !capturedImage && (
+          <div className="webcam-wrapper">
+            <Webcam
+                audio={false}
+                ref={webcamRef}
+                screenshotFormat="image/jpeg"
+                videoConstraints={{ facingMode }}
+                className="webcam"
+            />
+            <div className="overlay">
+                <p>PLEASE KEEP <b>YOUR ANSWER IN FOCUS</b>.</p>
+            </div>
+            <div className="overlay-b">
+                <button onClick={toggleFacingMode} className="overlay-button">
+                    <FontAwesomeIcon icon={faSync} />
+                </button>
+            </div>
+          </div>
+        )}
+        {capturedImage && (
+          <>
+            <img src={capturedImage} alt="Captured" className="webcam" />
+            <p>Don't worry, you will get a chance to edit your answer if there are any errors in the result.</p>
+          </>
+        )}
+      </div>
+      {/* <div className="answer-box">
+        <textarea value={answer} onChange={handleTextAreaChange} placeholder="Type your answer..."/>
+      </div> */}
+
+      <div className="answer-submit">
+        <button onClick={reset} className="square-button" disabled={capturedImage === null}>
+          <FontAwesomeIcon icon={faSyncAlt} color='white' />
+        </button>
+        {capturedImage ? (
+          <Button
+            buttonText="Send for OCR"
+            className="answer-submit--button"
+            onClick={() => sendForOCR(capturedImage)}
+          />
+        ) : (
+          <Button
+            buttonText="Capture Image"
+            className="answer-submit--button"
+            onClick={capture}
+          />
+        )}
+        <button onClick={() => setMode('normal')} className="square-button">
+          <img src={typing} alt="typing" />
+        </button>
+      </div>
+    </>
+  );
+
   const questionContent = useMemo(
     () => (
       <div className="question-header">
@@ -563,34 +707,7 @@ const Question = () => {
             </p>
           </div>
 
-          <div className="answer-box">
-            <textarea
-              ref={answerRef}
-              onChange={handleTextAreaChange}
-              placeholder="Type your answer..."
-            />
-          </div>
-          {/* <div className="answer-box">
-            <textarea value={answer} onChange={handleTextAreaChange} placeholder="Type your answer..."/>
-          </div> */}
-
-          <div className="answer-submit">
-            {numQuestionIndex + 1 === questions.length ? (
-              <Button
-                buttonText="Finish Quiz"
-                className="answer-submit--button"
-                onClick={onSubmitClick}
-                check={isAnswerEmpty}
-              />
-            ) : (
-              <Button
-                buttonText="Submit"
-                className="answer-submit--button"
-                onClick={onSubmitClick}
-                check={isAnswerEmpty}
-              />
-            )}
-          </div>
+          {answerContent}
         </section>
       </div>
     </>
