@@ -7,6 +7,7 @@ import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import {
   CreateUserResponseRequest,
   useCreateUserResponseMutation,
+  useOcrUploadMutation,
 } from "../../../api/userApiSlice";
 import { updateTimeLeft } from "../../../features/quiz/quizSlice";
 import {
@@ -500,6 +501,10 @@ const Question = () => {
     <Questionbooster booster={booster} key={idx} updateQuantity={updateBoosterQuantity} />
   ));
 
+  const [ocrUpload, { isLoading: isOcrUploadLoading, error: isOcrUploadError }] = useOcrUploadMutation();
+
+  const [ocrText, setOcrText] = useState<string>("");
+
   const capture = () => {
     if (isWebcamOpen) {
         const imageSrc = webcamRef.current?.getScreenshot();
@@ -523,24 +528,31 @@ const Question = () => {
   };
 
   const sendForOCR = async (imageSrc: string) => {
-      // try {
-      //     const response = await fetch('http://your-backend-server/api/upload', {
-      //         method: 'POST',
-      //         headers: {
-      //         'Content-Type': 'application/json',
-      //         },
-      //         body: JSON.stringify({ image: imageSrc }),
-      //     });
-      //     if (response.ok) {
-      //         console.log('Image sent successfully');
-      //     } else {
-      //         console.error('Failed to send image');
-      //     }
-      // } catch (error) {
-      //     console.error('Error:', error);
-      // }
-      setMode('normal');
+    const [header, imageData] = imageSrc.split(',');
+    const mimeType = imageSrc.split(';')[0].split(':')[1];
+    // console.log(imageSrc, mimeType);
+    try {
+      const response = await ocrUpload({
+        image: imageData,
+        type: mimeType,
+      });
+      if ('error' in response) {
+        console.log("An error occured");
+      } else {
+        console.log('Image sent successfully:', response);
+        setMode('normal');
+        setOcrText(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
+
+  useEffect(() => {
+    if (answerRef.current) {
+      answerRef.current.value = ocrText;
+    }
+  }, [ocrText]);
 
   const answerContent = mode === 'normal' ? (
     <>
@@ -586,7 +598,7 @@ const Question = () => {
                 ref={webcamRef}
                 screenshotFormat="image/jpeg"
                 videoConstraints={{ facingMode }}
-                className="webcam"
+                className={`webcam ${facingMode === 'user' ? 'mirrored' : ''}`}
             />
             <div className="overlay">
                 <p>PLEASE KEEP <b>YOUR ANSWER IN FOCUS</b>.</p>
@@ -595,6 +607,7 @@ const Question = () => {
                 <button onClick={toggleFacingMode} className="overlay-button">
                     <FontAwesomeIcon icon={faSync} />
                 </button>
+                <p>Flip Cam</p>
             </div>
           </div>
         )}
@@ -621,7 +634,7 @@ const Question = () => {
           />
         ) : (
           <Button
-            buttonText="Capture Image"
+            buttonText="Capture"
             className="answer-submit--button"
             onClick={capture}
           />
@@ -801,6 +814,7 @@ const Question = () => {
         isSubmitClicked={isSubmitClicked}
         onTimeLeftChange={handleTimeLeftChange}
         dotNavsLeft={dotNavsLeft}
+        ocrLoading={isOcrUploadLoading}
       />
       {model ? threeDContent : content}
     </>

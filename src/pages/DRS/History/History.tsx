@@ -31,9 +31,9 @@ const History = () => {
 
   const { data: quiz, isLoading: isFetchUserResultLoading, error: isFetchUserResultError } = useFetchUserResultQuery([
     user?.userId!,
-    quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 1].quizId!
+    quizzesData?.data.quizzes.length! > 0 ? quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 1].quizId! : 'undefined'
   ], {
-    skip: !quizzesData
+    skip: quizzesData?.data.quizzes.length! <= 0 || quizzesData === undefined,
   });
 
   if (!isFetchUserQuizzesLoading) {
@@ -115,7 +115,7 @@ const History = () => {
           <p>Your History</p>
         </div>
         <div className="quiz-half_quizzes">
-          {quizzesData?.data === undefined ? (
+          {quizzesData?.data.quizzes.length! <= 0 || quizzesData === undefined ? (
             <p>
               You haven't played any quizzes previously. Play a quiz to unlock
               this content.
@@ -134,7 +134,7 @@ const History = () => {
     <>
       {isLoading || isFetchUserResultLoading && <Loader />}
       {error && <p style={{ height: "100vh" }}>Authentication Error</p>}
-      {!isLoading && isAuthenticated && !isFetchUserResultLoading && isFetchUserQuizzesError && content}
+      {!isLoading && isAuthenticated && !isFetchUserResultLoading && content}
     </>
   );
 };

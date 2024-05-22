@@ -26,9 +26,9 @@ const GemmaChat: React.FC = () => {
 
     const { data: quiz, isLoading: isFetchUserResultLoading, error: isFetchUserResultError } = useFetchUserResultQuery([
         user?.userId!,
-        quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 2].quizId!
+        quizzesData?.data.quizzes.length! > 0 ? quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 2].quizId! : 'undefined'
     ], {
-        skip: !quizzesData
+        skip: quizzesData?.data.quizzes.length! <= 0 || quizzesData === undefined,
     });
 
     const responses = quiz && quiz!.data?.responses!;

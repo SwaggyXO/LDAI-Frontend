@@ -14,7 +14,7 @@ import Modal from "../../components/Modal/Modal";
 
 import { RootState } from "../../app/store";
 import renderContent from "../../features/content/renderContent";
-import { useCreateUserMutation } from "../../api/userApiSlice";
+import { useCreateUserMutation, useUpdateUserMutation } from "../../api/userApiSlice";
 import { setUser } from "../../features/user/userSlice";
 import {
   useFetchLatestQuizzesQuery,
@@ -36,10 +36,10 @@ import { getUserCookie } from "../../features/user/userCookieHandler";
 import Reward from "../../../public/assets/js_files/Reward.json";
 import Lottie from "lottie-react";
 import { gsap } from "gsap";
-import {
-  getChestCookie,
-  setChestCookie,
-} from "../../features/content/chestCookieHandler";
+// import {
+//   getChestCookie,
+//   setChestCookie,
+// } from "../../features/content/chestCookieHandler";
 
 const Home = () => {
   const { user, isAuthenticated, error, isLoading } = useAuth0();
@@ -57,13 +57,13 @@ const Home = () => {
   const [rewardModalOpen, setRewardModalOpen] = useState(false);
   const [isChestClicked, setIsChestClicked] = useState(false);
 
-  const chestReward = getChestCookie();
+  const [chestOpened, setChestOpened] = useState(false);
   const chestRef = useRef(null);
 
   useLayoutEffect(() => {
     let ctx: gsap.Context;
     if (chestRef.current) {
-      if (chestReward) {
+      if (chestOpened) {
         ctx = gsap.context(() => {
           gsap.to(chestRef.current, {
             y: "-10px",
@@ -86,9 +86,9 @@ const Home = () => {
       }
     }
     return () => ctx.revert();
-  }, [chestReward]);
+  }, [chestOpened]);
 
-  if (!chestReward && !isChestClicked) {
+  if (!chestOpened && !isChestClicked) {
     const ctx = gsap.context(() => {
       gsap.to(chestRef.current, {
         rotation: 10,
@@ -144,6 +144,8 @@ const Home = () => {
     { isLoading: isCreateUserLoading, error: isCreateUserError },
   ] = useCreateUserMutation();
 
+  const [updateUserMutation] = useUpdateUserMutation();
+
   useEffect(() => {
     const getGreeting = () => {
       const currTime = new Date().getHours();
@@ -175,6 +177,7 @@ const Home = () => {
           console.log("User added successfully:", response);
           dispatch(setUser(response.data.data.user));
           setIsUserCreated(true);
+          setChestOpened(response.data.data.isDailyChestOpened);
 
           if (
             response.data.data.user.isNew &&
@@ -248,6 +251,7 @@ const Home = () => {
 
   const handleChestClick = async () => {
     setIsChestClicked(true);
+    setChestOpened(true);
     const prize = randomizePrize();
     gsap.killTweensOf(chestRef.current);
     gsap.to(chestRef.current, {
@@ -258,8 +262,25 @@ const Home = () => {
       duration: 0.2,
       onComplete: rewardOpen,
     });
-    setChestCookie(prize);
     setReward(prize as any);
+
+    try {
+      const response = await updateUserMutation({
+        ciamId: user?.sub,
+        lastChestOpenedAt: new Date().toISOString(),
+      });
+
+      if ('error' in response) {
+        console.log("An error occured");
+      } else {
+        console.log('User updated successfully:', response);
+        // @ts-ignore
+        dispatch(setUser(response.data.data));
+      }
+      
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
 
     if (prize === "2K Marbles") {
       try {
@@ -377,9 +398,9 @@ const Home = () => {
           <div
             className="intro-half_header--chest"
             ref={chestRef}
-            onClick={chestReward ? undefined : handleChestClick}
+            onClick={chestOpened ? undefined : handleChestClick}
           >
-            {chestReward
+            {chestOpened
               ? renderContent("app", "Chest", "blank")
               : renderContent("app", "Chest", "closed")}
           </div>

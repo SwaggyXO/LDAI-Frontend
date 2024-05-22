@@ -13,6 +13,7 @@ interface LoadingBarProps {
   isSubmitClicked: boolean;
   onTimeLeftChange: (newTimeLeft: number) => void;
   dotNavsLeft: number;
+  ocrLoading: boolean;
 }
 
 const LoadingBar = ({
@@ -23,6 +24,7 @@ const LoadingBar = ({
   isSubmitClicked,
   onTimeLeftChange,
   dotNavsLeft,
+  ocrLoading,
 }: LoadingBarProps) => {
   const navigate = useNavigate();
 
@@ -35,10 +37,10 @@ const LoadingBar = ({
 
   useEffect(() => {
     console.log("useEffect ran");
-
+    console.log("OcrLoading", ocrLoading);
     const interval = setInterval(() => {
       setTimeLeft((prevTimeLeft) => {
-        if (!isFrozen && prevTimeLeft > 0) {
+        if (!isFrozen && prevTimeLeft > 0 && !ocrLoading) {
           return prevTimeLeft - 1;
         } else if (prevTimeLeft <= 0) {
           clearInterval(interval);
@@ -62,7 +64,7 @@ const LoadingBar = ({
     }
     // console.log("Time Left After:", timeLeft, quizTimeLeft);
     return () => clearInterval(interval);
-  }, [isFrozen, isSubmitClicked, dotNavsLeft]);
+  }, [isFrozen, isSubmitClicked, dotNavsLeft, ocrLoading]);
 
   minutes = Math.floor(timeLeft / 60);
   seconds = timeLeft % 60;

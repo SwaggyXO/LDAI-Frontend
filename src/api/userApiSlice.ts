@@ -17,9 +17,11 @@ type User = {
   streak: number;
   isNew: boolean;
   timeZone: string;
+  lastChestOpenedAt: string;
 }
 
 interface CreateResponseData {
+  isDailyChestOpened: boolean;
   newlyCreated: boolean;
   user: User;
 }
@@ -122,6 +124,13 @@ interface FetchUserQuizzesResponse {
   error: Object | null;
 }
 
+interface OcrResponse {
+  code: number;
+  status: string;
+  data: string;
+  error: Object | null;
+}
+
 
 export const usersApi = createApi({
   reducerPath: 'usersApi',
@@ -182,6 +191,13 @@ export const usersApi = createApi({
       },
       providesTags: ['User'],
     }),
+    ocrUpload: builder.mutation<OcrResponse, { image: string, type: string }>({
+      query: requestData => ({
+        url: '/ocr/upload',
+        method: 'POST',
+        body: requestData,
+      }),
+    }),
   }),
 });
 
@@ -194,4 +210,5 @@ export const {
   useFetchUserResultStreamQuery,
   useStartQuizMutation,
   useFetchUserQuizzesQuery,
+  useOcrUploadMutation,
 } = usersApi;

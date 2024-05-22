@@ -36,7 +36,7 @@ type Stat = {
 // }
 
 const Profile = () => {
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
 
   const dispatch = useDispatch();
 
@@ -46,7 +46,7 @@ const Profile = () => {
   const {
     data,
     error: fetchUserError,
-    isLoading,
+    isLoading: isFetchUserLoading,
   } = useFetchUserByIdQuery(currUser!.ciamId!.replace(/\|/g, "%7C"));
 
   useEffect(() => {
@@ -67,18 +67,18 @@ const Profile = () => {
 
   // console.log("User Achievements: ", rewardsData?.data.achievements);
 
-  const handleExit = async () => {
-    const response = await fetch(
-      `https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/reward/all`
-    );
-    const data = await response.json();
-    setAllAchievements(data.data);
-    console.log("All Achievements: ", data.data);
-  };
+  // const handleExit = async () => {
+  //   const response = await fetch(
+  //     `https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/reward/all`
+  //   );
+  //   const data = await response.json();
+  //   setAllAchievements(data.data);
+  //   console.log("All Achievements: ", data.data);
+  // };
 
-  useEffect(() => {
-    handleExit();
-  }, []);
+  // useEffect(() => {
+  //   handleExit();
+  // }, []);
 
   const handleAchievementTier = (tier: string) => {
     switch (tier) {
@@ -199,9 +199,9 @@ const Profile = () => {
 
   return (
     <>
-      {isLoading || isRewardsLoading && <Loader />}
+      {isLoading || isFetchUserLoading || isRewardsLoading && <Loader />}
       {error && (<p style={{ height: "100vh" }}>Error: {error}</p>)}
-      {!isLoading && !isRewardsLoading && isAuthenticated && content}
+      {!error && isAuthenticated && content}
     </>
   );
 };
