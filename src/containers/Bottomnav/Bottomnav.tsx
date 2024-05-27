@@ -4,7 +4,7 @@ import './bottomnav.scss';
 
 type PropsType = {
   home: string 
-  leaderboard: string
+  leaderboard?: string
   challenges?: string
   drs: string
   powerups: string 
