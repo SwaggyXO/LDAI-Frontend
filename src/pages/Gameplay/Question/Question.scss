@@ -149,6 +149,16 @@
         font-weight: bold;
     }
 
+    .mcq-section {
+        .mcq-options {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 3vh 1vh 1vh 1vh;
+            height: 80%;
+        }
+    }
+
     .question-text p {
         margin: 2%;
         padding: 2%;

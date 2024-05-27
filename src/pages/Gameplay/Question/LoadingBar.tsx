@@ -36,8 +36,6 @@ const LoadingBar = ({
   const [timeLeft, setTimeLeft] = useState<number>(quizTimeLimit * 60);
 
   useEffect(() => {
-    console.log("useEffect ran");
-    console.log("OcrLoading", ocrLoading);
     const interval = setInterval(() => {
       setTimeLeft((prevTimeLeft) => {
         if (!isFrozen && prevTimeLeft > 0 && !ocrLoading) {
@@ -51,12 +49,12 @@ const LoadingBar = ({
       });
     }, 1000);
     if (isSubmitClicked || dotNavsLeft > 0) {
-      console.log(
-        "Is frozen: ",
-        isFrozen,
-        "Is submit clicked: ",
-        isSubmitClicked
-      );
+      // console.log(
+      //   "Is frozen: ",
+      //   isFrozen,
+      //   "Is submit clicked: ",
+      //   isSubmitClicked
+      // );
 
       // console.log("Time Left Before:", timeLeft, quizTimeLeft);
       dispatch(updateTimeLeft(timeLeft));

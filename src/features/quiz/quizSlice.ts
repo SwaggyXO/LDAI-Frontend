@@ -28,8 +28,8 @@ interface Winning {
     amount: number;
     currency: string;
 }
-  
-  interface Response {
+
+interface Response {
     questionId: string;
     text: string;
     options: string[];
@@ -52,9 +52,10 @@ export interface QuizState {
     quizId: string | undefined;
     questions: Question[];
     timelimit: number;
-    timeLeft: number; 
+    timeLeft: number;
     result: Result | null;
     activatedBoosters: string[];
+    quizType?: string;
 }
 
 const initialState: QuizState = {
@@ -68,33 +69,33 @@ const initialState: QuizState = {
 
 
 const quizSlice = createSlice({
-  name: 'quiz',
-  initialState,
-  reducers: {
-    updateQuizState(state, action: PayloadAction<Partial<QuizState>>) {
-        setQuizCookie(action.payload);
-        return {
-          ...state,
-          ...action.payload,
-        };
-    },
-    updateTimeLeft(state, action: PayloadAction<number>) {
-        state.timeLeft = action.payload;
-    },
-    resetQuizState(state) {
-        state.questions = [];
-        state.timeLeft = 0;
-        state.activatedBoosters = [];
-    },
-    resetBoosterState(state) {
-        state.activatedBoosters = [];
-    },
-    updateActivatedBoosters(state, action: PayloadAction<string>) {
-        if (state.activatedBoosters.length < 2) {
-            state.activatedBoosters.push(action.payload);
+    name: 'quiz',
+    initialState,
+    reducers: {
+        updateQuizState(state, action: PayloadAction<Partial<QuizState>>) {
+            setQuizCookie(action.payload);
+            return {
+                ...state,
+                ...action.payload,
+            };
+        },
+        updateTimeLeft(state, action: PayloadAction<number>) {
+            state.timeLeft = action.payload;
+        },
+        resetQuizState(state) {
+            state.questions = [];
+            state.timeLeft = 0;
+            state.activatedBoosters = [];
+        },
+        resetBoosterState(state) {
+            state.activatedBoosters = [];
+        },
+        updateActivatedBoosters(state, action: PayloadAction<string>) {
+            if (state.activatedBoosters.length < 2) {
+                state.activatedBoosters.push(action.payload);
+            }
         }
-    }
-  },
+    },
 });
 
 export const { updateQuizState, updateTimeLeft, resetQuizState, resetBoosterState, updateActivatedBoosters } = quizSlice.actions;

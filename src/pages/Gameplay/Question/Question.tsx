@@ -30,6 +30,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSync, faCamera, faVideoSlash, faVideo, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 import ocr from '../../../../public/assets/Icons/ocr.png';
 import typing from '../../../../public/assets/Icons/typing.png';
+import Tile from "../../../components/Tiles/Tile";
 
 const Question = () => {
   const { quizId, questionIndex } = useParams();
@@ -46,6 +47,8 @@ const Question = () => {
   const question = questions[numQuestionIndex];
 
   const model = question.model;
+
+  const quizType = quiz.quizType;
 
   let index: number = question.paraphrased.indexOf("?");
   let slicedQuestion: string;
@@ -340,7 +343,7 @@ const Question = () => {
     setTimeTaken(timeLeft - newTimeLeft);
     setTimeLeft(newTimeLeft);
 
-    console.log("Time Left Change:", newTimeLeft, quizTimeLeft);
+    // console.log("Time Left Change:", newTimeLeft, quizTimeLeft);
     if (isSubmitClicked) await handleUserResponse(timeLeft - newTimeLeft);
     if (dotNavsLeft > 0) await handleDotResponse(timeLeft - newTimeLeft);
     setIsFrozen(false);
@@ -352,13 +355,19 @@ const Question = () => {
   const progressWidth = (timeLeft / (quizTimeLimit * 60)) * 100 + "%";
 
   const onSubmitClick = async () => {
-    const text = answerRef.current?.value.trim();
-    if (text) {
-      setAnswer(text);
-      if (answerRef.current) {
-        answerRef.current.value = "";
+    if (quizType === 'ONE TAP' && selectedTile) {
+      setAnswer(selectedTile);
+      setSelectedTile(null);
+      setSelected(true);
+    } else {
+      const text = answerRef.current?.value.trim();
+      if (text) {
+        setAnswer(text);
+        if (answerRef.current) {
+          answerRef.current.value = "";
+        }
+        setIsTextAreaEmpty(true);
       }
-      setIsTextAreaEmpty(true);
     }
     setIsSubmitClicked(true);
   };
@@ -497,8 +506,10 @@ const Question = () => {
     }
   }, [activatedBoosters]);
 
-  const boosterItem = boosters.map((booster, idx) => (
-    <Questionbooster booster={booster} key={idx} updateQuantity={updateBoosterQuantity} />
+  const boosterItem = boosters
+    .filter(booster => quizType !== 'ONE TAP' || (booster.booster.name !== 'Fact Hint'))  
+    .map((booster, idx) => (
+      <Questionbooster booster={booster} key={idx} updateQuantity={updateBoosterQuantity} />
   ));
 
   const [ocrUpload, { isLoading: isOcrUploadLoading, error: isOcrUploadError }] = useOcrUploadMutation();
@@ -646,6 +657,46 @@ const Question = () => {
     </>
   );
 
+  const [selectedTile, setSelectedTile] = useState<string | null>(null);
+  const [selected, setSelected] = useState<boolean>(true);
+  const [option, setOption] = useState<string | null>(null);
+
+  const handleTileClick = (option: string) => {
+    setSelectedTile(option); 
+    setSelected(false);
+    setOption(option);
+  }
+
+  const mcqContent = (
+    <>
+      <div className="mcq-section">
+        <div className="mcq-options">
+          {question.options.map((option, idx) => (
+            <Tile key={idx} option={option} onClick={() => handleTileClick(option)} selected={selectedTile === option} />
+          ))}
+        </div>
+      </div>
+
+      <div className="answer-submit">
+        {numQuestionIndex + 1 === questions.length ? (
+          <Button
+            buttonText="Finish Quiz"
+            className="answer-submit--button"
+            onClick={onSubmitClick}
+            check={selected}
+          />
+        ) : (
+          <Button
+            buttonText="Submit"
+            className="answer-submit--button"
+            onClick={onSubmitClick}
+            check={selected}
+          />
+        )}
+      </div>
+    </>
+  )
+
   const questionContent = useMemo(
     () => (
       <div className="question-header">
@@ -673,7 +724,59 @@ const Question = () => {
     [answer, handleThreeDTextAreaChange]
   );
 
-  const content = (
+  const oneTapContent = (
+    <>
+      <div className="booster-backdrop"></div>
+      <div className="booster-description"></div>
+      <div className="quiz-body--question">
+        {timeFreezeLeft !== 0 ? (
+          <p style={{ width: "100%", textAlign: "center" }}>
+            Time Freeze remaining: {timeFreezeLeft}
+          </p>
+        ) : null}
+        <div className="question--boosters_heading">
+          {activatedBoosters.length < 2 ? (
+            <p>Available Boosters</p>
+          ) : (
+            <p>Exhausted Booster Usage</p>
+          )}
+        </div>
+        {activatedBoosters.length < 2 || !showExhaustedMessage ? (
+          <section className="question--boosters">
+            <div className="question--boosters_container">{boosterItem}</div>
+          </section>
+        ) : null}
+        {keywords.length ? <p className="keyword-header">Facts</p> : null}
+        <div className="question--keywords_container">
+          {keywords.length
+            ? keywords.map((keyword, idx) => (
+                <div className="question--keyword" key={idx}>
+                  {keyword}
+                </div>
+              ))
+            : null}
+        </div>
+        <section className="question--start">
+          <div className="question-count">
+            <p>
+              Question <span> {numQuestionIndex + 1} </span> out of{" "}
+              {questions.length}
+            </p>
+          </div>
+
+          <div className="question-text">
+            <p>
+              {slicedQuestion.length ? slicedQuestion : question.paraphrased}
+            </p>
+          </div>
+
+          {mcqContent}
+        </section>
+      </div>
+    </>
+  )
+
+  const standardContent = (
     <>
       {/* {loadingBar} */}
       <div className="booster-backdrop"></div>
@@ -726,7 +829,7 @@ const Question = () => {
     </>
   );
 
-  const threeDContent = (
+  const threeDStandardContent = (
     <>
       <div className="booster-backdrop"></div>
       <div className="booster-description"></div>
@@ -816,7 +919,11 @@ const Question = () => {
         dotNavsLeft={dotNavsLeft}
         ocrLoading={isOcrUploadLoading}
       />
-      {model ? threeDContent : content}
+      {quizType === 'STANDARD' 
+        ? model 
+          ? threeDStandardContent : standardContent
+        : oneTapContent
+      }
     </>
   );
 };

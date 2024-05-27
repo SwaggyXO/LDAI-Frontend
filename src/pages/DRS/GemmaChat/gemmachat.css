@@ -9,8 +9,8 @@
     padding: 10px;
     margin-bottom: 10px;
     overflow-y: scroll;
-    height: 450px;
-    max-height: 450px;
+    height: 600px;
+    max-height: 600px;
 }
 
 .chat-input {
@@ -40,6 +40,10 @@
 
 .send-button:hover {
     background-color: #0056b3;
+}
+
+.send-button:disabled {
+    background-color: #b30000;
 }
 
 .box {

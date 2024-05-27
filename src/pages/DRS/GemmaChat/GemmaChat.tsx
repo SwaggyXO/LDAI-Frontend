@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './gemmachat.css'; // Import CSS for styling
 import axios from 'axios';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,6 +16,8 @@ const GemmaChat: React.FC = () => {
 
     const [inputText, setInputText] = useState<string>('');
     const [conversation, setConversation] = useState<{ question: string; answer: string }[]>([]);
+    const [isDisabled, setIsDisabled] = useState<boolean>(false);
+    const [isMessageLoading, setIsMessageLoading] = useState(false);
 
     const user = getUserCookie();
 
@@ -30,6 +32,11 @@ const GemmaChat: React.FC = () => {
     ], {
         skip: quizzesData?.data.quizzes.length! <= 0 || quizzesData === undefined,
     });
+
+    useEffect(() => {
+        if (inputText === '') setIsDisabled(true);
+        else setIsDisabled(false);
+    }, [inputText]); 
 
     const responses = quiz && quiz!.data?.responses!;
 
@@ -57,15 +64,21 @@ const GemmaChat: React.FC = () => {
     };
 
     const handleSendMessage = async () => {
+        setInputText('');
+
         if (!inputText.trim()) return;
+
+        setIsMessageLoading(true);
 
         try {
             const response = await sendMessageToAPI(inputText);
             const newConversation = [...conversation, { question: inputText, answer: response }];
             setConversation(newConversation);
-            setInputText('');
+            setIsDisabled(false);
         } catch (error) {
             console.error('Error handling message:', error);
+        }  finally {
+            setIsMessageLoading(false);
         }
     };
 
@@ -80,6 +93,7 @@ const GemmaChat: React.FC = () => {
             console.error('Error handling message:', error);
         }
     };
+    
 
     const content = (
         <div className="box">
@@ -96,8 +110,17 @@ const GemmaChat: React.FC = () => {
                 placeholder="Ask your doubt here..."
                 value={inputText}
                 onChange={handleInputChange}
+                onKeyDown={event => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      handleSendMessage();
+                    }
+                }}
+                disabled={isMessageLoading}
             />
-            <button className="send-button" onClick={handleSendMessage}>Send</button>
+            <button className="send-button" onClick={handleSendMessage} disabled={isDisabled}>
+                Send
+            </button>
             </div>
 
             <SuggestiveTextBox 

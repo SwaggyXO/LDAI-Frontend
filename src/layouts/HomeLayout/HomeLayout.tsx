@@ -59,7 +59,7 @@ const HomeLayout = () => {
             <div className="Layout">
                 <Outlet />
             </div>
-            <Bottomnav home='Home' drs='Drs' challenges='Challenges' powerups='PowerUps' profile='Profile' />
+            <Bottomnav home='Home' drs='Drs' leaderboard='Leaderboard' powerups='PowerUps' profile='Profile' />
         </>
     );
 

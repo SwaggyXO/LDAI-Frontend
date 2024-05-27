@@ -31,6 +31,7 @@ import ModePage from "./pages/Modes/ModePage/ModePage";
 import History from "./pages/DRS/History/History";
 import Review from "./pages/DRS/Review/Review";
 import GemmaChat from "./pages/DRS/GemmaChat/GemmaChat";
+import Leaderboard from "./pages/Leaderboard/Leaderboard";
 
 export const routes = createBrowserRouter(
   createRoutesFromElements(
@@ -43,6 +44,7 @@ export const routes = createBrowserRouter(
       <Route path="" element={<HomeLayout />}>
         <Route path="/home" element={<Home />} />
         <Route path="/challenges" element={<Challenges />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/drs">
           <Route index element={<History />} />
           <Route path="/drs/review" element={<Review />} /> 

@@ -10,6 +10,7 @@ type PropsType = {
   onClick?: (() => Promise<void>) | (() => void);
   selected?: boolean;
   subjectSvg?: boolean;
+  option?: string;
 };
 
 const Tile = (props: PropsType) => {
@@ -42,6 +43,10 @@ const Tile = (props: PropsType) => {
     <div className={`tile--subject ${tileClass}`} onClick={handleClick}>
       {renderContent('app', 'Subjects', `${props.name}`)}
       <div className="name">{capitalizeWords(props.name!)}</div>
+    </div>
+  ) : props.option ? (
+    <div className={`tile--option ${tileClass}`} onClick={handleClick}>
+      <p>{props.option}</p>
     </div>
   ) : (
     <div className="stat-tile">

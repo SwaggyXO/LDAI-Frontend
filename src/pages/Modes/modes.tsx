@@ -1,7 +1,7 @@
 export const modes = [
     {
         key: 1,
-        imgText: 'ONETAP',
+        imgText: 'ONE TAP',
         title: 'One Tap',
         description: 'Answer with a single tap. No going back!',
         time: 5,

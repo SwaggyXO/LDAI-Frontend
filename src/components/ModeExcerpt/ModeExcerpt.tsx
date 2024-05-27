@@ -35,7 +35,7 @@ const ModeExcerpt = (props: ModeExcerptProps) => {
     const content = (
         <div className='mode-excerpt' onClick={() => handleOnModeClick(`/unrated/${mode.imgText.toLowerCase()}`)}>
             <div className="mode-image">
-                {renderContent('app', 'Modes', `${mode.imgText}`)}
+                {renderContent('app', 'Modes', `${mode.imgText.replace(/\s/g, '')}`)}
             </div>
             <div className="mode-info">
                 <p>{mode.title}</p>

@@ -25,11 +25,11 @@ const ModePage = () => {
 
     const { data: quizData, isLoading: isFetchLatestLoading, error: fetchLatestError} = useFetchLatestQuizzesQuery({subject: `${currUser!.subject}`, limit: 10, quizType: `${mode?.imgText}`});
 
-    // useEffect(() => {
-    //     if (quizData) {
-    //         console.log(quizData);
-    //     }
-    // }, [quizData]);
+    useEffect(() => {
+        if (quizData) {
+            console.log(quizData, mode?.imgText);
+        }
+    }, [quizData]);
 
 
     const now = new Date();
@@ -42,7 +42,7 @@ const ModePage = () => {
         <div className='mode-main'>
             <div className="mode-intro">
                 <div className="mode-intro_top">
-                    {renderContent('app', 'Modes', `${mode?.imgText}`)}
+                    {renderContent('app', 'Modes', `${mode?.imgText.replace(/\s/g, '')}`)}
                     <h1>{mode?.title}</h1>
                     <p>{mode?.description}</p>
                 </div>

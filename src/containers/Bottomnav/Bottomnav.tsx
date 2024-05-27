@@ -4,7 +4,8 @@ import './bottomnav.scss';
 
 type PropsType = {
   home: string 
-  challenges: string
+  leaderboard: string
+  challenges?: string
   drs: string
   powerups: string 
   profile: string 
@@ -15,7 +16,6 @@ const Bottomnav = (props: PropsType) => {
   const navItems = Object.keys(props);
 
   const location = useLocation();
-
 
   const content = (
     <div className={`bottom-navbar sticky`}>

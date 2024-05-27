@@ -98,7 +98,7 @@ const Intro = (props: Quiz) => {
         <div className="section-starter--quiz-name">
           <h1>{quiz.title}</h1>
         </div>
-        <div className="section-starter--ellipse">{renderContent('app', 'Modes', `${quiz.quizType}`)}</div>
+        <div className="section-starter--ellipse">{renderContent('app', 'Modes', `${quiz.quizType.replace(/\s/g, '')}`)}</div>
         <div className="section-starter--quiz-type">
           <h2>{quiz.quizType}</h2>
         </div>
@@ -108,7 +108,7 @@ const Intro = (props: Quiz) => {
         <div className="section-overview--heading">
           <h3>Overview</h3>
         </div>
-        <div className="section-overview--quiz-description">
+        <div className="description">
           <p>{quiz.description}</p>
         </div>
       </section>

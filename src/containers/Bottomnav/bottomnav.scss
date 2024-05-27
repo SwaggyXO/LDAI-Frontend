@@ -23,6 +23,7 @@
         justify-content: center;
         border: none;
         border-radius: 50%;
+        background-color: #CAF0F8;
 
         cursor: pointer;
 
@@ -40,7 +41,7 @@
     .active {
         background-color: #90E0EF;
         transform: translateZ(0.5vh) translateY(-0.3vh) scale(1.1);
-    
+
     }
 }
 

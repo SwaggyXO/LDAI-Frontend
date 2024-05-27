@@ -41,6 +41,26 @@
     }
 }
 
+.tile--option {
+    display: flex;
+    flex-direction: column;
+    width: calc(50% - 10px);
+    margin-bottom: 20px;
+    background-color: #dddddd;
+    padding: 3vh 2vh;
+    box-sizing: border-box;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+
+    text-align: center;
+    font-family: var(--ofont-family);
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
 .selected {
     background-color: #0077A2;
 }
@@ -89,6 +109,8 @@
         }
     }
 }
+
+
 
 .stat-tile {
     display: flex;
