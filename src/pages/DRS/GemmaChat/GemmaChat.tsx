@@ -10,6 +10,7 @@ import SuggestiveTextBox from './SuggestiveTextBox';
 import { useFetchUserQuizzesQuery, useFetchUserResultQuery } from '../../../api/userApiSlice';
 import { getUserCookie } from '../../../features/user/userCookieHandler';
 import { Blocks } from 'react-loader-spinner';
+import { useNavigate } from 'react-router-dom';
 
 const GemmaChat: React.FC = () => {
 
@@ -40,6 +41,8 @@ const GemmaChat: React.FC = () => {
     }, [inputText]); 
 
     const responses = quiz && quiz!.data?.responses!;
+
+    
 
     const buttonElements = (
         <p>{<FontAwesomeIcon icon={faArrowLeft} color='rgba(0, 0, 0, 0.5)'/>}</p>
@@ -98,7 +101,7 @@ const GemmaChat: React.FC = () => {
         }
     };
     
-    const height = responses!.length > 0 ? '530px' : '600px';
+    const height = responses && responses!.length > 0 ? "calc(100% - 25%)" : "calc(100% - 20%)";
 
     const content = (
         <div className="box">
@@ -134,7 +137,7 @@ const GemmaChat: React.FC = () => {
                 responses={responses!}
             />
 
-            <div className="chat-output" style={{ maxHeight: height}}>
+            <div className="chat-output" style={{ maxHeight: height, height: height}}>
                 {isMessageLoading && <Blocks height={30} width={30}/>}
             {conversation.map((item, index) => (
                 <div key={index} className="conversation">

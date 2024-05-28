@@ -9,8 +9,8 @@
     padding: 10px;
     margin-bottom: 10px;
     overflow-y: scroll;
-    height: 600px;
-    max-height: 600px;
+    height: 60%;
+    max-height: 60%;
 }
 
 .chat-input {
@@ -55,6 +55,7 @@
 .gemma-chat {
     padding: 10px 10px 10px 10px;
     position: relative;
+    height: 90%;
 }
 
 .message {
