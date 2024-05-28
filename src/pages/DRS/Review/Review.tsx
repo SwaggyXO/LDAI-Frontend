@@ -286,6 +286,12 @@ const Review = () => {
       responses[3] > responses[4]
     ) {
       return `Not bad! You were doing well with answering questions correctly. Let's try to improve further.`;
+    } else if (
+      responses[4] > responses[1] &&
+      responses[4] > responses[2] &&
+      responses[4] > responses[3]
+    ) {
+      return 'Wow! You were really stepping up your game. Keep up the good work!';
     } else {
       return `You kept it balanced. Were you on a mission? 🫥`;
     }

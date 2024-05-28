@@ -164,6 +164,7 @@ export const inventoryApi = createApi({
                 method: 'POST',
                 body: requestData
             }),
+            invalidatesTags: ['Inventory'],
         }),
     }),
 });

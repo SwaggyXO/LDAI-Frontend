@@ -9,6 +9,7 @@ import Loader from '../../Loader/Loader';
 import SuggestiveTextBox from './SuggestiveTextBox';
 import { useFetchUserQuizzesQuery, useFetchUserResultQuery } from '../../../api/userApiSlice';
 import { getUserCookie } from '../../../features/user/userCookieHandler';
+import { Blocks } from 'react-loader-spinner';
 
 const GemmaChat: React.FC = () => {
 
@@ -28,7 +29,7 @@ const GemmaChat: React.FC = () => {
 
     const { data: quiz, isLoading: isFetchUserResultLoading, error: isFetchUserResultError } = useFetchUserResultQuery([
         user?.userId!,
-        quizzesData?.data.quizzes.length! > 0 ? quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 2].quizId! : 'undefined'
+        quizzesData?.data.quizzes.length! > 0 ? quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 1].quizId! : 'undefined'
     ], {
         skip: quizzesData?.data.quizzes.length! <= 0 || quizzesData === undefined,
     });
@@ -83,6 +84,7 @@ const GemmaChat: React.FC = () => {
     };
 
     const handleSuggestiveMessage = async (text: string) => {
+        setIsMessageLoading(true);
         if (!text.trim()) return;
 
         try {
@@ -91,9 +93,12 @@ const GemmaChat: React.FC = () => {
             setConversation(newConversation);
         } catch (error) {
             console.error('Error handling message:', error);
+        } finally {
+            setIsMessageLoading(false);
         }
     };
     
+    const height = responses!.length > 0 ? '530px' : '600px';
 
     const content = (
         <div className="box">
@@ -129,7 +134,8 @@ const GemmaChat: React.FC = () => {
                 responses={responses!}
             />
 
-            <div className="chat-output">
+            <div className="chat-output" style={{ maxHeight: height}}>
+                {isMessageLoading && <Blocks height={30} width={30}/>}
             {conversation.map((item, index) => (
                 <div key={index} className="conversation">
                 <div className="gemma-question">

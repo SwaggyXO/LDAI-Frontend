@@ -4,6 +4,7 @@ import React from 'react'
 import Loader from '../Loader/Loader';
 import renderContent from '../../features/content/renderContent';
 import { useFetchLeaderboardQuery } from '../../api/quizApiSlice';
+import defaultPfp from '../../../public/assets/Icons/default_pfp.png';
 
 const Leaderboard = () => {
 
@@ -80,7 +81,7 @@ const Leaderboard = () => {
                     {sortedLeaderboardData && sortedLeaderboardData.map((user) => (
                         <div key={user.userId} className="leaderboard-item">
                             <div className="leaderboard-item-img">
-                                <img className="img" src={user.picture} alt={user.name} />
+                                <img className="img" src={user.picture ? user.picture : defaultPfp} />
                             </div>
                             <div className="leaderboard-item-name">{shortener(user.name)}</div>
                             <div className="leaderboard-item-score">{user.score * 100}%</div>
