@@ -23,17 +23,30 @@ const annotations = [
   //       z: 1
   //   },
   // },
+  // {
+  //   question: "What does Ascending Aorta do?",
+  //   cameraPos: {
+  //     x: -6,
+  //     y: 1.100902499991096,
+  //     z: 8,
+  //   },
+  //   lookAt: {
+  //     x: -0.6385672631219208,
+  //     y: 1.100902499991096,
+  //     z: 1.8547378740795566,
+  //   },
+  // },
   {
-    question: "What does Ascending Aorta do?",
+    question: "Explain the prominence of Laryngeal Prominence in the larynx.",
     cameraPos: {
-      x: -6,
-      y: 1.100902499991096,
-      z: 8,
+        x: -2.343814338775122,
+        y: 0,
+        z: 5
     },
     lookAt: {
-      x: -0.6385672631219208,
-      y: 1.100902499991096,
-      z: 1.8547378740795566,
+        x: 0.05,
+        y: 0,
+        z: 1.5
     },
   },
 ];
@@ -44,8 +57,8 @@ const Three = () => {
       <MemoizedThreeDQuestion />
       <MemoizedThreeDComponent
         annotations={annotations}
-        name={"Heart"}
-        scale={0.1}
+        name={"Larynx"}
+        scale={0.12}
       />
       {/* <AnimalCellModel /> */}
       <div className="answer-submit">

@@ -8,9 +8,10 @@ Title: Neuron
 */
 
 import * as THREE from 'three'
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useGLTF } from '@react-three/drei'
 import { GLTF } from 'three-stdlib'
+import { useFrame } from '@react-three/fiber'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -38,6 +39,7 @@ type ContextType = Record<string, React.ForwardRefExoticComponent<JSX.IntrinsicE
 
 export function Neuron(props: JSX.IntrinsicElements['group']) {
   const { nodes, materials } = useGLTF('/assets/Models/Neuron.glb') as GLTFResult
+
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, Math.PI / 2, 0]}>

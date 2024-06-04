@@ -100,24 +100,34 @@ type ThreeDComponentProps = {
 };
 
 const ThreeDComponent = (props: ThreeDComponentProps) => {
-  console.log("ThreeDComponent");
+
   const name = props.name;
   const scale = props.scale;
   const annotations = props.annotations;
 
+  const position: any = [];
+
   const handleModel = (name: string) => {
+    
     switch (name) {
       case "Heart":
+        position.push(0, 0, 0);
+        console.log("Heart from heart");
         return <HeartModel />;
       case "Brain":
+        position.push(0.75, -5, 0);
         return <BrainModel />;
-      case "Inner Ear":
+      case "InnerEar":
+        position.push(0, -0.75, 0);
         return <InnerEarModel />;
       case "Larynx":
+        position.push(0, -5, -2);
         return <LarynxModel />;
       case "Neuron":
+        position.push(-4, 0, 0);
         return <NeuronModel />;
       default:
+        console.log("Heart from here");
         return <HeartModel />;
     }
   };
@@ -126,18 +136,20 @@ const ThreeDComponent = (props: ThreeDComponentProps) => {
 
   function SkyBox() {
     const { scene } = useThree();
+    
     const loader = new CubeTextureLoader();
 
     const texture = loader.load([
-      "../../../src/assets/textures/skybox/px.png",
-      "../../../src/assets/textures/skybox/nx.png",
-      "../../../src/assets/textures/skybox/py.png",
-      "../../../src/assets/textures/skybox/ny.png",
-      "../../../src/assets/textures/skybox/pz.png",
-      "../../../src/assets/textures/skybox/nz.png",
+      "/textures/skybox/px.png",
+      "/textures/skybox/nx.png",
+      "/textures/skybox/py.png",
+      "/textures/skybox/ny.png",
+      "/textures/skybox/pz.png",
+      "/textures/skybox/nz.png",
     ]);
 
     scene.background = texture;
+    scene.backgroundIntensity = 0.2;
     return null;
   }
 
@@ -296,7 +308,7 @@ const ThreeDComponent = (props: ThreeDComponentProps) => {
       <hemisphereLight intensity={1} />
       {/* Pull scale of the model */}
       <Suspense fallback={<Loader />}>
-        <group position={[0, -0.75, 0]} scale={scale}>
+        <group position={position} scale={scale}>
           <Center>{handleModel(name)}</Center>
         </group>
         <OrbitControls

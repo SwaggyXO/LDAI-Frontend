@@ -31,7 +31,7 @@ const History = () => {
 
   const { data: quiz, isLoading: isFetchUserResultLoading, error: isFetchUserResultError } = useFetchUserResultQuery([
     user?.userId!,
-    quizzesData?.data.quizzes.length! > 0 ? quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 1].quizId! : 'undefined'
+    quizzesData?.data.quizzes.length! > 0 ? quizzesData?.data.quizzes[0].quizId! : 'undefined'
   ], {
     skip: quizzesData?.data.quizzes.length! <= 0 || quizzesData === undefined,
   });

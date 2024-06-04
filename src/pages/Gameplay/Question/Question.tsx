@@ -478,7 +478,7 @@ const Question = () => {
 
   useEffect(() => {
     if (boosterData) {
-      if (quiz.quizId !== "4402ae3a-7e22-409e-83c8-f0b868c034ca") {
+      if (quiz.quizId !== "248bdd7c-b1b6-4aae-a9eb-c644694d30ee") {
         console.log("Non tutorial Quiz", boosterData.data);
         setBoosters(boosterData.data.inventory);
       } else {

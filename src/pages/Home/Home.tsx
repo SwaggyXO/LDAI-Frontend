@@ -197,13 +197,12 @@ const Home = () => {
     createNewUser();
   }, [user]);
 
-  const quizId = "	9735d635-cf6e-47b4-884c-8a3254524360";
-  const smallQuizId = "4402ae3a-7e22-409e-83c8-f0b868c034ca";
+  const quizId = "248bdd7c-b1b6-4aae-a9eb-c644694d30ee";
   const {
     data: quizData,
     error: fetchQuizError,
     isLoading: isFetchQuizLoading,
-  } = useFetchQuizByIdQuery(smallQuizId, {
+  } = useFetchQuizByIdQuery(quizId, {
     skip: !isUserCreated || !currUser.isNew,
   });
 

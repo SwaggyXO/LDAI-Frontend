@@ -48,11 +48,11 @@ const Review = () => {
     data: quizData,
     error: fetchQuizError,
     isLoading: isFetchQuizLoading,
-  } = useFetchQuizByIdQuery(quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 1].quizId!, { skip: !quizzesData });
+  } = useFetchQuizByIdQuery(quizzesData?.data.quizzes[0].quizId!, { skip: !quizzesData });
 
   const { data: quiz, isLoading: isFetchUserResultLoading, error: isFetchUserResultError } = useFetchUserResultQuery([
     user?.userId!,
-    quizzesData?.data.quizzes[quizzesData?.data.quizzes.length - 1].quizId!
+    quizzesData?.data.quizzes[0].quizId!
   ], {
     skip: !quizzesData
   });
