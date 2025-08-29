@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const baseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/user' });
+const baseQuery = fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_CORE_MS_BASE_URL}/user` });
 
 type CreateUserRequest = {
   ciamId: string;

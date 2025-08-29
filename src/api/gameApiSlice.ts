@@ -1,8 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-const boosterBaseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/booster' });
+const boosterBaseQuery = fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_CORE_MS_BASE_URL}/booster` });
 
-const inventoryBaseQuery = fetchBaseQuery({ baseUrl: 'https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/inventory' });
+const inventoryBaseQuery = fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_CORE_MS_BASE_URL}/inventory` });
 
 export interface Booster {
     id: string,

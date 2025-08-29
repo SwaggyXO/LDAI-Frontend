@@ -69,7 +69,7 @@ const Profile = () => {
 
   // const handleExit = async () => {
   //   const response = await fetch(
-  //     `https://ldotai-core-ms.azurewebsites.net/api/ldai-core/v1/reward/all`
+  //     `${import.meta.env.VITE_CORE_MS_BASE_URL}/reward/all`
   //   );
   //   const data = await response.json();
   //   setAllAchievements(data.data);

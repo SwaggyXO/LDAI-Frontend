@@ -50,7 +50,7 @@ const GemmaChat: React.FC = () => {
 
     const sendMessageToAPI = async (message: string): Promise<string> => {
         try {
-            const response = await axios.post('https://lightly-rare-starfish.ngrok-free.app/gemma-chat', {
+            const response = await axios.post(import.meta.env.VITE_GEMMA_CHAT_URL, {
                 question: message
             });
 
